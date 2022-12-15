@@ -15,7 +15,13 @@ const SignupSchema = Yup.object().shape({
     .required('Password is required!'),
 });
 
-const AuthForm = ({ questionText, hash, buttonText, buttonTextToNavigate }) => {
+const AuthForm = ({
+  questionText,
+  hash,
+  buttonText,
+  buttonTextToNavigate,
+  handleSetCredentials,
+}) => {
   let navigate = useNavigate();
 
   return (
@@ -30,6 +36,7 @@ const AuthForm = ({ questionText, hash, buttonText, buttonTextToNavigate }) => {
         onSubmit={values => {
           // same shape as initial values
           console.log(values);
+          handleSetCredentials(values);
         }}
       >
         {({ errors, touched }) => (
@@ -62,6 +69,8 @@ AuthForm.propTypes = {
   questionText: PropTypes.string.isRequired,
   hash: PropTypes.string.isRequired,
   buttonText: PropTypes.string.isRequired,
+  buttonTextToNavigate: PropTypes.string.isRequired,
+  handleSetCredentials: PropTypes.func.isRequired,
 };
 
 export default AuthForm;
