@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 // import s from "./Auth.module.css";
@@ -14,6 +14,18 @@ const SignupSchema = Yup.object().shape({
 });
 
 const Auth = () => {
+  const [signUp, setSignUp] = useState(false);
+  const [signIn, setSignIn] = useState(true);
+
+  const onClickSignUp = () => {
+    setSignIn(false);
+    setSignUp(true);
+  };
+
+  const onClickSignIn = () => {
+    setSignIn(true);
+    setSignUp(false);
+  };
   return (
     <>
       <div>Sign in to Music Quiz</div>
@@ -38,14 +50,28 @@ const Auth = () => {
               <div>{errors.password}</div>
             ) : null}
 
-            <button type="submit">Sign In</button>
+            {signIn && (
+              <div>
+                <button type="submit">Sign In</button>
+                <p>Need an account?</p>
+                <button type="submit" onClick={onClickSignUp}>
+                  Sign Up
+                </button>
+              </div>
+            )}
+
+            {signUp && (
+              <div>
+                <button type="submit">Sign Up</button>
+                <p>Already have an account?</p>
+                <button type="submit" onClick={onClickSignIn}>
+                  Sign In
+                </button>
+              </div>
+            )}
           </Form>
         )}
       </Formik>
-      <div>
-        <p>Need an account?</p>
-        <button type="button">Sign Up</button>
-      </div>
     </>
   );
 };
