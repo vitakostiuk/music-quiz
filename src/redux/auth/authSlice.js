@@ -4,6 +4,7 @@ import { signup, signin } from './authOperations';
 const initialState = {
   userEmail: null,
   token: null,
+  googleToken: null,
   loading: false,
   error: null,
 };
@@ -11,7 +12,11 @@ const initialState = {
 const authSlice = createSlice({
   name: 'auth',
   initialState,
-  reducers: {},
+  reducers: {
+    googleAuth: (state, { payload }) => {
+      state.googleToken = payload.access_token;
+    },
+  },
   extraReducers: builder => {
     builder
       // REDUCER FOR SIGN_UP
@@ -46,5 +51,7 @@ const authSlice = createSlice({
       });
   },
 });
+
+export const { googleAuth } = authSlice.actions;
 
 export default authSlice.reducer;

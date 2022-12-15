@@ -1,9 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { googleAuth } from '../../redux/auth/authSlice';
 import { Formik, Form, Field } from 'formik';
+import { useGoogleLogin } from '@react-oauth/google';
+import { ReactComponent as IconGoogle } from '../../images/icon-google.svg';
 import * as Yup from 'yup';
-// import s from "./Auth.module.css";
+import s from './AuthForm.module.css';
 
 const SignupSchema = Yup.object().shape({
   email: Yup.string()
@@ -24,9 +28,26 @@ const AuthForm = ({
 }) => {
   let navigate = useNavigate();
 
+  const dispatch = useDispatch();
+
+  const login = useGoogleLogin({
+    onSuccess: tokenResponse => {
+      console.log(tokenResponse);
+      dispatch(googleAuth(tokenResponse));
+    },
+    onError: error => {
+      console.log(error);
+    },
+  });
+
   return (
     <>
       <div>Sign in to Music Quiz</div>
+      <button type="button" onClick={() => login()}>
+        <IconGoogle className={s.icon} />
+        Google
+      </button>
+      <div>OR</div>
       <Formik
         initialValues={{
           email: '',
