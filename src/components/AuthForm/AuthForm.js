@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { useNavigate } from 'react-router-dom';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 // import s from "./Auth.module.css";
@@ -13,19 +15,9 @@ const SignupSchema = Yup.object().shape({
     .required('Password is required!'),
 });
 
-const Auth = () => {
-  const [signUp, setSignUp] = useState(false);
-  const [signIn, setSignIn] = useState(true);
+const AuthForm = ({ questionText, hash, buttonText, buttonTextToNavigate }) => {
+  let navigate = useNavigate();
 
-  const onClickSignUp = () => {
-    setSignIn(false);
-    setSignUp(true);
-  };
-
-  const onClickSignIn = () => {
-    setSignIn(true);
-    setSignUp(false);
-  };
   return (
     <>
       <div>Sign in to Music Quiz</div>
@@ -50,25 +42,15 @@ const Auth = () => {
               <div>{errors.password}</div>
             ) : null}
 
-            {signIn && (
+            <div>
+              <button type="submit">{buttonText}</button>
               <div>
-                <button type="submit">Sign In</button>
-                <p>Need an account?</p>
-                <button type="submit" onClick={onClickSignUp}>
-                  Sign Up
+                <p>{questionText}</p>
+                <button type="button" onClick={() => navigate(`/${hash}`)}>
+                  {buttonTextToNavigate}
                 </button>
               </div>
-            )}
-
-            {signUp && (
-              <div>
-                <button type="submit">Sign Up</button>
-                <p>Already have an account?</p>
-                <button type="submit" onClick={onClickSignIn}>
-                  Sign In
-                </button>
-              </div>
-            )}
+            </div>
           </Form>
         )}
       </Formik>
@@ -76,4 +58,10 @@ const Auth = () => {
   );
 };
 
-export default Auth;
+AuthForm.propTypes = {
+  questionText: PropTypes.string.isRequired,
+  hash: PropTypes.string.isRequired,
+  buttonText: PropTypes.string.isRequired,
+};
+
+export default AuthForm;
