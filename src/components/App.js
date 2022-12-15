@@ -1,8 +1,8 @@
 import { Route, Routes } from 'react-router-dom';
-import Container from './components/common/Container';
-import SignInPage from './components/pages/SignInPage';
-import SignUpPage from './components/pages/SignUpPage';
-import GamePage from './components/pages/GamePage';
+import Container from './common/Container';
+import SignInPage from './pages/SignInPage';
+import SignUpPage from './pages/SignUpPage';
+import GamePage from './pages/GamePage';
 
 function App() {
   return (
