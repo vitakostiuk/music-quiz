@@ -4,6 +4,7 @@ import { Route, Routes } from 'react-router-dom';
 import SignInPage from './pages/SignInPage';
 import SignUpPage from './pages/SignUpPage';
 import GamePage from './pages/GamePage';
+import Container from './common/Container';
 
 function App() {
   // const token = useSelector(getToken);
@@ -12,11 +13,14 @@ function App() {
   // console.log('googleToken', googleToken);
   return (
     <>
-      <Routes>
-        <Route path="/" element={<GamePage />} />
-        <Route path="/login" element={<SignInPage />} />
-        <Route path="/register" element={<SignUpPage />} />
-      </Routes>
+      <Container>
+        {' '}
+        <Routes>
+          <Route path="/" element={<GamePage />} />
+          <Route path="/login" element={<SignInPage />} />
+          <Route path="/register" element={<SignUpPage />} />
+        </Routes>
+      </Container>
       {/* <Routes>
           <Route
             path="/login"

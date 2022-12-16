@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import { signup } from '../../redux/auth/authOperations';
 import { getToken } from '../../redux/auth/authSelectors';
 import AuthForm from '../AuthForm/AuthForm';
-import Container from '../common/Container';
 
 const SignUpPage = () => {
   const [credentials, setCredentials] = useState(null);
@@ -33,16 +32,13 @@ const SignUpPage = () => {
   };
 
   return (
-    <Container>
-      {' '}
-      <AuthForm
-        questionText="Already have an account?"
-        hash="login"
-        buttonText="Sign Up"
-        buttonTextToNavigate="Sign In"
-        handleSetCredentials={handleSetCredentials}
-      />
-    </Container>
+    <AuthForm
+      questionText="Already have an account?"
+      hash="login"
+      buttonText="Sign Up"
+      buttonTextToNavigate="Sign In"
+      handleSetCredentials={handleSetCredentials}
+    />
   );
 };
 

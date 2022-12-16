@@ -6,10 +6,18 @@ const Header = () => {
   const navigate = useNavigate();
   return (
     <div className={s.container}>
-      <button type="button" onClick={() => navigate('/login')}>
+      <button
+        className={s.signin}
+        type="button"
+        onClick={() => navigate('/login')}
+      >
         Sign In
       </button>
-      <button type="button" onClick={() => navigate('/register')}>
+      <button
+        className={s.signup}
+        type="button"
+        onClick={() => navigate('/register')}
+      >
         Sign Up
       </button>
     </div>

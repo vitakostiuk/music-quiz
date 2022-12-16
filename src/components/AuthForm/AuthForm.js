@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { googleAuth } from '../../redux/auth/authSlice';
-import { getToken, getGoogleToken } from '../../redux/auth/authSelectors';
 import { Formik, Form, Field } from 'formik';
 import { useGoogleLogin } from '@react-oauth/google';
 import { ReactComponent as IconGoogle } from '../../images/icon-google.svg';
@@ -13,10 +12,10 @@ import s from './AuthForm.module.css';
 const SignupSchema = Yup.object().shape({
   email: Yup.string()
     .email('Invalid email address')
-    .required('Email is required!'),
+    .required('Email is required'),
   password: Yup.string()
     .min(8, 'Password is Too short')
-    .required('Password is required!'),
+    .required('Password is required'),
 });
 
 const AuthForm = ({
@@ -44,48 +43,80 @@ const AuthForm = ({
   });
 
   return (
-    <>
-      <div>Sign in to Music Quiz</div>
-      <button type="button" onClick={() => login()}>
-        <IconGoogle className={s.icon} />
-        Google
-      </button>
-      <div>OR</div>
-      <Formik
-        initialValues={{
-          email: '',
-          password: '',
-        }}
-        validationSchema={SignupSchema}
-        onSubmit={values => {
-          // same shape as initial values
-          console.log(values);
-          handleSetCredentials(values);
-        }}
-      >
-        {({ errors, touched }) => (
-          <Form>
-            <Field name="email" type="email" />
-            {errors.email && touched.email ? <div>{errors.email}</div> : null}
+    <div className={s.wrapper}>
+      <div className={s.container}>
+        <h1 className={s.title}>Sign in to Music Quiz</h1>
+        <button className={s.google} type="button" onClick={() => login()}>
+          <IconGoogle className={s.icon} />
+          Google
+        </button>
+        <p className={s.orText}>OR</p>
+        <Formik
+          initialValues={{
+            email: '',
+            password: '',
+          }}
+          validationSchema={SignupSchema}
+          onSubmit={values => {
+            // same shape as initial values
+            console.log(values);
+            handleSetCredentials(values);
+          }}
+        >
+          {({ errors, touched }) => (
+            <Form className={s.form}>
+              <label className={s.label} htmlFor="email">
+                Email
+              </label>
+              <Field
+                id="email"
+                className={
+                  errors.password || touched.password ? s.errInput : s.input
+                }
+                name="email"
+                type="email"
+                placeholder="your@email.com"
+              />
+              {errors.email && touched.email ? (
+                <div className={s.errEmail}>{errors.email}</div>
+              ) : null}
 
-            <Field name="password" type="password" />
-            {errors.password && touched.password ? (
-              <div>{errors.password}</div>
-            ) : null}
+              <label className={s.label} htmlFor="password">
+                Password
+              </label>
+              <Field
+                id="password"
+                className={
+                  errors.password || touched.password ? s.errInput : s.input
+                }
+                name="password"
+                type="password"
+                placeholder="your password"
+              />
+              {errors.password && touched.password ? (
+                <div className={s.errPassword}>{errors.password}</div>
+              ) : null}
 
-            <div>
-              <button type="submit">{buttonText}</button>
               <div>
-                <p>{questionText}</p>
-                <button type="button" onClick={() => navigate(`/${hash}`)}>
-                  {buttonTextToNavigate}
+                <button className={s.bigButton} type="submit">
+                  {buttonText}
                 </button>
+                <div className={s.questionContainr}>
+                  <p className={s.questionText}>{questionText}</p>
+                  <button
+                    className={s.questionBtn}
+                    type="button"
+                    onClick={() => navigate(`/${hash}`)}
+                  >
+                    {buttonTextToNavigate}
+                  </button>
+                </div>
               </div>
-            </div>
-          </Form>
-        )}
-      </Formik>
-    </>
+            </Form>
+          )}
+        </Formik>
+      </div>
+    </div>
   );
 };
 
