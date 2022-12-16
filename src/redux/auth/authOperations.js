@@ -12,6 +12,8 @@ const signup = createAsyncThunk(
 
       return data;
     } catch (error) {
+      // console.log(error.response.data.message);
+      alert(error.response.data.message);
       return rejectWithValue(error.message);
     }
   }
@@ -25,7 +27,7 @@ const signin = createAsyncThunk(
 
       return data;
     } catch (error) {
-      // console.dir(error);
+      alert(error.response.data.message);
       return rejectWithValue(error.message);
     }
   }

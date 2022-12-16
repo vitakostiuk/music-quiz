@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { signup } from '../../redux/auth/authOperations';
+import { getToken } from '../../redux/auth/authSelectors';
 import AuthForm from '../AuthForm/AuthForm';
+import Container from '../common/Container';
 
 const SignUpPage = () => {
   const [credentials, setCredentials] = useState(null);
-  console.log('credentials', credentials);
+  // console.log('credentials', credentials);
 
+  const token = useSelector(getToken);
+  // console.log('token', token);
+
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -15,18 +22,27 @@ const SignUpPage = () => {
     }
   }, [credentials, dispatch]);
 
+  useEffect(() => {
+    if (token) {
+      navigate('/');
+    }
+  }, [navigate, token]);
+
   const handleSetCredentials = data => {
     setCredentials(data);
   };
 
   return (
-    <AuthForm
-      questionText="Already have an account?"
-      hash="login"
-      buttonText="Sign Up"
-      buttonTextToNavigate="Sign In"
-      handleSetCredentials={handleSetCredentials}
-    />
+    <Container>
+      {' '}
+      <AuthForm
+        questionText="Already have an account?"
+        hash="login"
+        buttonText="Sign Up"
+        buttonTextToNavigate="Sign In"
+        handleSetCredentials={handleSetCredentials}
+      />
+    </Container>
   );
 };
 

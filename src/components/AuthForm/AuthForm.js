@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { googleAuth } from '../../redux/auth/authSlice';
+import { getToken, getGoogleToken } from '../../redux/auth/authSelectors';
 import { Formik, Form, Field } from 'formik';
 import { useGoogleLogin } from '@react-oauth/google';
 import { ReactComponent as IconGoogle } from '../../images/icon-google.svg';
@@ -14,7 +15,6 @@ const SignupSchema = Yup.object().shape({
     .email('Invalid email address')
     .required('Email is required!'),
   password: Yup.string()
-    .email('Invalid password')
     .min(8, 'Password is Too short')
     .required('Password is required!'),
 });
@@ -26,7 +26,7 @@ const AuthForm = ({
   buttonTextToNavigate,
   handleSetCredentials,
 }) => {
-  let navigate = useNavigate();
+  const navigate = useNavigate();
 
   const dispatch = useDispatch();
 
@@ -34,6 +34,9 @@ const AuthForm = ({
     onSuccess: tokenResponse => {
       console.log(tokenResponse);
       dispatch(googleAuth(tokenResponse));
+      if (tokenResponse) {
+        navigate('/');
+      }
     },
     onError: error => {
       console.log(error);
