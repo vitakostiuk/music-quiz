@@ -24,6 +24,7 @@ const AuthForm = ({
   buttonText,
   buttonTextToNavigate,
   handleSetCredentials,
+  forgotPassword,
 }) => {
   const navigate = useNavigate();
 
@@ -111,6 +112,18 @@ const AuthForm = ({
                     {buttonTextToNavigate}
                   </button>
                 </div>
+                {forgotPassword && (
+                  <div className={s.questionContainr}>
+                    <p className={s.questionText}>Forgot your password?</p>
+                    <p
+                      className={s.reset}
+                      type="button"
+                      // onClick={}
+                    >
+                      Reset it
+                    </p>
+                  </div>
+                )}
               </div>
             </Form>
           )}
@@ -126,6 +139,7 @@ AuthForm.propTypes = {
   buttonText: PropTypes.string.isRequired,
   buttonTextToNavigate: PropTypes.string.isRequired,
   handleSetCredentials: PropTypes.func.isRequired,
+  forgotPassword: PropTypes.bool,
 };
 
 export default AuthForm;

@@ -158,6 +158,12 @@
   color: #a1a5be;
 }
 
+.reset {
+  composes: questionText;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 .questionBtn {
   width: 80px;
   height: 30px;

@@ -33,4 +33,18 @@ const signin = createAsyncThunk(
   }
 );
 
-export { signup, signin };
+const forgotPassword = createAsyncThunk(
+  'auth/forgot-password',
+  async (email, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.patch(`/users/forgot-password`, email);
+
+      return data;
+    } catch (error) {
+      alert(error.response.data.message);
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export { signup, signin, forgotPassword };
