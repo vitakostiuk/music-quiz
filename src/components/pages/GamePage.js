@@ -1,11 +1,12 @@
-// import React, { useState } from 'react';
+import React from 'react';
 import Header from '../Header';
+import Game from '../Game';
 
 const GamePage = () => {
   return (
     <div>
       <Header />
-      <p>GamePage</p>
+      <Game />
     </div>
   );
 };
