@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { googleAuth } from '../../redux/auth/authSlice';
 import { Formik, Form, Field } from 'formik';
 import { useGoogleLogin } from '@react-oauth/google';
+import { forgotPassword } from '../../redux/auth/authOperations';
 import { ReactComponent as IconGoogle } from '../../images/icon-google.svg';
+import Modal from '../common/Modal';
 import * as Yup from 'yup';
 import s from './AuthForm.module.css';
 
@@ -24,11 +26,20 @@ const AuthForm = ({
   buttonText,
   buttonTextToNavigate,
   handleSetCredentials,
-  forgotPassword,
+  isForgotPassword,
 }) => {
+  const [isShowModal, setisShowModal] = useState(false);
+  const [email, setEmail] = useState(null);
+
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (email) {
+      dispatch(forgotPassword(email));
+    }
+  }, [dispatch, email]);
 
   const login = useGoogleLogin({
     onSuccess: tokenResponse => {
@@ -42,6 +53,14 @@ const AuthForm = ({
       console.log(error);
     },
   });
+
+  const onClickShowModal = () => {
+    setisShowModal(prefState => !prefState);
+  };
+
+  const setEmailforForgotPassword = data => {
+    setEmail(data);
+  };
 
   return (
     <div className={s.wrapper}>
@@ -72,7 +91,7 @@ const AuthForm = ({
               <Field
                 id="email"
                 className={
-                  errors.password || touched.password ? s.errInput : s.input
+                  errors.password && touched.password ? s.errInput : s.input
                 }
                 name="email"
                 type="email"
@@ -88,7 +107,7 @@ const AuthForm = ({
               <Field
                 id="password"
                 className={
-                  errors.password || touched.password ? s.errInput : s.input
+                  errors.password && touched.password ? s.errInput : s.input
                 }
                 name="password"
                 type="password"
@@ -112,13 +131,13 @@ const AuthForm = ({
                     {buttonTextToNavigate}
                   </button>
                 </div>
-                {forgotPassword && (
+                {isForgotPassword && (
                   <div className={s.questionContainr}>
                     <p className={s.questionText}>Forgot your password?</p>
                     <p
                       className={s.reset}
                       type="button"
-                      // onClick={}
+                      onClick={() => onClickShowModal()}
                     >
                       Reset it
                     </p>
@@ -128,6 +147,15 @@ const AuthForm = ({
             </Form>
           )}
         </Formik>
+        {isShowModal && (
+          <Modal
+            onClickShowModal={onClickShowModal}
+            setEmailforForgotPassword={setEmailforForgotPassword}
+            text="Reset Your Password"
+            btnText="reset password"
+            input
+          />
+        )}
       </div>
     </div>
   );
@@ -139,7 +167,7 @@ AuthForm.propTypes = {
   buttonText: PropTypes.string.isRequired,
   buttonTextToNavigate: PropTypes.string.isRequired,
   handleSetCredentials: PropTypes.func.isRequired,
-  forgotPassword: PropTypes.bool,
+  isForgotPassword: PropTypes.bool,
 };
 
 export default AuthForm;

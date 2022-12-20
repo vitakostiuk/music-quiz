@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { toast } from 'react-toastify';
 
 axios.defaults.baseURL = 'http://localhost:3000/api';
 axios.defaults.headers.post['Content-Type'] = 'application/json';
@@ -12,8 +13,7 @@ const signup = createAsyncThunk(
 
       return data;
     } catch (error) {
-      // console.log(error.response.data.message);
-      alert(error.response.data.message);
+      toast.error(error.response.data.message);
       return rejectWithValue(error.message);
     }
   }
@@ -27,7 +27,7 @@ const signin = createAsyncThunk(
 
       return data;
     } catch (error) {
-      alert(error.response.data.message);
+      toast.error(error.response.data.message);
       return rejectWithValue(error.message);
     }
   }
@@ -39,9 +39,10 @@ const forgotPassword = createAsyncThunk(
     try {
       const { data } = await axios.patch(`/users/forgot-password`, email);
 
-      return data;
+      toast.success(data.message);
+      return data.message;
     } catch (error) {
-      alert(error.response.data.message);
+      toast.error(error.response.data.message);
       return rejectWithValue(error.message);
     }
   }

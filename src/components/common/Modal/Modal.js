@@ -1,10 +1,21 @@
 import { useEffect } from 'react';
 import PropTypes from 'prop-types';
-// import { useDispatch } from 'react-redux';
+import { Formik, Form, Field } from 'formik';
+import * as Yup from 'yup';
+import { useSelector } from 'react-redux';
+import { isSentEmail } from '../../../redux/auth/authSelectors';
 import { ReactComponent as CloseModal } from '../../../images/close.svg';
 import s from './Modal.module.css';
 
-const Modal = ({ onClickShowModal, text, btnText, input }) => {
+const Modal = ({
+  onClickShowModal,
+  setEmailforForgotPassword,
+  text,
+  btnText,
+  input,
+}) => {
+  const sentEmail = useSelector(isSentEmail);
+
   useEffect(() => {
     const handleKeyDown = e => {
       if (e.code === 'Escape') {
@@ -23,6 +34,13 @@ const Modal = ({ onClickShowModal, text, btnText, input }) => {
     }
   };
 
+  useEffect(() => {
+    console.log('sentEmail', sentEmail);
+    if (sentEmail) {
+      onClickShowModal();
+    }
+  }, [onClickShowModal, sentEmail]);
+
   return (
     <div className={s.backdrop} onClick={handleBackdropClick}>
       <div className={s.modal}>
@@ -35,25 +53,45 @@ const Modal = ({ onClickShowModal, text, btnText, input }) => {
         </button>
         <p className={s.title}>{text}</p>
         {input && (
-          <>
-            <p className={s.text}>
-              Enter your email address and we'll send you a password reset link.
-            </p>
-            <label className={s.label} htmlFor="email">
-              Email
-            </label>
-            <input
-              id="email"
-              className={s.input}
-              name="email"
-              type="email"
-              placeholder="your@email.com"
-            />
-          </>
+          <Formik
+            initialValues={{
+              email: '',
+            }}
+            validationSchema={Yup.object().shape({
+              email: Yup.string()
+                .email('Invalid email address')
+                .required('Email is required'),
+            })}
+            onSubmit={values => {
+              // console.log(values);
+              setEmailforForgotPassword(values);
+            }}
+          >
+            {({ errors, touched }) => (
+              <Form className={s.form}>
+                <label className={s.label} htmlFor="email">
+                  Email
+                </label>
+                <Field
+                  id="email"
+                  className={
+                    errors.password && touched.password ? s.errInput : s.input
+                  }
+                  name="email"
+                  type="email"
+                  placeholder="your@email.com"
+                />
+                {errors.email && touched.email ? (
+                  <div className={s.errEmail}>{errors.email}</div>
+                ) : null}
+
+                <button className={s.bigButton} type="submit">
+                  {btnText}
+                </button>
+              </Form>
+            )}
+          </Formik>
         )}
-        <button className={s.bigButton} type="button">
-          {btnText}
-        </button>
       </div>
     </div>
   );
@@ -61,9 +99,9 @@ const Modal = ({ onClickShowModal, text, btnText, input }) => {
 
 Modal.propTypes = {
   text: PropTypes.string.isRequired,
-  hash: PropTypes.string.isRequired,
   btnText: PropTypes.string.isRequired,
   onClickShowModal: PropTypes.func.isRequired,
+  setEmailforForgotPassword: PropTypes.func.isRequired,
   input: PropTypes.bool,
 };
 

@@ -37,7 +37,7 @@ const SignInPage = () => {
       buttonText="Sign In"
       buttonTextToNavigate="Sign Up"
       handleSetCredentials={handleSetCredentials}
-      forgotPassword
+      isForgotPassword
     />
   );
 };

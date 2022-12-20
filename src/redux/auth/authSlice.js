@@ -7,6 +7,7 @@ const initialState = {
   googleToken: null,
   loading: false,
   error: null,
+  sentEmail: '',
 };
 
 const authSlice = createSlice({
@@ -55,8 +56,9 @@ const authSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(forgotPassword.fulfilled, state => {
+      .addCase(forgotPassword.fulfilled, (state, { payload }) => {
         state.loading = false;
+        state.sentEmail = payload;
       })
       .addCase(forgotPassword.rejected, (state, { payload }) => {
         state.loading = false;

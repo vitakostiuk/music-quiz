@@ -4,7 +4,8 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: #1f24497e;
+  background-color: #3c4372e0;
+
   z-index: 20;
 }
 
@@ -57,6 +58,12 @@
   color: #a1a5be;
 }
 
+.form {
+  position: relative;
+  width: 350px;
+  padding: 20px;
+}
+
 .btnContainer {
   display: flex;
   justify-content: center;
@@ -100,4 +107,24 @@
 .input:focus {
   outline: none;
   border: 1px solid #4f65f1;
+}
+
+.input::placeholder {
+  color: #a1a5be;
+}
+
+.errInput {
+  composes: input;
+  border: 1px solid #fc4274;
+}
+
+.errEmail {
+  position: absolute;
+  top: 87px;
+  right: 20px;
+  margin-top: 8px;
+  color: #fc4274;
+  font-size: 12px;
+  text-align: right;
+  font-size: 12px;
 }

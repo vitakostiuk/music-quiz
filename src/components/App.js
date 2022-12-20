@@ -1,4 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 // import { useSelector } from 'react-redux';
 // import { getToken, getGoogleToken } from '../redux/auth/authSelectors';
 import SignInPage from './pages/SignInPage';
@@ -20,6 +22,7 @@ function App() {
           <Route path="/login" element={<SignInPage />} />
           <Route path="/register" element={<SignUpPage />} />
         </Routes>
+        <ToastContainer position="top-right" autoClose={3000} limit={1} />
       </Container>
       {/* <Routes>
           <Route
