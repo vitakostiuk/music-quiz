@@ -12,6 +12,7 @@ import {
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import authSlice from './auth/authSlice';
+import playerSlice from './player/playerSlice';
 
 const persistAuthConfig = {
   key: 'token',
@@ -21,6 +22,7 @@ const persistAuthConfig = {
 
 const rootReducer = combineReducers({
   auth: persistReducer(persistAuthConfig, authSlice),
+  player: playerSlice,
 });
 
 const store = configureStore({

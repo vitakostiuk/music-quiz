@@ -1,27 +1,23 @@
-.container {
-  height: 500px;
-  background-color: #fff;
-}
-
 .list {
+  display: flex;
+  justify-content: space-between;
   list-style: none;
   padding: 0;
 }
 
-.frame {
-  display: block;
-  margin: 0 auto;
-}
-
-.audioBtn,
-.answerBtn {
+.audioBtn {
   display: flex;
   margin-bottom: 5px;
   cursor: pointer;
+  transition-property: transform;
 }
 
-.audioBtn::before,
-.answerBtn::before {
+.audioBtnCurrent {
+  composes: audioBtn;
+  font-weight: 700;
+}
+
+.audioBtn::before {
   content: '';
   display: block;
   margin-right: 10px;
@@ -30,11 +26,6 @@
   border-radius: 50%;
   background-color: rgb(255, 103, 103);
   cursor: pointer;
-}
-
-.answerBtn::before {
-  background-color: rgb(31, 138, 9);
-  border-radius: 10%;
 }
 
 .hidden {

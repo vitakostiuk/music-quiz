@@ -1,93 +1,194 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { nanoid } from '@reduxjs/toolkit';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setCurrent, togglePlaying } from '../../redux/player/playerSlice';
+import { getSongsList, getCurrent } from '../../redux/player/playerSelectors';
 import audioSingers from './audioSingers.json';
-import { shuffle } from '../../helpers/shuffle';
-import { ReactComponent as Cross } from '../../images/cross.svg';
-import { ReactComponent as Checkmark } from '../../images/checkmark.svg';
+import Paper from '../common/Paper';
+import Player from '../Player';
+import Answers from '../Answers';
 import s from './Game.module.css';
 
 const Game = () => {
-  const filteredByStage = audioSingers.find(({ stage }) => stage === 1);
+  const dispatch = useDispatch();
 
-  const [quiz, setQuiz] = useState(
-    useMemo(() => shuffle(filteredByStage.quizInfo), [filteredByStage.quizInfo])
-  );
-  const [quizAnswers, setQuizAnswers] = useState(null);
-  const [targetUrl, setTargetUrl] = useState(quiz[0].url);
-  const [isMatch, setIsMatch] = useState(false);
+  const songsList = useSelector(getSongsList);
+  const currentSong = useSelector(getCurrent);
 
-  useEffect(() => {
-    const answers = quiz.find(({ url }) => url === targetUrl);
-    // console.log('answers', answers);
-
-    const randomArr = shuffle(answers.incorrectSingers).slice(0, 3);
-    randomArr.push(answers.correctSinger);
-
-    const result = shuffle(randomArr);
-    setQuizAnswers(result);
-    // console.log('result', result);
-  }, [quiz, targetUrl]);
-
-  const handleClickUrl = link => {
-    setTargetUrl(link);
-  };
-
-  const handleClickAnswer = e => {
-    const correctAnaswer = quizAnswers.find(answer => answer.isCorrect);
-
-    if (e.target.innerText === correctAnaswer.song) {
-      setIsMatch(true);
-      console.log('WIN');
-    } else {
-      setIsMatch(false);
-      console.log('SHIT');
-    }
-  };
+  // const handleClickSong = idx => {
+  //   // dispatch(togglePlaying());
+  //   dispatch(setCurrent(idx));
+  // };
 
   return (
-    <div className={s.container}>
-      {' '}
+    <Paper>
       <ul className={s.list}>
         {audioSingers &&
-          quiz.map(({ url, name, id }) => (
+          songsList.map(({ name, id }, idx) => (
             <li
               key={id}
-              className={s.audioBtn}
-              onClick={() => handleClickUrl(url)}
+              className={currentSong === idx ? s.audioBtnCurrent : s.audioBtn}
+              // onClick={() => handleClickSong(idx)}
             >
               {name}
             </li>
           ))}
-        <iframe
-          title="test"
-          frameBorder="0"
-          width="500"
-          height="65"
-          src={targetUrl}
-          className={s.frame}
-        ></iframe>
       </ul>
-      {quizAnswers && (
-        <ul className={s.list}>
-          {quizAnswers.map(({ song }) => (
-            <li key={song} className={s.answerBtn} onClick={handleClickAnswer}>
-              <Cross
-                width="17px"
-                height="17px"
-                // className={!isMatch && s.hidden}
-              />
-              <Checkmark
-                width="17px"
-                height="17px"
-                // className={!isMatch && s.hidden}
-              />
-              {song}
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
+      <Player />
+      <Answers />
+    </Paper>
   );
 };
 
 export default Game;
+
+// import React, { useState, useEffect, useMemo } from 'react';
+// import { useDispatch } from 'react-redux';
+// import { setSongsArr } from '../../redux/player/playerSlice';
+// // import { nanoid } from '@reduxjs/toolkit';
+// import audioSingers from './audioSingers.json';
+// import { shuffle } from '../../helpers/shuffle';
+// // import { ReactComponent as Cross } from '../../images/cross.svg';
+// // import { ReactComponent as Checkmark } from '../../images/checkmark.svg';
+// import s from './Game.module.css';
+
+// const Game = () => {
+//   const dispatch = useDispatch();
+
+//   const filteredByStage = audioSingers.find(({ stage }) => stage === 1);
+
+//   const [quiz, setQuiz] = useState(
+//     useMemo(() => shuffle(filteredByStage.quizInfo), [filteredByStage.quizInfo])
+//   );
+//   const [quizAnswers, setQuizAnswers] = useState(null);
+//   const [targetUrl, setTargetUrl] = useState(quiz[0].url);
+//   const [isMatch, setIsMatch] = useState(null);
+//   const [activeIndex, setActiveIndex] = useState(null);
+//   const [correct, setCorrect] = useState('');
+//   const [isClickAnswer, setIsClickAnswer] = useState(false);
+//   const [isDisable, setIsDisable] = useState(false);
+//   const [currentSong, setCurrentSong] = useState(quiz[0].id);
+
+//   useEffect(() => {
+//     setIsClickAnswer(false);
+//     setIsDisable(false);
+
+//     const answers = quiz.find(({ url }) => url === targetUrl);
+//     // console.log('answers', answers);
+
+//     const randomArr = shuffle(answers.incorrectSingers).slice(0, 3);
+//     randomArr.push(answers.correctSinger);
+
+//     const result = shuffle(randomArr);
+//     setQuizAnswers(result);
+//     // console.log('result', result);
+
+//     const correctAnaswer = result.find(answer => answer.isCorrect);
+//     // console.log('correctAnaswer', correctAnaswer);
+//     setCorrect(correctAnaswer.song);
+//   }, [quiz, targetUrl]);
+
+//   const handleClickUrl = (link, id) => {
+//     setTargetUrl(link);
+//     setCurrentSong(id);
+//   };
+
+//   const handleClickAnswer = (index, array) => {
+//     setActiveIndex(index);
+//     setIsClickAnswer(true);
+
+//     if (array[index].song === correct) {
+//       setIsMatch(true);
+//       console.log('WIN');
+//     } else {
+//       setIsMatch(false);
+//       console.log('SHIT');
+//     }
+//     setIsDisable(true);
+//   };
+
+//   const makeOptionClassName = (index, array) => {
+//     if (!isClickAnswer) {
+//       return s.answerBtn;
+//     }
+
+//     if (isMatch && index === activeIndex) {
+//       // return s.trueAnswerBtn;
+//       return s.trueActiveAnswerBtn;
+//     }
+
+//     if (isMatch && index !== activeIndex) {
+//       return s.falseAnswerBtn;
+//     }
+
+//     if (
+//       isMatch === false &&
+//       index === activeIndex &&
+//       array[index].song !== correct
+//     ) {
+//       return s.falseActiveAnswerBtn;
+//     }
+
+//     if (
+//       isMatch === false &&
+//       index !== activeIndex &&
+//       array[index].song === correct
+//     ) {
+//       return s.trueAnswerBtn;
+//     }
+
+//     if (
+//       isMatch === false &&
+//       index !== activeIndex &&
+//       array[index].song !== correct
+//     ) {
+//       return s.falseAnswerBtn;
+//     }
+
+//     return s.answerBtn;
+//   };
+
+//   const disabled = isDisable;
+
+//   return (
+//     <div className={s.container}>
+//       {' '}
+//       <ul className={s.list}>
+//         {audioSingers &&
+//           quiz.map(({ url, name, id }) => (
+//             <li
+//               key={id}
+//               className={s.audioBtn}
+//               onClick={() => handleClickUrl(url, id)}
+//             >
+//               {name}
+//             </li>
+//           ))}
+//         <iframe
+//           title="test"
+//           frameBorder="0"
+//           width="500"
+//           height="65"
+//           src={targetUrl}
+//           className={s.frame}
+//         ></iframe>
+//       </ul>
+//       {quizAnswers && (
+//         <div className={s.list}>
+//           {quizAnswers.map(({ song }, index, array) => (
+//             <button
+//               key={song}
+//               type="button"
+//               className={makeOptionClassName(index, array)}
+//               onClick={() => handleClickAnswer(index, array)}
+//               disabled={disabled}
+//             >
+//               {song}
+//             </button>
+//           ))}
+//         </div>
+//       )}
+//     </div>
+//   );
+// };
+
+// export default Game;
