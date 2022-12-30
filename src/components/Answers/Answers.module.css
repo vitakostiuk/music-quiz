@@ -48,10 +48,12 @@
 
 .trueActiveAnswerBtn {
   background-color: #85ffb6;
+  box-shadow: 0px 7px 12px rgba(133, 255, 182, 0.25);
 }
 
 .falseActiveAnswerBtn {
   background-color: #ff8585;
+  box-shadow: 0px 7px 12px rgba(245, 148, 148, 0.25);
 }
 
 .hidden {

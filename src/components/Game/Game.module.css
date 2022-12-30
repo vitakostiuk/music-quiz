@@ -1,8 +1,11 @@
 .list {
+  display: block;
+  margin: 0 auto;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   list-style: none;
   padding: 0;
+  width: 831px;
 }
 
 .inactive {
@@ -32,6 +35,69 @@
   background-repeat: no-repeat;
   background-position: center;
   background-color: #ff8585;
+}
+
+.lineWrapper {
+  display: flex;
+  align-items: center;
+  height: 50px;
+}
+
+.line {
+  width: 135px;
+  height: 5px;
+  background-color: #d9d9d9;
+  border-radius: 2.5px;
+}
+
+.doubleTrueLine {
+  composes: line;
+  background-color: #85ffb6;
+}
+
+.doubleWrongLine {
+  composes: line;
+  background-color: #ff8585;
+}
+
+.firstTrueThenCurrentLine {
+  composes: line;
+  background-image: linear-gradient(
+    270deg,
+    #94cdf5 0%,
+    #a5f2e4 49.93%,
+    #85ffb6 100%
+  );
+}
+
+.firsWrongThenCurrentLine {
+  composes: line;
+  background-image: linear-gradient(
+    270deg,
+    #94cdf5 0%,
+    #a5f2e4 49.93%,
+    #ff8585 100%
+  );
+}
+
+.firstTrueThenWrongLine {
+  composes: line;
+  background-image: linear-gradient(
+    270deg,
+    #85ffb6 0%,
+    #e7e8dd 49.4%,
+    #ff8585 100%
+  );
+}
+
+.firsWrongThenTrueLine {
+  composes: line;
+  background-image: linear-gradient(
+    270deg,
+    #ff8585 0%,
+    #e7e8dd 49.4%,
+    #85ffb6 100%
+  );
 }
 
 .hidden {

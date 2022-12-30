@@ -78,7 +78,8 @@ const Answers = () => {
     dispatch(setAnswerState(isRightAnswer));
     setIsDisable(true);
 
-    const DELAY = isRightAnswer ? 8000 : 1000;
+    // const DELAY = isRightAnswer ? 1000 : 1000;
+    const DELAY = isRightAnswer ? 1000 : 1000;
 
     // Автоматичнтй перехід на наступну пісню
     setTimeout(() => {
@@ -132,6 +133,9 @@ const Answers = () => {
           autoPlay
         />
       )}
+      {/* {isMatch === false && (
+        <audio type="audio/mpeg" src="../../audio/Wrong.mp3" autoPlay />
+      )} */}
     </div>
   );
 };
