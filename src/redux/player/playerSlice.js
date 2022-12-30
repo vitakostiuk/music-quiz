@@ -6,6 +6,7 @@ const initialState = {
   currentSong: 0,
   playing: false,
   clickAnswer: false,
+  answerState: [],
 };
 
 const playerSlice = createSlice({
@@ -24,10 +25,18 @@ const playerSlice = createSlice({
     setClickAnswer: (state, { payload }) => {
       state.clickAnswer = payload;
     },
+    setAnswerState: (state, { payload }) => {
+      state.answerState = [...state.answerState, payload];
+    },
   },
 });
 
-export const { setSongsArr, togglePlaying, setCurrent, setClickAnswer } =
-  playerSlice.actions;
+export const {
+  setSongsArr,
+  togglePlaying,
+  setCurrent,
+  setClickAnswer,
+  setAnswerState,
+} = playerSlice.actions;
 
 export default playerSlice.reducer;

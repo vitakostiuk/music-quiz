@@ -10,6 +10,7 @@ import {
   setCurrent,
   togglePlaying,
   setClickAnswer,
+  setAnswerState,
 } from '../../redux/player/playerSlice';
 import { shuffle } from '../../helpers/shuffle';
 import s from './Answers.module.css';
@@ -32,23 +33,34 @@ const Answers = () => {
     dispatch(setClickAnswer(false));
     setIsDisable(false);
 
+    // Списк відповідей,не включачи правильну
     const answers = songsList.find(
       ({ url }) => url === songsList[currentSong].url
     );
 
+    // Копія відповідей,не включачи правильну. Щоб можна було рандомно перемішати масив(ф-я shuffle)
     const incorrectAnswers = [...answers.incorrectSingers];
 
+    // Рандомно перемішуємо і беремо перших три ел-та
     const randomAnswers = shuffle(incorrectAnswers).slice(0, 3);
+    // Додавляємо коректну віповідь
     randomAnswers.push(answers.correctSinger);
 
+    // Рандомно перемішуємо з коректною відповіддю
     const result = shuffle([...randomAnswers]);
+    // Записуємо в локальний стейт
     setAnswersList(result);
 
+    // Записуємо в локальний стейт коретну відповідь
     const correctAnaswer = result.find(answer => answer.isCorrect);
     setCorrect(correctAnaswer.song);
   }, [currentSong, dispatch, songsList]);
 
+  // ОБРОБКА ВІДПОВІДІ
   const handleClickAnswer = (index, array) => {
+    let isRightAnswer = null;
+
+    // Записуємо в локальний стейт,вгадали чи ні
     setActiveIndex(index);
     dispatch(setClickAnswer(true));
 
@@ -56,20 +68,27 @@ const Answers = () => {
 
     if (array[index].song === correct) {
       setIsMatch(true);
-      console.log('WIN');
+      isRightAnswer = true;
     } else {
       setIsMatch(false);
-      console.log('SHIT');
+      isRightAnswer = false;
     }
+
+    // Записуємо в масив, правильна чи неправильна відповідь
+    dispatch(setAnswerState(isRightAnswer));
     setIsDisable(true);
 
+    const DELAY = isRightAnswer ? 8000 : 1000;
+
+    // Автоматичнтй перехід на наступну пісню
     setTimeout(() => {
       if (currentSong === 4) return;
       setIsMatch(false);
       dispatch(setCurrent(currentSong + 1));
-    }, 8000);
+    }, DELAY);
   };
 
+  // Classname для неактивної, правильної і неправильної відповіді
   const makeOptionClassName = (index, array) => {
     if (!isClickAnswer) {
       return s.answerBtn;

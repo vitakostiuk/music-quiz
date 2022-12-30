@@ -24,8 +24,7 @@ const Player = props => {
   const audio = useRef('audio_tag');
   // console.log(audio);
 
-  const toggleAudio = () =>
-    audio.current.paused ? audio.current.play() : audio.current.play();
+  const playAudio = () => audio.current.play();
 
   const handleVolume = q => {
     setStateVolum(q);
@@ -62,7 +61,7 @@ const Player = props => {
           className={playing || isClickAnswer ? s.hidden : s.play}
           onClick={() => {
             dispatch(togglePlaying());
-            toggleAudio();
+            playAudio();
           }}
         >
           <span className={s.icon}>

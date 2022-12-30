@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCurrent, togglePlaying } from '../../redux/player/playerSlice';
-import { getSongsList, getCurrent } from '../../redux/player/playerSelectors';
+import {
+  getSongsList,
+  getCurrent,
+  answerState,
+} from '../../redux/player/playerSelectors';
 import audioSingers from './audioSingers.json';
 import Paper from '../common/Paper';
 import Player from '../Player';
@@ -13,24 +17,52 @@ const Game = () => {
 
   const songsList = useSelector(getSongsList);
   const currentSong = useSelector(getCurrent);
+  const answers = useSelector(answerState);
 
-  // const handleClickSong = idx => {
-  //   // dispatch(togglePlaying());
-  //   dispatch(setCurrent(idx));
-  // };
+  console.log('answers', answers);
+
+  const handleClickSong = idx => {
+    console.log(songsList[idx].name);
+    // // dispatch(togglePlaying());
+    // dispatch(setCurrent(idx));
+  };
+
+  // Classname кнопок для правильної/неправильної відповіді, для актиної і неактиної пісні
+  const setClassnameButtons = idx => {
+    if (answers) {
+      if (currentSong > idx && answers[idx] === true) {
+        return s.right;
+      }
+      if (currentSong > idx && answers[idx] === false) {
+        return s.wrong;
+      }
+      if (idx === 4) {
+        if (answers[idx] === true) {
+          return s.right;
+        } else if (answers[idx] === false) {
+          return s.wrong;
+        }
+      }
+    }
+
+    if (currentSong === idx) {
+      return s.current;
+    }
+    if (currentSong < idx) {
+      return s.inactive;
+    }
+  };
 
   return (
     <Paper>
       <ul className={s.list}>
         {audioSingers &&
-          songsList.map(({ name, id }, idx) => (
+          songsList.map(({ id }, idx) => (
             <li
               key={id}
-              className={currentSong === idx ? s.audioBtnCurrent : s.audioBtn}
-              // onClick={() => handleClickSong(idx)}
-            >
-              {name}
-            </li>
+              className={setClassnameButtons(idx)}
+              onClick={() => handleClickSong(idx)}
+            ></li>
           ))}
       </ul>
       <Player />

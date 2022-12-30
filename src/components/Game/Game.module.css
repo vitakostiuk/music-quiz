@@ -1,31 +1,37 @@
 .list {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   list-style: none;
   padding: 0;
 }
 
-.audioBtn {
-  display: flex;
-  margin-bottom: 5px;
-  cursor: pointer;
-  transition-property: transform;
-}
-
-.audioBtnCurrent {
-  composes: audioBtn;
-  font-weight: 700;
-}
-
-.audioBtn::before {
-  content: '';
+.inactive {
   display: block;
-  margin-right: 10px;
-  width: 20px;
-  height: 20px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
-  background-color: rgb(255, 103, 103);
-  cursor: pointer;
+  background-color: #d9d9d9;
+}
+
+.current {
+  composes: inactive;
+  background-color: #94cdf5;
+}
+
+.right {
+  composes: inactive;
+  background-image: url('../../images/checkmark.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: #85ffb6;
+}
+
+.wrong {
+  composes: inactive;
+  background-image: url('../../images/cross.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: #ff8585;
 }
 
 .hidden {
