@@ -5,6 +5,7 @@ import {
   getCurrent,
   isPlaying,
   clickAnswer,
+  answerState,
 } from '../../redux/player/playerSelectors';
 import {
   setCurrent,
@@ -28,13 +29,12 @@ const Answers = () => {
   const [correct, setCorrect] = useState('');
   const [isMatch, setIsMatch] = useState(null);
   const [activeIndex, setActiveIndex] = useState(null);
-  const [isDisable, setIsDisable] = useState(false);
   const [countClicksOnAnswerBtn, setCountClicksOnAnswerBtn] = useState(0);
 
   useEffect(() => {
     dispatch(setClickAnswer(false));
-    setIsDisable(false);
     setCountClicksOnAnswerBtn(0);
+    setIsMatch(null);
 
     // Списк відповідей,не включачи правильну
     const answers = songsList.find(
@@ -83,7 +83,6 @@ const Answers = () => {
     if (countClicksOnAnswerBtn === 0) {
       dispatch(setAnswerState(isRightAnswer));
     }
-    // setIsDisable(true);
 
     const DELAY = isRightAnswer ? 8000 : 2000;
 
@@ -134,7 +133,6 @@ const Answers = () => {
               type="button"
               className={makeOptionClassName(index, array)}
               onClick={event => handleClickAnswer(index, array, event)}
-              // disabled={isDisable}
             >
               {song}
             </button>

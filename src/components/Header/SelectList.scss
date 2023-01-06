@@ -1,0 +1,159 @@
+.custom-select {
+  &__control {
+    background-color: transparent !important;
+    font-family: 'CircleRoundedAlt' !important;
+    font-weight: 400 !important;
+    font-size: 16px !important;
+    line-height: 3 !important;
+    text-align: center !important;
+    border: none !important;
+    box-shadow: none !important;
+    transition: none !important;
+    border-radius: 0px !important;
+
+    &--menu-is-open {
+      background-color: transparent !important;
+    }
+
+    &--is-focused {
+      background-color: transparent !important;
+      transition: none !important;
+    }
+  }
+
+  // @media screen and (min-width: 768px) {
+  //   &__control {
+  //     width: 169px !important;
+  //     background-color: transparent !important;
+  //     border: 2px solid #f6f7fc !important;
+  //     border-radius: 0 !important;
+  //     border-left: none !important;
+  //   }
+  // }
+
+  &__value-container, &__input-container {
+    padding-left: 20px;
+  }
+
+  &__placeholder {
+    margin: 0;
+    padding: 0;
+    font-family: 'CircleRoundedAlt' !important;
+    font-weight: 400 !important;
+    font-size: 16px !important;
+    line-height: 3 !important;
+    text-align: center !important;
+    color: #000 !important;
+  }
+
+  &__indicator-separator {
+    display: none !important;
+  }
+
+  &__indicator {
+    color: #000 !important;
+    cursor: pointer;
+  }
+
+  &__indicator:hover, &__indicator:focus {
+    transform: rotate(-180deg) !important;
+    cursor: pointer;
+  }
+
+  &__single-value {
+    font-family: 'CircleRoundedAlt' !important;
+    font-weight: 400 !important;
+    font-size: 16px !important;
+    line-height: 3 !important;
+    color: #fff !important;
+  }
+
+  &__menu {
+    top: 40px;
+    width: 156px !important;
+    // height: 119px !important;
+    background-color: #fff !important;
+    box-shadow: 0px 5px 20px rgba(5, 0, 255, 0.1), inset 0px -3px 15px rgba(255, 255, 255, 0.3) !important;
+    border-radius: 15px !important;
+    font-family: 'CircleRoundedAlt' !important;
+    font-weight: 400 !important;
+    font-size: 16px !important;
+    line-height: 3 !important;
+    color: #000000 !important;
+  }
+
+  // @media screen and (min-width: 768px) {
+  //   &__menu {
+  //     top: 36px;
+  //     width: 182px !important;
+
+  //   }
+  // }
+
+  &__option {
+    cursor: pointer !important;
+    padding-left: 55px !important;
+    color: #000;
+    &:first-child, &:last-child {
+      background-image: url('../../images/Robo_icon_black.svg') !important;
+      background-repeat: no-repeat !important;
+      background-position: 20px !important;
+    }
+    &:last-child {
+      background-image: url('../../images/Music_icon_black.svg') !important;
+    }
+  
+    &:first-child:hover,
+    &:first-child:focus {
+      color: #9E9E9E !important;
+      background-image: url('../../images/Robo_icon_gray.svg') !important;
+    }
+  
+    &:last-child:hover,
+    &:last-child:focus {
+      color: #9E9E9E !important;
+      background-image: url('../../images/Music_icon_Gray.svg') !important;
+    }
+
+    &--is-focused:first-child, &--is-selected:first-child,
+    &--is-focused:last-child, &--is-selected:last-child {
+      background-image: url('../../images/Robo_icon_gray.svg') !important;
+      background-repeat: no-repeat !important;
+      color: #9E9E9E !important;
+      background-color: transparent !important;
+    }
+    &--is-focused:last-child, &--is-selected:last-child {
+      background-image: url('../../images/Music_icon_Gray.svg') !important;
+    }
+  }
+}
+
+.css-1pahdxg-control {
+  background-color: transparent !important;
+  box-shadow: 0 0 0 0 !important;
+  border: 2px solid #fff !important;
+  border-top: none !important;
+}
+
+// @media screen and (min-width: 768px) {
+//   .css-1pahdxg-control {
+//     background-color: transparent !important;
+//     box-shadow: 0 0 0 0 !important;
+//     border: 2px solid #f6f7fc !important;
+//     border-left: none !important;
+//   }
+// }
+
+.css-1gtu0rj-indicatorContainer:hover {
+color: #C7CCDC !important;
+}
+
+.css-1xc3v61-indicatorContainer, .css-1fdsijx-ValueContainer, .css-15lsz6c-indicatorContainer {
+  padding: 0 !important;
+  transition: none !important;
+}
+
+.css-b62m3t-container {
+  // width: 110px;
+  margin-right: 36px;
+}

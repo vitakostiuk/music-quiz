@@ -1,13 +1,20 @@
 @font-face {
-  font-family: 'CircleRounded';
-  src: local('CircleRounded'),
+  font-family: 'CircleRoundedAlt';
+  src: local('CircleRoundedAlt'),
     url('./fonts/CircleRounded/CIRCEROUNDED-REGULAR.TTF') format('truetype');
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: 'CircleRounded3';
+  src: local('CircleRounded3'),
+    url('./fonts/CircleRounded/CirceRounded-Regular3.otf') format('opentype');
   font-weight: normal;
 }
 
 body {
   margin: 0;
-  font-family: 'CircleRounded', sans-serif;
+  font-family: 'CircleRoundedAlt', sans-serif;
   /* -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; */
   /* background-color: #1f2449; */

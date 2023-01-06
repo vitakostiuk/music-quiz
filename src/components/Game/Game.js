@@ -152,9 +152,10 @@ const Game = () => {
         <div className={s.btnWrapper}>
           {' '}
           <button
-            className={s.nextBtn}
+            // className={s.nextBtn}
             type="button"
             onClick={handleClickLevel}
+            disabled={answers.length < 5}
           >
             Next
           </button>
