@@ -11,10 +11,6 @@ body {
   /* -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; */
   /* background-color: #1f2449; */
-  background-image: url('./images//BG.png');
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
 }
 
 /* code {

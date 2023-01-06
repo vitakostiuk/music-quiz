@@ -1,0 +1,13 @@
+.homePageWrapper {
+  width: 100vw;
+  height: 100vh;
+  background-image: url('../../images/image2.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+.gamePageWrapper {
+  composes: homePageWrapper;
+  background-image: url('../../images/BG.png');
+}

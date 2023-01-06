@@ -6,7 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import SignInPage from './pages/SignInPage';
 import SignUpPage from './pages/SignUpPage';
 import GamePage from './pages/GamePage';
-import Container from './common/Container';
+import HomePage from './pages/HomePage';
 
 function App() {
   // const token = useSelector(getToken);
@@ -15,15 +15,13 @@ function App() {
   // console.log('googleToken', googleToken);
   return (
     <>
-      <Container>
-        {' '}
-        <Routes>
-          <Route path="/" element={<GamePage />} />
-          <Route path="/login" element={<SignInPage />} />
-          <Route path="/register" element={<SignUpPage />} />
-        </Routes>
-        <ToastContainer position="top-right" autoClose={3000} limit={1} />
-      </Container>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/game" element={<GamePage />} />
+        <Route path="/login" element={<SignInPage />} />
+        <Route path="/register" element={<SignUpPage />} />
+      </Routes>
+      <ToastContainer position="top-right" autoClose={3000} limit={1} />
       {/* <Routes>
           <Route
             path="/login"
