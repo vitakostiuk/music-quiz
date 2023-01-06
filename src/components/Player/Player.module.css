@@ -66,11 +66,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #4aa9de;
+  background: #94cdf5;
   width: 168px;
   height: 168px;
   border-radius: 50%;
-  box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.25);
   position: relative;
   z-index: 3;
   cursor: pointer;
@@ -78,7 +77,8 @@
 
 .icon {
   fill: #fff;
-  /* padding: 10px; */
+  width: 72px;
+  height: 72px;
 }
 
 .play:active {
@@ -92,6 +92,18 @@
 .hidden {
   display: none;
   visibility: hidden;
+}
+
+.text {
+  margin: 0;
+  margin-top: 37px;
+  font-family: 'CircleRounded';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 2;
+  text-align: center;
+  color: #94cdf5;
 }
 
 /* input[type='range'] {

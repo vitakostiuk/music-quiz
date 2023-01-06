@@ -165,9 +165,12 @@ export const songs = [
       {
         id: 1,
         name: 'Q_Kalush_Zori',
-        url: 'https://drive.google.com/file/d/1pcoRbHNmyTpARvENGWJtlLEw5quqr-qx/preview?usp=sharing',
+        url: 'https://victorina-tracks.s3.eu-central-1.amazonaws.com/Q_Kalush_Zori.mp3',
+        originalUrl:
+          'https://victorina-tracks.s3.eu-central-1.amazonaws.com/Kalush_Zori.mp3',
         correctSinger: {
           song: 'KALUSH',
+          isCorrect: true,
         },
         incorrectSingers: [
           {
@@ -193,9 +196,12 @@ export const songs = [
       {
         id: 2,
         name: 'Q_M_Kondratenko_VankaVstanka',
-        url: 'https://drive.google.com/file/d/1_AE_AAe0qYhVsZQSdJ-v6HvSUEtwdbQA/preview?usp=sharing',
+        url: 'https://victorina-tracks.s3.eu-central-1.amazonaws.com/Q_M_Kondratenko_VankaVstanka.mp3',
+        originalUrl:
+          'https://victorina-tracks.s3.eu-central-1.amazonaws.com/M_Kondratenko_VankaVstanka.mp3',
         correctSinger: {
           song: 'МАША КОНДРАТЕНКО',
+          isCorrect: true,
         },
         incorrectSingers: [
           {
@@ -221,9 +227,12 @@ export const songs = [
       {
         id: 3,
         name: 'Q_Kalush_Kaluski_vechornici',
-        url: 'https://drive.google.com/file/d/1sKvrdan2XV7ves1vECaizl5MEUzPk-BP/preview?usp=sharing',
+        url: 'https://victorina-tracks.s3.eu-central-1.amazonaws.com/Q_Kalush_Kaluski_vechornici.mp3',
+        originalUrl:
+          'https://victorina-tracks.s3.eu-central-1.amazonaws.com/Kalush_Kaluski_vechornici.mp3',
         correctSinger: {
           song: 'KALUSH feat. Tember Blanche',
+          isCorrect: true,
         },
         incorrectSingers: [
           {
@@ -249,9 +258,12 @@ export const songs = [
       {
         id: 4,
         name: 'Q_Okean_Elzi_Misto_vesni',
-        url: 'https://drive.google.com/file/d/1vO9bFlBe4X5LLjYn3fuGcBe2NI4iLcMR/preview?usp=sharing',
+        url: 'https://victorina-tracks.s3.eu-central-1.amazonaws.com/Q_Okean_Elzi_Misto_vesni.mp3',
+        originalUrl:
+          'https://victorina-tracks.s3.eu-central-1.amazonaws.com/Okean_Elzi_Misto_vesni.mp3',
         correctSinger: {
           song: 'Океан Ельзи / Один в каное',
+          isCorrect: true,
         },
         incorrectSingers: [
           {
@@ -277,9 +289,12 @@ export const songs = [
       {
         id: 5,
         name: 'Q_Hristina_Solovoi_Trimay',
-        url: 'https://drive.google.com/file/d/1DdHmZkcOi0tb3J9gEAfGuBqmjZPriJMH/preview?usp=sharing',
+        url: 'https://victorina-tracks.s3.eu-central-1.amazonaws.com/Q_Hristina_Solovoi_Trimay.mp3',
+        originalUrl:
+          'https://victorina-tracks.s3.eu-central-1.amazonaws.com/Hristina_Solovoi_Trimay.mp3',
         correctSinger: {
           song: 'Христина Соловій',
+          isCorrect: true,
         },
         incorrectSingers: [
           {

@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setCurrent, togglePlaying } from '../../redux/player/playerSlice';
+import {
+  setCurrent,
+  togglePlaying,
+  setSongsArr,
+  resetAnswerStateArray,
+} from '../../redux/player/playerSlice';
 import {
   getSongsList,
   getCurrent,
@@ -10,16 +15,31 @@ import audioSingers from './audioSingers.json';
 import Paper from '../common/Paper';
 import Player from '../Player';
 import Answers from '../Answers';
+import Robot from '../common/Robot';
+import { songs } from './songs';
 import s from './Game.module.css';
 
 const Game = () => {
   const dispatch = useDispatch();
 
+  const [level, setLevel] = useState(1);
+
   const songsList = useSelector(getSongsList);
   const currentSong = useSelector(getCurrent);
   const answers = useSelector(answerState);
 
-  console.log('answers', answers);
+  useEffect(() => {
+    if (level > 1) {
+      const songsArr = songs.find(({ stage }) => stage === level).quizInfo;
+      dispatch(setSongsArr(songsArr));
+    }
+  }, [dispatch, level]);
+
+  const handleClickLevel = () => {
+    setLevel(prevLevel => prevLevel + 1);
+    dispatch(setCurrent(0));
+    dispatch(resetAnswerStateArray([]));
+  };
 
   const handleClickSong = idx => {
     console.log(songsList[idx].name);
@@ -107,27 +127,40 @@ const Game = () => {
   };
 
   return (
-    <Paper>
-      <ul className={s.list}>
-        {audioSingers &&
-          songsList.map(({ id, name }, idx) => (
-            <>
-              <li
-                key={id}
-                className={setClassnameButtons(idx)}
-                onClick={() => handleClickSong(idx)}
-              ></li>
-              {idx < 4 && (
-                <div className={s.lineWrapper}>
-                  <div className={setClassnameLine(idx)}></div>
-                </div>
-              )}
-            </>
-          ))}
-      </ul>
-      <Player />
-      <Answers />
-    </Paper>
+    <>
+      <Robot />
+      <Paper>
+        <h1 className={s.title}>Text title</h1>
+        <ul className={s.list}>
+          {audioSingers &&
+            songsList.map(({ id, name }, idx) => (
+              <li key={id} className={s.itemWrapper}>
+                <div
+                  className={setClassnameButtons(idx)}
+                  onClick={() => handleClickSong(idx)}
+                ></div>
+                {idx < 4 && (
+                  <div className={s.lineWrapper}>
+                    <div className={setClassnameLine(idx)}></div>
+                  </div>
+                )}
+              </li>
+            ))}
+        </ul>
+        <Player />
+        <Answers />
+        <div className={s.btnWrapper}>
+          {' '}
+          <button
+            className={s.nextBtn}
+            type="button"
+            onClick={handleClickLevel}
+          >
+            Next
+          </button>
+        </div>
+      </Paper>
+    </>
   );
 };
 

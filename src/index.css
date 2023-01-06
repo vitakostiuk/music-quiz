@@ -1,15 +1,23 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  /* background-color: #1f2449; */
-  background-image: url('./images//BG.png');
+@font-face {
+  font-family: 'CircleRounded';
+  src: local('CircleRounded'),
+    url('./fonts/CircleRounded/CIRCEROUNDED-REGULAR.TTF') format('truetype');
+  font-weight: normal;
 }
 
-code {
+body {
+  margin: 0;
+  font-family: 'CircleRounded', sans-serif;
+  /* -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale; */
+  /* background-color: #1f2449; */
+  background-image: url('./images//BG.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+/* code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
-}
+} */

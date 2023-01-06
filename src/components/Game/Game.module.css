@@ -1,3 +1,14 @@
+.title {
+  font-family: 'CircleRounded';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 32px;
+  line-height: 1.5;
+  text-align: center;
+  margin: 0;
+  color: #94cdf5;
+}
+
 .list {
   display: block;
   margin: 0 auto;
@@ -6,6 +17,12 @@
   list-style: none;
   padding: 0;
   width: 831px;
+  margin-top: 20px;
+}
+
+.itemWrapper {
+  display: flex;
+  align-items: center;
 }
 
 .inactive {
@@ -44,6 +61,7 @@
 }
 
 .line {
+  margin-left: 4.5px;
   width: 135px;
   height: 5px;
   background-color: #d9d9d9;
@@ -103,4 +121,22 @@
 .hidden {
   display: none;
   visibility: hidden;
+}
+
+.btnWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.nextBtn {
+  width: 100px;
+  height: 40px;
+  border: none;
+  background-color: #94cdf5;
+  border-radius: 5px;
+  color: #fff;
+  font-family: 'CircleRounded';
+  font-size: 25px;
+  cursor: pointer;
 }

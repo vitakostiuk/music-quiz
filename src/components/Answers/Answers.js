@@ -13,6 +13,7 @@ import {
   setAnswerState,
 } from '../../redux/player/playerSlice';
 import { shuffle } from '../../helpers/shuffle';
+import { wrongAudio } from '../Game/wrongAudio';
 import s from './Answers.module.css';
 
 const Answers = () => {
@@ -28,10 +29,12 @@ const Answers = () => {
   const [isMatch, setIsMatch] = useState(null);
   const [activeIndex, setActiveIndex] = useState(null);
   const [isDisable, setIsDisable] = useState(false);
+  const [countClicksOnAnswerBtn, setCountClicksOnAnswerBtn] = useState(0);
 
   useEffect(() => {
     dispatch(setClickAnswer(false));
     setIsDisable(false);
+    setCountClicksOnAnswerBtn(0);
 
     // Списк відповідей,не включачи правильну
     const answers = songsList.find(
@@ -57,7 +60,9 @@ const Answers = () => {
   }, [currentSong, dispatch, songsList]);
 
   // ОБРОБКА ВІДПОВІДІ
-  const handleClickAnswer = (index, array) => {
+  const handleClickAnswer = (index, array, event) => {
+    setCountClicksOnAnswerBtn(prevCount => prevCount + 1);
+
     let isRightAnswer = null;
 
     // Записуємо в локальний стейт,вгадали чи ні
@@ -75,18 +80,28 @@ const Answers = () => {
     }
 
     // Записуємо в масив, правильна чи неправильна відповідь
-    dispatch(setAnswerState(isRightAnswer));
-    setIsDisable(true);
+    if (countClicksOnAnswerBtn === 0) {
+      dispatch(setAnswerState(isRightAnswer));
+    }
+    // setIsDisable(true);
 
-    // const DELAY = isRightAnswer ? 1000 : 1000;
-    const DELAY = isRightAnswer ? 1000 : 1000;
+    const DELAY = isRightAnswer ? 8000 : 2000;
 
     // Автоматичнтй перехід на наступну пісню
     setTimeout(() => {
       if (currentSong === 4) return;
-      setIsMatch(false);
-      dispatch(setCurrent(currentSong + 1));
+      if (countClicksOnAnswerBtn === 0) {
+        setIsMatch(null);
+        dispatch(setCurrent(currentSong + 1));
+      }
     }, DELAY);
+
+    // Передчасне закінчення пісні-відповіді
+    if (countClicksOnAnswerBtn > 0) {
+      setIsMatch(null);
+      dispatch(setCurrent(currentSong + 1));
+      dispatch(togglePlaying());
+    }
   };
 
   // Classname для неактивної, правильної і неправильної відповіді
@@ -118,8 +133,8 @@ const Answers = () => {
               key={song}
               type="button"
               className={makeOptionClassName(index, array)}
-              onClick={() => handleClickAnswer(index, array)}
-              disabled={isDisable}
+              onClick={event => handleClickAnswer(index, array, event)}
+              // disabled={isDisable}
             >
               {song}
             </button>
@@ -133,9 +148,9 @@ const Answers = () => {
           autoPlay
         />
       )}
-      {/* {isMatch === false && (
-        <audio type="audio/mpeg" src="../../audio/Wrong.mp3" autoPlay />
-      )} */}
+      {isMatch === false && (
+        <audio type="audio/mpeg" src={wrongAudio.url} autoPlay />
+      )}
     </div>
   );
 };

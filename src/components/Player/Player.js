@@ -8,10 +8,10 @@ import {
   clickAnswer,
 } from '../../redux/player/playerSelectors';
 import { ReactComponent as Volume } from '../../images/volume-low.svg';
-import { ReactComponent as Play } from '../../images/play3.svg';
+import { ReactComponent as Play } from '../../images/Polygon 1.svg';
 import s from './Player.module.css';
 
-const Player = props => {
+const Player = () => {
   const [stateVolum, setStateVolum] = useState(0.3);
 
   const dispatch = useDispatch();
@@ -22,7 +22,6 @@ const Player = props => {
   const isClickAnswer = useSelector(clickAnswer);
 
   const audio = useRef('audio_tag');
-  // console.log(audio);
 
   const playAudio = () => audio.current.play();
 
@@ -56,18 +55,19 @@ const Player = props => {
           onChange={e => handleVolume(e.target.value / 100)}
         />
       </div>
-      <div className={s.musicControls}>
-        <span
-          className={playing || isClickAnswer ? s.hidden : s.play}
-          onClick={() => {
-            dispatch(togglePlaying());
-            playAudio();
-          }}
-        >
-          <span className={s.icon}>
-            <Play />
+      <div className={playing || isClickAnswer ? s.hidden : s.musicControls}>
+        <div>
+          <span
+            className={s.play}
+            onClick={() => {
+              dispatch(togglePlaying());
+              playAudio();
+            }}
+          >
+            <Play className={s.icon} />
           </span>
-        </span>
+          <p className={s.text}>Tap to start</p>
+        </div>
       </div>
     </div>
   );

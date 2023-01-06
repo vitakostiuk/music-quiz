@@ -3,6 +3,7 @@ import { songs } from '../../components/Game/songs';
 
 const initialState = {
   songslist: songs.find(({ stage }) => stage === 1).quizInfo,
+  // songslist: [],
   currentSong: 0,
   playing: false,
   clickAnswer: false,
@@ -15,6 +16,7 @@ const playerSlice = createSlice({
   reducers: {
     setSongsArr: (state, { payload }) => {
       state.songslist = payload;
+      // state.songslist = songs.find(({ stage }) => stage === payload).quizInfo;
     },
     togglePlaying: (state, { payload }) => {
       state.playing = state.playing ? false : true;
@@ -28,6 +30,9 @@ const playerSlice = createSlice({
     setAnswerState: (state, { payload }) => {
       state.answerState = [...state.answerState, payload];
     },
+    resetAnswerStateArray: (state, { payload }) => {
+      state.answerState = payload;
+    },
   },
 });
 
@@ -37,6 +42,7 @@ export const {
   setCurrent,
   setClickAnswer,
   setAnswerState,
+  resetAnswerStateArray,
 } = playerSlice.actions;
 
 export default playerSlice.reducer;
