@@ -7,12 +7,12 @@ import {
   isPlaying,
   clickAnswer,
 } from '../../redux/player/playerSelectors';
-import { ReactComponent as Volume } from '../../images/volume-low.svg';
-import { ReactComponent as Play } from '../../images/Polygon 1.svg';
+import { ReactComponent as Volume } from '../../images/volum.svg';
+import { ReactComponent as Play } from '../../images/PlayButton.svg';
 import s from './Player.module.css';
 
 const Player = () => {
-  const [stateVolum, setStateVolum] = useState(0.3);
+  const [stateVolume, setStateVolume] = useState(0.3);
 
   const dispatch = useDispatch();
 
@@ -25,13 +25,21 @@ const Player = () => {
 
   const playAudio = () => audio.current.play();
 
-  const handleVolume = q => {
-    setStateVolum(q);
-    audio.current.volume = q;
+  const handleVolume = e => {
+    const min = e.target.min;
+    const max = e.target.max;
+    const val = e.target.value;
+
+    // Динамічна зміна бекграунда на полосі
+    e.target.style.backgroundSize =
+      ((val - min) * 100) / (max - min) + '% 100%';
+
+    setStateVolume(e.target.value / 100);
+    audio.current.volume = e.target.value / 100;
   };
 
   useEffect(() => {
-    audio.current.volume = stateVolum;
+    audio.current.volume = stateVolume;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentSong]);
   return (
@@ -43,16 +51,18 @@ const Player = () => {
         src={songsList[currentSong].url}
         // onEnded={() => dispatch(togglePlaying())}
       />
-      <div className={s.vlme}>
-        <span className={s.volum}>
+      <div className={s.volume}>
+        <span>
           <Volume />
         </span>
         <input
-          value={Math.round(stateVolum * 100)}
+          value={Math.round(stateVolume * 100)}
+          min="0"
+          max="100"
           type="range"
           name="volBar"
           id="volBar"
-          onChange={e => handleVolume(e.target.value / 100)}
+          onChange={e => handleVolume(e)}
         />
       </div>
       <div className={playing || isClickAnswer ? s.hidden : s.musicControls}>
@@ -64,7 +74,7 @@ const Player = () => {
               playAudio();
             }}
           >
-            <Play className={s.icon} />
+            <Play />
           </span>
           <p className={s.text}>Tap to start</p>
         </div>

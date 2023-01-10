@@ -8,12 +8,19 @@ const Home = () => {
         Exciting music trivia game. You'll hear familiar songs from the other
         side!
       </p>
-      <button className={s.btn}>
-        robo-quiz<span>ROBOT SINGING — you guess</span>
-      </button>
-      <button className={s.btn}>
-        Music-quiz<span>original song sounds — you guess</span>
-      </button>
+      <div className={s.btnWrapper}>
+        {' '}
+        <button className={s.btnRobot}>
+          <p className={s.textBtnRobot}>robo-quiz</p>
+          <p className={s.subTextBtnRobot}>ROBOT SINGING — you guess</p>
+        </button>
+      </div>
+      <div className={s.btnWrapper}>
+        <button className={s.btnMusic}>
+          <p className={s.textBtnMusic}>Music-quiz</p>
+          <p className={s.subTextBtnMusic}>original song sounds — you guess</p>
+        </button>
+      </div>
     </div>
   );
 };

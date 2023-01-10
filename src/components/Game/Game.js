@@ -15,13 +15,13 @@ import audioSingers from './audioSingers.json';
 import Paper from '../common/Paper';
 import Player from '../Player';
 import Answers from '../Answers';
-import Robot from '../common/Robot';
 import { songs } from './songs';
 import s from './Game.module.css';
 
 const Game = () => {
   const dispatch = useDispatch();
 
+  // Потім левел будемобрати з бекенда
   const [level, setLevel] = useState(1);
 
   const songsList = useSelector(getSongsList);
@@ -128,9 +128,10 @@ const Game = () => {
 
   return (
     <>
-      <Robot />
       <Paper>
-        <h1 className={s.title}>Text title</h1>
+        <div className={s.titleWrapper}>
+          <h1 className={s.title}>Robo Mode. Level {`${level}`}</h1>
+        </div>
         <ul className={s.list}>
           {audioSingers &&
             songsList.map(({ id, name }, idx) => (
@@ -138,7 +139,9 @@ const Game = () => {
                 <div
                   className={setClassnameButtons(idx)}
                   onClick={() => handleClickSong(idx)}
-                ></div>
+                >
+                  {(currentSong < idx || currentSong === idx) && idx + 1}
+                </div>
                 {idx < 4 && (
                   <div className={s.lineWrapper}>
                     <div className={setClassnameLine(idx)}></div>

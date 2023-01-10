@@ -1,14 +1,16 @@
 .homePageWrapper {
   width: 100vw;
-  height: 100vh;
+  min-height: 968px;
+  /* height: 100vh; */
   background-image: url('../../images/image2.svg');
   /* background-image: url('../../images/Music_Quize_WEB.svg'); */
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
+  /* overflow: hidden; */
 }
 
 .gamePageWrapper {
   composes: homePageWrapper;
-  background-image: url('../../images/BG.png');
+  background-image: url('../../images/BG_blue.svg');
 }

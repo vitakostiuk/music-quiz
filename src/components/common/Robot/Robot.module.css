@@ -1,4 +1,6 @@
 .robotWrapper {
   display: flex;
   justify-content: center;
+  padding-top: 75px;
+  /* border: 1px solid red; */
 }

@@ -1,8 +1,10 @@
 .paper {
+  position: relative;
   margin: 0 auto;
-  padding: 50px;
+  padding: 50px 167px;
   width: 1180px;
   height: 512px;
   background-color: #ffffff;
   border-radius: 25px;
+  /* border: 1px solid red; */
 }

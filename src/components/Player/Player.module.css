@@ -1,52 +1,5 @@
 .controls {
-  /* display: flex;
-  flex-direction: row;
-  height: 110px;
-  background: #3a3a3a;
-  color: white;
-  align-items: center;
-  width: 100vw;
-  position: fixed;
-  bottom: 0;
-  left: 0; */
-}
-
-.vlme {
-  display: flex;
-  align-content: center;
-  overflow: hidden;
-  width: 25px;
-  transition: all 500ms;
-  position: absolute;
-  left: 0;
-  background-color: rgb(133, 86, 86);
-}
-
-.vlme:hover {
-  width: 90px;
-}
-
-.volum {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  fill: #4aa9de;
-  padding: 10px;
-}
-
-#volBar {
-  padding: 0;
-  margin: 0;
-  width: 50px;
-  background: transparent;
-}
-
-#volBar::-moz-range-thumb {
-  height: 10px;
-  width: 3px;
-  background: #2a6586;
-  border-radius: 5px;
-  cursor: pointer;
+  /* position: relative; */
 }
 
 .musicControls {
@@ -106,106 +59,91 @@
   color: #94cdf5;
 }
 
-/* input[type='range'] {
+/* VOLUME */
+.volume {
+  position: absolute;
+  top: 60px;
+  right: 167px;
+  display: flex;
+  align-items: center;
+  transition: all 500ms;
+  /* border: 1px solid rgb(255, 0, 255); */
+}
+
+/* INPUT VOLUME */
+input[type='range'] {
   -webkit-appearance: none;
-  margin: 10px 0;
-  width: 100%;
-}
-
-input[type='range']:focus {
-  outline: none;
-}
-
-input[type='range']::-webkit-slider-runnable-track {
-  width: 100%;
-  height: 5px;
-  cursor: pointer;
-  animate: 0.2s;
-  box-shadow: 0px 0px 0px #000000;
-  background: #4aa9de;
+  width: 114px;
+  height: 4px;
+  margin-left: 4px;
+  background: rgba(185, 226, 255, 0.5);
   border-radius: 5px;
-  border: 0px solid #000000;
+  background-image: linear-gradient(#94cdf5, #94cdf5);
+  background-size: 40% 100%;
+  background-repeat: no-repeat;
 }
 
+/* Input Thumb VOLUME */
 input[type='range']::-webkit-slider-thumb {
-  box-shadow: 0px 0px 1px #000000;
-  border: 0px solid #000000;
-  height: 13px;
-  width: 4px;
-  border-radius: 50px;
-  background: #2a6586;
-  cursor: pointer;
   -webkit-appearance: none;
-  margin-top: -4px;
-}
-
-input[type='range']:focus::-webkit-slider-runnable-track {
-  background: #4aa9de;
-}
-
-input[type='range']::-moz-range-track {
-  width: 100%;
-  height: 5px;
-  cursor: pointer;
-  animate: 0.2s;
-  box-shadow: 0px 0px 0px #000000;
-  background: #4aa9de;
-  border-radius: 5px;
-  border: 0px solid #000000;
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  border: 3px solid #fff;
+  background: #94cdf5;
+  cursor: ew-resize;
 }
 
 input[type='range']::-moz-range-thumb {
-  box-shadow: 0px 0px 1px #000000;
-  border: 0px solid #000000;
-  height: 13px;
-  width: 4px;
-  border-radius: 50px;
-  background: #2a6586;
-  cursor: pointer;
-}
-
-input[type='range']::-ms-track {
-  width: 100%;
-  height: 5px;
-  cursor: pointer;
-  animate: 0.2s;
-  background: transparent;
-  border-color: transparent;
-  color: transparent;
-}
-
-input[type='range']::-ms-fill-lower {
-  background: #4aa9de;
-  border: 0px solid #000000;
-  border-radius: 10px;
-  box-shadow: 0px 0px 0px #000000;
-}
-
-input[type='range']::-ms-fill-upper {
-  background: #4aa9de;
-  border: 0px solid #000000;
-  border-radius: 10px;
-  box-shadow: 0px 0px 0px #000000;
+  -webkit-appearance: none;
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  border: 3px solid #fff;
+  background: #94cdf5;
+  cursor: ew-resize;
 }
 
 input[type='range']::-ms-thumb {
-  box-shadow: 0px 0px 1px #000000;
-  border: 0px solid #000000;
-  height: 13px;
-  width: 4px;
-  border-radius: 50px;
-  background: #2a6586;
-  cursor: pointer;
+  -webkit-appearance: none;
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  border: 3px solid #fff;
+  background: #94cdf5;
+  cursor: ew-resize;
 }
 
-input[type='range']:focus::-ms-fill-lower {
-  background: #4aa9de;
+input[type='range']::-webkit-slider-thumb:hover {
+  background: #94cdf5;
 }
 
-input[type='range']:focus::-ms-fill-upper {
-  background: #4aa9de;
+input[type='range']::-moz-range-thumb:hover {
+  background: #94cdf5;
 }
 
-.plsoptions {
-  justify-self: flex-end;
-} */
+input[type='range']::-ms-thumb:hover {
+  background: #94cdf5;
+}
+
+/* Input Track VOLUME */
+input[type='range']::-webkit-slider-runnable-track {
+  -webkit-appearance: none;
+  box-shadow: none;
+  border: none;
+  background: transparent;
+}
+
+input[type='range']::-moz-range-track {
+  -webkit-appearance: none;
+  box-shadow: none;
+  border: none;
+  background: transparent;
+}
+
+input[type='range']::-ms-track {
+  -webkit-appearance: none;
+  box-shadow: none;
+  border: none;
+  background: transparent;
+}

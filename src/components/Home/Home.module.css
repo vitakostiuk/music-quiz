@@ -1,11 +1,13 @@
 .container {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  border: 1px solid red;
+  top: 255px;
+  left: 1050px;
+  width: 500px;
+  /* border: 1px solid red; */
 }
 
 .title {
+  margin: 0;
   font-family: 'CircleRounded3';
   font-style: normal;
   font-weight: 400;
@@ -13,4 +15,53 @@
   line-height: 1.1;
   text-align: right;
   color: #ffffff;
+}
+
+.subTitle {
+  composes: title;
+  font-size: 20px;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+.btnWrapper {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btnRobot,
+.btnMusic {
+  padding: 16px 48px 24px 48px;
+  width: 474px;
+  height: 95px;
+  background-color: #ffffff;
+  box-shadow: 0px 7px 12px rgba(0, 171, 255, 0.2);
+  border-radius: 20px;
+  margin-top: 70px;
+  margin-bottom: 36px;
+  border: none;
+}
+
+.btnMusic {
+  margin-bottom: 0;
+  margin-top: 0;
+}
+
+.textBtnRobot,
+.textBtnMusic {
+  margin: 0;
+  font-family: 'CircleRounded3';
+  font-size: 32px;
+  /* line-height: 1.5; */
+  text-align: center;
+  text-transform: uppercase;
+  color: #c972df;
+}
+
+.subTextBtnRobot,
+.subTextBtnMusic {
+  composes: textBtnRobot;
+  font-family: 'CircleRoundedAlt';
+  font-size: 14px;
+  /* line-height: 3.4; */
 }
