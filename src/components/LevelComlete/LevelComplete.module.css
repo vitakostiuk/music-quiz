@@ -1,0 +1,148 @@
+.wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 29px;
+}
+
+.congratulation {
+  position: absolute;
+  top: 37.5px;
+  font-family: 'CircleRoundedAlt';
+  font-size: 20px;
+  line-height: 2.4;
+  color: #85ffb6;
+}
+
+.motivation {
+  composes: congratulation;
+  color: #ff8585;
+}
+
+.list {
+  width: 619px;
+  height: 180px;
+  margin: 0;
+  padding: 0;
+  font-family: 'CircleRoundedAlt';
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 1.5;
+  /* border: 1px solid red; */
+}
+
+.item {
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  /* border: 1px solid blue; */
+}
+
+.trueSongName,
+.wrongSongName {
+  width: 500px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  /* border: 1px solid blue; */
+}
+
+.num {
+  display: block;
+  width: 25px;
+  margin: 0;
+  color: #94cdf5;
+  text-align: left;
+  /* border: 1px solid blue; */
+}
+
+.total {
+  margin: 0;
+  color: #94cdf5;
+  text-align: right;
+}
+
+.timeAndIconsWrapper {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  /* border: 1px solid rgb(0, 238, 255); */
+}
+
+.iconsWrapper {
+  width: 32px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  /* border: 1px solid rgb(0, 255, 13); */
+}
+
+.trueTime,
+.wrongTime {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 75px;
+  /* border: 1px solid blue; */
+}
+
+.trueSongName,
+.trueTime {
+  color: #85ffb6;
+}
+
+.wrongSongName,
+.wrongTime {
+  color: #ff8585;
+}
+
+.trueIcon path {
+  fill: #85ffb6;
+}
+
+.wrongIcon path {
+  fill: #ff8585;
+}
+
+/* BUTTONS */
+.btnsWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 17px;
+}
+
+.button {
+  width: 220px;
+  height: 50px;
+  padding: 10px;
+
+  background-color: #94cdf5;
+  box-shadow: 0px 7px 12px rgba(148, 205, 245, 0.25);
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+
+  font-family: 'CircleRoundedAlt';
+  font-size: 20px;
+  line-height: 2.4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+}
+
+.buttonNextLVL {
+  composes: button;
+  width: 300px;
+  height: 64px;
+  text-transform: capitalize;
+}
+
+.button:not(:last-child) {
+  margin-right: 47px;
+}

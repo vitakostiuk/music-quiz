@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { togglePlaying } from '../../redux/player/playerSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import { setStartPlayingTime } from '../../redux/player/playerSlice';
 import {
   getSongsList,
   getCurrent,
@@ -23,8 +24,17 @@ const Player = () => {
 
   const audio = useRef('audio_tag');
 
+  // PLAY
+  const handleClikPlay = () => {
+    console.log('total1', Math.round(new Date().getTime()));
+
+    dispatch(setStartPlayingTime(Math.round(new Date().getTime())));
+    dispatch(togglePlaying());
+    playAudio();
+  };
   const playAudio = () => audio.current.play();
 
+  // VOLUME
   const handleVolume = e => {
     const min = e.target.min;
     const max = e.target.max;
@@ -67,13 +77,7 @@ const Player = () => {
       </div>
       <div className={playing || isClickAnswer ? s.hidden : s.musicControls}>
         <div>
-          <span
-            className={s.play}
-            onClick={() => {
-              dispatch(togglePlaying());
-              playAudio();
-            }}
-          >
+          <span className={s.play} onClick={handleClikPlay}>
             <Play />
           </span>
           <p className={s.text}>Tap to start</p>

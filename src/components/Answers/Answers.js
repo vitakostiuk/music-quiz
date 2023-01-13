@@ -6,15 +6,19 @@ import {
   isPlaying,
   clickAnswer,
   answerState,
+  getStartPlayingTime,
+  getLevelCompleteInfo,
 } from '../../redux/player/playerSelectors';
 import {
   setCurrent,
   togglePlaying,
   setClickAnswer,
   setAnswerState,
+  setLevelCompleteInfo,
 } from '../../redux/player/playerSlice';
 import { shuffle } from '../../helpers/shuffle';
 import { wrongAudio } from '../Game/wrongAudio';
+import LevelComlete from '../LevelComlete';
 import s from './Answers.module.css';
 
 const Answers = () => {
@@ -22,6 +26,8 @@ const Answers = () => {
   const currentSong = useSelector(getCurrent);
   const playing = useSelector(isPlaying);
   const isClickAnswer = useSelector(clickAnswer);
+  const answersArray = useSelector(answerState);
+  const startPlayingTime = useSelector(getStartPlayingTime);
 
   const dispatch = useDispatch();
 
@@ -30,11 +36,13 @@ const Answers = () => {
   const [isMatch, setIsMatch] = useState(null);
   const [activeIndex, setActiveIndex] = useState(null);
   const [countClicksOnAnswerBtn, setCountClicksOnAnswerBtn] = useState(0);
+  const [isLVLComplete, setIsLVLComplete] = useState(false);
 
   useEffect(() => {
     dispatch(setClickAnswer(false));
     setCountClicksOnAnswerBtn(0);
     setIsMatch(null);
+    setIsLVLComplete(false);
 
     // Списк відповідей,не включачи правильну
     const answers = songsList.find(
@@ -81,7 +89,22 @@ const Answers = () => {
 
     // Записуємо в масив, правильна чи неправильна відповідь
     if (countClicksOnAnswerBtn === 0) {
+      console.log(
+        'total2',
+        Math.round(new Date().getTime()) - startPlayingTime
+      );
+
+      const total2 = Math.round(new Date().getTime()) - startPlayingTime;
+
       dispatch(setAnswerState(isRightAnswer));
+      dispatch(
+        setLevelCompleteInfo({
+          isRightAnswer,
+          answerSong: array[index].song,
+          // time: Math.round(new Date().getTime()) / 1000 - startPlayingTime,
+          time: Number.parseFloat((total2 / 1000).toFixed(1)),
+        })
+      );
     }
 
     const DELAY = isRightAnswer ? 8000 : 2000;
@@ -96,9 +119,21 @@ const Answers = () => {
     }, DELAY);
 
     // Передчасне закінчення пісні-відповіді
-    if (countClicksOnAnswerBtn > 0) {
+    if (countClicksOnAnswerBtn > 0 && currentSong !== 4) {
       setIsMatch(null);
       dispatch(setCurrent(currentSong + 1));
+      dispatch(togglePlaying());
+    }
+
+    // Автоматичнтй перехід на LEVEL COMPLETE
+    setTimeout(() => {
+      if (currentSong !== 4) return;
+      setIsLVLComplete(true);
+    }, DELAY);
+
+    // Передчасне закінчення останньої пісні - Перехід на LEVEL COMPLETE
+    if (countClicksOnAnswerBtn > 0 && currentSong === 4) {
+      setIsLVLComplete(true);
       dispatch(togglePlaying());
     }
   };
@@ -109,47 +144,55 @@ const Answers = () => {
       return s.answerBtn;
     }
 
-    if (isMatch && index === activeIndex) {
+    if (isMatch && index === activeIndex && isClickAnswer) {
       return s.trueActiveAnswerBtn;
     }
 
     if (
       isMatch === false &&
       index === activeIndex &&
-      array[index].song !== correct
+      array[index].song !== correct &&
+      isClickAnswer
     ) {
       return s.falseActiveAnswerBtn;
     }
 
     return s.answerBtn;
   };
+
   return (
-    <div className={!playing && !isClickAnswer ? s.hidden : s.wrapper}>
-      {answersList && (
-        <div className={s.answers}>
-          {answersList.map(({ song }, index, array) => (
-            <button
-              key={song}
-              type="button"
-              className={makeOptionClassName(index, array)}
-              onClick={event => handleClickAnswer(index, array, event)}
-            >
-              {song}
-            </button>
-          ))}
+    <>
+      {!isLVLComplete && (
+        <div className={!playing && !isClickAnswer ? s.hidden : s.wrapper}>
+          {answersList && (
+            <div className={s.answers}>
+              {answersList.map(({ song }, index, array) => (
+                <button
+                  key={song}
+                  type="button"
+                  className={makeOptionClassName(index, array)}
+                  onClick={event => handleClickAnswer(index, array, event)}
+                  // disabled={answersArray.length > 4}
+                >
+                  {song}
+                </button>
+              ))}
+            </div>
+          )}
+          {isMatch && (
+            <audio
+              type="audio/mpeg"
+              src={songsList[currentSong].originalUrl}
+              autoPlay
+            />
+          )}
+          {isMatch === false && (
+            <audio type="audio/mpeg" src={wrongAudio.url} autoPlay />
+          )}
         </div>
       )}
-      {isMatch && (
-        <audio
-          type="audio/mpeg"
-          src={songsList[currentSong].originalUrl}
-          autoPlay
-        />
-      )}
-      {isMatch === false && (
-        <audio type="audio/mpeg" src={wrongAudio.url} autoPlay />
-      )}
-    </div>
+      {isLVLComplete && <LevelComlete />}
+    </>
   );
 };
 

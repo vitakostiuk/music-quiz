@@ -26,7 +26,7 @@
   margin-left: 30px;
   flex-basis: calc(100% / 2 - 30px);
 
-  background: #94cdf5;
+  background-color: #94cdf5;
   box-shadow: 0px 7px 12px rgba(148, 205, 245, 0.25);
   border-radius: 20px;
   border: none;

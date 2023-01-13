@@ -2,18 +2,27 @@ import { createSlice } from '@reduxjs/toolkit';
 import { songs } from '../../components/Game/songs';
 
 const initialState = {
+  level: 1,
   songslist: songs.find(({ stage }) => stage === 1).quizInfo,
-  // songslist: [],
+  // currentSong = 0, бо прив'язано до індекса пісні
   currentSong: 0,
   playing: false,
   clickAnswer: false,
   answerState: [],
+  startPlayingTime: '',
+  levelCompleteInfo: [],
 };
 
 const playerSlice = createSlice({
   name: 'player',
   initialState,
   reducers: {
+    setLevel: (state, { payload }) => {
+      state.level = state.level + 1;
+    },
+    restartLevel: (state, { payload }) => {
+      state.level = payload;
+    },
     setSongsArr: (state, { payload }) => {
       state.songslist = payload;
       // state.songslist = songs.find(({ stage }) => stage === payload).quizInfo;
@@ -33,16 +42,30 @@ const playerSlice = createSlice({
     resetAnswerStateArray: (state, { payload }) => {
       state.answerState = payload;
     },
+    setStartPlayingTime: (state, { payload }) => {
+      state.startPlayingTime = payload;
+    },
+    setLevelCompleteInfo: (state, { payload }) => {
+      state.levelCompleteInfo = [...state.levelCompleteInfo, payload];
+    },
+    resetLevelCompleteInfo: (state, { payload }) => {
+      state.levelCompleteInfo = payload;
+    },
   },
 });
 
 export const {
+  setLevel,
+  restartLevel,
   setSongsArr,
   togglePlaying,
   setCurrent,
   setClickAnswer,
   setAnswerState,
   resetAnswerStateArray,
+  setStartPlayingTime,
+  setLevelCompleteInfo,
+  resetLevelCompleteInfo,
 } = playerSlice.actions;
 
 export default playerSlice.reducer;

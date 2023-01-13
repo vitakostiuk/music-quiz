@@ -7,6 +7,7 @@ import {
   resetAnswerStateArray,
 } from '../../redux/player/playerSlice';
 import {
+  getLevel,
   getSongsList,
   getCurrent,
   answerState,
@@ -21,25 +22,10 @@ import s from './Game.module.css';
 const Game = () => {
   const dispatch = useDispatch();
 
-  // Потім левел будемобрати з бекенда
-  const [level, setLevel] = useState(1);
-
+  const level = useSelector(getLevel);
   const songsList = useSelector(getSongsList);
   const currentSong = useSelector(getCurrent);
   const answers = useSelector(answerState);
-
-  useEffect(() => {
-    if (level > 1) {
-      const songsArr = songs.find(({ stage }) => stage === level).quizInfo;
-      dispatch(setSongsArr(songsArr));
-    }
-  }, [dispatch, level]);
-
-  const handleClickLevel = () => {
-    setLevel(prevLevel => prevLevel + 1);
-    dispatch(setCurrent(0));
-    dispatch(resetAnswerStateArray([]));
-  };
 
   const handleClickSong = idx => {
     console.log(songsList[idx].name);
@@ -140,7 +126,7 @@ const Game = () => {
                   className={setClassnameButtons(idx)}
                   onClick={() => handleClickSong(idx)}
                 >
-                  {(currentSong < idx || currentSong === idx) && idx + 1}
+                  {currentSong <= idx && answers.length <= 4 && idx + 1}
                 </div>
                 {idx < 4 && (
                   <div className={s.lineWrapper}>
@@ -152,17 +138,6 @@ const Game = () => {
         </ul>
         <Player />
         <Answers />
-        <div className={s.btnWrapper}>
-          {' '}
-          <button
-            // className={s.nextBtn}
-            type="button"
-            onClick={handleClickLevel}
-            disabled={answers.length < 5}
-          >
-            Next
-          </button>
-        </div>
       </Paper>
     </>
   );
