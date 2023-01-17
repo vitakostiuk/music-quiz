@@ -1,6 +1,5 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import Header from '../Header';
 import Game from '../Game';
 import Container from '../common/Container';
 import Robot from '../common/Robot';
@@ -16,7 +15,6 @@ const GamePage = () => {
       }
     >
       <Container>
-        <Header />
         <Robot />
         <Game />
       </Container>

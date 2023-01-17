@@ -7,6 +7,8 @@ import SignInPage from './pages/SignInPage';
 import SignUpPage from './pages/SignUpPage';
 import GamePage from './pages/GamePage';
 import HomePage from './pages/HomePage';
+import Header from './Header';
+import s from './App.module.css';
 
 function App() {
   // const token = useSelector(getToken);
@@ -15,6 +17,7 @@ function App() {
   // console.log('googleToken', googleToken);
   return (
     <>
+      <Header />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/game" element={<GamePage />} />

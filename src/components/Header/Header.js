@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setQuizMode } from '../../redux/player/playerSlice';
 import { getQuizMode } from '../../redux/player/playerSelectors';
@@ -20,61 +20,62 @@ const options = [
 ];
 
 const Header = () => {
-  const [selectValue, setSelectValue] = useState('QuizMode');
+  // const [isClickHome, setIsClickHome] = useState(false);
+  // const [selectValue, setSelectValue] = useState('QuizMode');
   const isRoboQuizMode = useSelector(getQuizMode);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const handleChangeQuizMode = e => {
+    navigate('/game');
+
     if (e.value === 'Robo-Quiz') {
       dispatch(setQuizMode(true));
-      setTimeout(() => {
-        navigate('/game');
-      }, 500);
-      setSelectValue('Robo-Quiz');
-      // navigate('/game');
+      // setSelectValue('Robo-Quiz');
     }
-
     if (e.value === 'Music-Quiz') {
       dispatch(setQuizMode(false));
-      setTimeout(() => {
-        navigate('/game');
-      }, 500);
-      setSelectValue('Music-Quiz');
-      // navigate('/game');
+      // setSelectValue('Music-Quiz');
     }
+  };
 
-    // if (selectValue === 'Robo-Quiz' || selectValue === 'Music-Quiz') {
-    //   navigate('/game');
-    //   // setTimeout(() => {
-    //   //   navigate('/game');
-    //   // }, 500);
-    // }
+  const onClickNavItem = () => {
+    setTimeout(() => {
+      window.location.reload(false);
+    });
   };
 
   return (
     <div className={s.container}>
-      <Logo className={s.logo} onClick={() => navigate('/')} />
+      <NavLink to="/" onClick={onClickNavItem}>
+        <Logo className={s.logo} />
+      </NavLink>
       <div className={s.navigation}>
         <NavLink
           to="/"
           className={({ isActive }) => (isActive ? s.activeStyle : s.navItem)}
+          onClick={onClickNavItem}
         >
           Home
         </NavLink>
         <Select
           classNamePrefix="custom-select"
           onChange={handleChangeQuizMode}
-          value={selectValue}
           required
           options={options}
-          // placeholder="QuizMode"
-          placeholder={selectValue}
+          placeholder="QuizMode"
+          // placeholder={selectValue}
           isSearchable={false}
           defaultValue="ahdghjafg"
         />
-        <NavLink className={s.navItem}>Leaderboard</NavLink>
+        <NavLink
+          to="/leaderboard"
+          className={({ isActive }) => (isActive ? s.activeStyle : s.navItem)}
+          onClick={onClickNavItem}
+        >
+          Leaderboard
+        </NavLink>
       </div>
       <button
         className={s.signin}

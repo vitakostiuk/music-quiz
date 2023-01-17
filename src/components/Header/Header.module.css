@@ -1,6 +1,8 @@
 .container {
   position: fixed;
   top: 0;
+  left: 50%;
+  transform: translateX(-50%);
   display: block;
   margin: 0 auto;
   display: flex;
@@ -90,4 +92,14 @@
   border: 2px solid #000;
   border-radius: 5px;
   margin-left: 44px;
+}
+
+.navBarContainer {
+  background-color: transparent !important;
+  border: 1px solid green;
+}
+
+.navBar {
+  background-color: transparent;
+  border: 1px solid red !important;
 }
