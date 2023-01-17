@@ -67,6 +67,12 @@
   /* border: 1px solid rgb(255, 0, 255); */
 }
 
+.volumeControl {
+  display: flex;
+  align-items: center;
+  /* border: 1px solid rgb(255, 0, 255); */
+}
+
 /* INPUT VOLUME */
 input[name='volBarRobo'] {
   -webkit-appearance: none;

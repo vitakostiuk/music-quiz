@@ -13,6 +13,8 @@ import { ReactComponent as VolumeRobo } from '../../images/volum.svg';
 import { ReactComponent as VolumeMusic } from '../../images/volumeMusic.svg';
 import { ReactComponent as PlayRobo } from '../../images/PlayButton.svg';
 import { ReactComponent as PlayMusic } from '../../images/PlayBttnMusic.svg';
+import { ReactComponent as VolumeZeroRobo } from '../../images/volumeZeroRobo.svg';
+import { ReactComponent as VolumeZeroMusic } from '../../images/volumeZeroMusic.svg';
 import s from './Player.module.css';
 
 const Player = () => {
@@ -66,7 +68,17 @@ const Player = () => {
         // onEnded={() => dispatch(togglePlaying())}
       />
       <div className={s.volume}>
-        <span>{isRoboQuizMode ? <VolumeRobo /> : <VolumeMusic />}</span>
+        {stateVolume > 0 && (
+          <span className={s.volumeControl}>
+            {isRoboQuizMode ? <VolumeRobo /> : <VolumeMusic />}
+          </span>
+        )}
+        {stateVolume === 0 && (
+          <span className={s.volumeControl}>
+            {isRoboQuizMode ? <VolumeZeroRobo /> : <VolumeZeroMusic />}
+          </span>
+        )}
+
         {isRoboQuizMode ? (
           <input
             value={Math.round(stateVolume * 100)}

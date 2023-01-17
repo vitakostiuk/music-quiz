@@ -150,9 +150,12 @@ const Game = () => {
     <>
       <Paper>
         <div className={s.titleWrapper}>
-          <h1 className={isRoboQuizMode ? s.titleRobo : s.titleMusic}>
-            Robo Mode. Level {`${level}`}
-          </h1>
+          {isRoboQuizMode && (
+            <h1 className={s.titleRobo}>Robo Mode. Level {`${level}`}</h1>
+          )}
+          {!isRoboQuizMode && (
+            <h1 className={s.titleMusic}>Music Mode. Level {`${level}`}</h1>
+          )}
         </div>
         <ul className={s.list}>
           {audioSingers &&

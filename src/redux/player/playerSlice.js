@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { songs } from '../../components/Game/songs';
 
 const initialState = {
-  isRoboQuizMode: null,
+  isRoboQuizMode: false,
   level: 1,
   songslist: songs.find(({ stage }) => stage === 1).quizInfo,
   // currentSong = 0, бо прив'язано до індекса пісні
