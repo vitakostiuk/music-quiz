@@ -20,6 +20,7 @@ const options = [
 ];
 
 const Header = () => {
+  const [selectValue, setSelectValue] = useState('QuizMode');
   const isRoboQuizMode = useSelector(getQuizMode);
 
   const navigate = useNavigate();
@@ -28,14 +29,30 @@ const Header = () => {
   const handleChangeQuizMode = e => {
     if (e.value === 'Robo-Quiz') {
       dispatch(setQuizMode(true));
-      navigate('/game');
+      setTimeout(() => {
+        navigate('/game');
+      }, 500);
+      setSelectValue('Robo-Quiz');
+      // navigate('/game');
     }
 
     if (e.value === 'Music-Quiz') {
       dispatch(setQuizMode(false));
-      navigate('/game');
+      setTimeout(() => {
+        navigate('/game');
+      }, 500);
+      setSelectValue('Music-Quiz');
+      // navigate('/game');
     }
+
+    // if (selectValue === 'Robo-Quiz' || selectValue === 'Music-Quiz') {
+    //   navigate('/game');
+    //   // setTimeout(() => {
+    //   //   navigate('/game');
+    //   // }, 500);
+    // }
   };
+
   return (
     <div className={s.container}>
       <Logo className={s.logo} onClick={() => navigate('/')} />
@@ -49,10 +66,13 @@ const Header = () => {
         <Select
           classNamePrefix="custom-select"
           onChange={handleChangeQuizMode}
+          value={selectValue}
           required
           options={options}
-          placeholder="QuizMode"
+          // placeholder="QuizMode"
+          placeholder={selectValue}
           isSearchable={false}
+          defaultValue="ahdghjafg"
         />
         <NavLink className={s.navItem}>Leaderboard</NavLink>
       </div>
