@@ -10,7 +10,12 @@
   /* overflow: hidden; */
 }
 
-.gamePageWrapper {
+.gamePageWrapperRobo {
   composes: homePageWrapper;
   background-image: url('../../images/BG_blue.svg');
+}
+
+.gamePageWrapperMusic {
+  composes: homePageWrapper;
+  background-image: url('../../images/BG.png');
 }

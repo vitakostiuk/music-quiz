@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { songs } from '../../components/Game/songs';
 
 const initialState = {
+  isRoboQuizMode: false,
   level: 1,
   songslist: songs.find(({ stage }) => stage === 1).quizInfo,
   // currentSong = 0, бо прив'язано до індекса пісні
@@ -17,6 +18,9 @@ const playerSlice = createSlice({
   name: 'player',
   initialState,
   reducers: {
+    setQuizMode: (state, { payload }) => {
+      state.isRoboQuizMode = payload;
+    },
     setLevel: (state, { payload }) => {
       state.level = state.level + 1;
     },
@@ -55,6 +59,7 @@ const playerSlice = createSlice({
 });
 
 export const {
+  setQuizMode,
   setLevel,
   restartLevel,
   setSongsArr,

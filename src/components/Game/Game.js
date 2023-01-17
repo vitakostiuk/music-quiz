@@ -7,6 +7,7 @@ import {
   resetAnswerStateArray,
 } from '../../redux/player/playerSlice';
 import {
+  getQuizMode,
   getLevel,
   getSongsList,
   getCurrent,
@@ -22,6 +23,7 @@ import s from './Game.module.css';
 const Game = () => {
   const dispatch = useDispatch();
 
+  const isRoboQuizMode = useSelector(getQuizMode);
   const level = useSelector(getLevel);
   const songsList = useSelector(getSongsList);
   const currentSong = useSelector(getCurrent);
@@ -51,8 +53,12 @@ const Game = () => {
       }
     }
 
-    if (currentSong === idx) {
-      return s.current;
+    // Режим гри - ROBO-MODE або MUSIC-MODE
+    if (currentSong === idx && isRoboQuizMode) {
+      return s.currentRobo;
+    }
+    if (currentSong === idx && !isRoboQuizMode) {
+      return s.currentMusic;
     }
     if (currentSong < idx) {
       return s.inactive;
@@ -63,12 +69,26 @@ const Game = () => {
   const setClassnameLine = idx => {
     if (answers) {
       // Перша кнопка --- друга кнопка (якщо друга каррент)
-      if ((idx === 0 || idx === 1 || idx === 2) && currentSong === idx + 1) {
-        if (answers[idx] === false) {
-          return s.firsWrongThenCurrentLine;
+      // ROBO-MODE
+      if (isRoboQuizMode) {
+        if ((idx === 0 || idx === 1 || idx === 2) && currentSong === idx + 1) {
+          if (answers[idx] === false) {
+            return s.firsWrongThenCurrentLineRobo;
+          }
+          if (answers[idx] === true) {
+            return s.firstTrueThenCurrentLineRobo;
+          }
         }
-        if (answers[idx] === true) {
-          return s.firstTrueThenCurrentLine;
+      }
+      // MUSIC-MODE
+      if (!isRoboQuizMode) {
+        if ((idx === 0 || idx === 1 || idx === 2) && currentSong === idx + 1) {
+          if (answers[idx] === false) {
+            return s.firsWrongThenCurrentLineMusic;
+          }
+          if (answers[idx] === true) {
+            return s.firstTrueThenCurrentLineMusic;
+          }
         }
       }
 
@@ -99,12 +119,26 @@ const Game = () => {
       }
 
       // Четверта --- остання (якщо остання каррент)
-      if (idx === 3 && currentSong === idx + 1) {
-        if (answers[idx] === false) {
-          return s.firsWrongThenCurrentLine;
+      // ROBO-MODE
+      if (isRoboQuizMode) {
+        if (idx === 3 && currentSong === idx + 1) {
+          if (answers[idx] === false) {
+            return s.firsWrongThenCurrentLineRobo;
+          }
+          if (answers[idx] === true) {
+            return s.firstTrueThenCurrentLineRobo;
+          }
         }
-        if (answers[idx] === true) {
-          return s.firstTrueThenCurrentLine;
+      }
+      // MUSIC-MODE
+      if (!isRoboQuizMode) {
+        if (idx === 3 && currentSong === idx + 1) {
+          if (answers[idx] === false) {
+            return s.firsWrongThenCurrentLineMusic;
+          }
+          if (answers[idx] === true) {
+            return s.firstTrueThenCurrentLineMusic;
+          }
         }
       }
     }
@@ -116,7 +150,9 @@ const Game = () => {
     <>
       <Paper>
         <div className={s.titleWrapper}>
-          <h1 className={s.title}>Robo Mode. Level {`${level}`}</h1>
+          <h1 className={isRoboQuizMode ? s.titleRobo : s.titleMusic}>
+            Robo Mode. Level {`${level}`}
+          </h1>
         </div>
         <ul className={s.list}>
           {audioSingers &&

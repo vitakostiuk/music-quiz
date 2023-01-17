@@ -1,6 +1,18 @@
+import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { setQuizMode } from '../../redux/player/playerSlice';
 import s from './Home.module.css';
 
 const Home = () => {
+  const dispatch = useDispatch();
+
+  const handleClickRoboQuizBtn = () => {
+    dispatch(setQuizMode(true));
+  };
+
+  const handleClickMusicQuizBtn = () => {
+    dispatch(setQuizMode(false));
+  };
   return (
     <div className={s.container}>
       <h1 className={s.title}>MUSIC ROBO QUIZ</h1>
@@ -10,16 +22,20 @@ const Home = () => {
       </p>
       <div className={s.btnWrapper}>
         {' '}
-        <button className={s.btnRobot}>
+        <Link
+          to="/game"
+          className={s.btnRobot}
+          onClick={handleClickRoboQuizBtn}
+        >
           <p className={s.textBtnRobot}>robo-quiz</p>
           <p className={s.subTextBtnRobot}>ROBOT SINGING — you guess</p>
-        </button>
+        </Link>
       </div>
-      <div className={s.btnWrapper}>
-        <button className={s.btnMusic}>
+      <div className={s.btnWrapper} onClick={handleClickMusicQuizBtn}>
+        <Link to="/game" className={s.btnMusic}>
           <p className={s.textBtnMusic}>Music-quiz</p>
           <p className={s.subTextBtnMusic}>original song sounds — you guess</p>
-        </button>
+        </Link>
       </div>
     </div>
   );

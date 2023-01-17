@@ -3,13 +3,16 @@ import { togglePlaying } from '../../redux/player/playerSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { setStartPlayingTime } from '../../redux/player/playerSlice';
 import {
+  getQuizMode,
   getSongsList,
   getCurrent,
   isPlaying,
   clickAnswer,
 } from '../../redux/player/playerSelectors';
-import { ReactComponent as Volume } from '../../images/volum.svg';
-import { ReactComponent as Play } from '../../images/PlayButton.svg';
+import { ReactComponent as VolumeRobo } from '../../images/volum.svg';
+import { ReactComponent as VolumeMusic } from '../../images/volumeMusic.svg';
+import { ReactComponent as PlayRobo } from '../../images/PlayButton.svg';
+import { ReactComponent as PlayMusic } from '../../images/PlayBttnMusic.svg';
 import s from './Player.module.css';
 
 const Player = () => {
@@ -17,6 +20,7 @@ const Player = () => {
 
   const dispatch = useDispatch();
 
+  const isRoboQuizMode = useSelector(getQuizMode);
   const songsList = useSelector(getSongsList);
   const currentSong = useSelector(getCurrent);
   const playing = useSelector(isPlaying);
@@ -62,25 +66,42 @@ const Player = () => {
         // onEnded={() => dispatch(togglePlaying())}
       />
       <div className={s.volume}>
-        <span>
-          <Volume />
-        </span>
-        <input
-          value={Math.round(stateVolume * 100)}
-          min="0"
-          max="100"
-          type="range"
-          name="volBar"
-          id="volBar"
-          onChange={e => handleVolume(e)}
-        />
+        <span>{isRoboQuizMode ? <VolumeRobo /> : <VolumeMusic />}</span>
+        {isRoboQuizMode ? (
+          <input
+            value={Math.round(stateVolume * 100)}
+            min="0"
+            max="100"
+            type="range"
+            name="volBarRobo"
+            id="volBarRobo"
+            onChange={e => handleVolume(e)}
+          />
+        ) : (
+          <input
+            value={Math.round(stateVolume * 100)}
+            min="0"
+            max="100"
+            type="range"
+            name="volBarMusic"
+            id="volBarMusic"
+            onChange={e => handleVolume(e)}
+          />
+        )}
       </div>
       <div className={playing || isClickAnswer ? s.hidden : s.musicControls}>
         <div>
-          <span className={s.play} onClick={handleClikPlay}>
-            <Play />
-          </span>
-          <p className={s.text}>Tap to start</p>
+          {/* <div className={s.play} onClick={handleClikPlay}> */}
+          {isRoboQuizMode ? (
+            <PlayRobo className={s.icon} onClick={handleClikPlay} />
+          ) : (
+            <PlayMusic className={s.icon} onClick={handleClikPlay} />
+          )}
+          {/* </div> */}
+
+          <p className={isRoboQuizMode ? s.textRobo : s.textMusic}>
+            Tap to start
+          </p>
         </div>
       </div>
     </div>

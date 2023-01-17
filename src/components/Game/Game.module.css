@@ -2,10 +2,10 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border: 1px solid red;
+  /* border: 1px solid red; */
 }
 
-.title {
+.titleRobo {
   font-family: 'CircleRoundedAlt';
   font-style: normal;
   font-weight: 400;
@@ -14,6 +14,11 @@
   text-align: center;
   margin: 0;
   color: #94cdf5;
+}
+
+.titleMusic {
+  composes: titleRobo;
+  color: #c972df;
 }
 
 .list {
@@ -50,9 +55,13 @@
   color: #ffffff;
 }
 
-.current {
+.currentRobo {
   composes: inactive;
   background-color: #94cdf5;
+}
+.currentMusic {
+  composes: inactive;
+  background-color: #c972df;
 }
 
 .right {
@@ -95,7 +104,8 @@
   background-color: #ff8585;
 }
 
-.firstTrueThenCurrentLine {
+.firstTrueThenCurrentLineRobo,
+.firstTrueThenCurrentLineMusic {
   composes: line;
   background-image: linear-gradient(
     270deg,
@@ -104,12 +114,29 @@
     #85ffb6 100%
   );
 }
+.firstTrueThenCurrentLineMusic {
+  background-image: linear-gradient(
+    270deg,
+    #c972df 0%,
+    #a5f2e4 49.93%,
+    #85ffb6 100%
+  );
+}
 
-.firsWrongThenCurrentLine {
+.firsWrongThenCurrentLineRobo,
+.firsWrongThenCurrentLineMusic {
   composes: line;
   background-image: linear-gradient(
     270deg,
     #94cdf5 0%,
+    #a5f2e4 49.93%,
+    #ff8585 100%
+  );
+}
+.firsWrongThenCurrentLineMusic {
+  background-image: linear-gradient(
+    270deg,
+    #c972df 0%,
     #a5f2e4 49.93%,
     #ff8585 100%
   );

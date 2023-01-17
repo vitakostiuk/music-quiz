@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
+  getQuizMode,
   getSongsList,
   getCurrent,
   isPlaying,
@@ -22,6 +23,7 @@ import LevelComlete from '../LevelComlete';
 import s from './Answers.module.css';
 
 const Answers = () => {
+  const isRoboQuizMode = useSelector(getQuizMode);
   const songsList = useSelector(getSongsList);
   const currentSong = useSelector(getCurrent);
   const playing = useSelector(isPlaying);
@@ -140,24 +142,49 @@ const Answers = () => {
 
   // Classname для неактивної, правильної і неправильної відповіді
   const makeOptionClassName = (index, array) => {
-    if (!isClickAnswer) {
-      return s.answerBtn;
+    // ROBO-MODE
+    if (isRoboQuizMode) {
+      if (!isClickAnswer) {
+        return s.answerBtnRobo;
+      }
+
+      if (isMatch && index === activeIndex && isClickAnswer) {
+        return s.trueActiveAnswerBtn;
+      }
+
+      if (
+        isMatch === false &&
+        index === activeIndex &&
+        array[index].song !== correct &&
+        isClickAnswer
+      ) {
+        return s.falseActiveAnswerBtn;
+      }
+
+      return s.answerBtnRobo;
     }
 
-    if (isMatch && index === activeIndex && isClickAnswer) {
-      return s.trueActiveAnswerBtn;
-    }
+    // MUSIC-MODE
+    if (!isRoboQuizMode) {
+      if (!isClickAnswer) {
+        return s.answerBtnMusic;
+      }
 
-    if (
-      isMatch === false &&
-      index === activeIndex &&
-      array[index].song !== correct &&
-      isClickAnswer
-    ) {
-      return s.falseActiveAnswerBtn;
-    }
+      if (isMatch && index === activeIndex && isClickAnswer) {
+        return s.trueActiveAnswerBtn;
+      }
 
-    return s.answerBtn;
+      if (
+        isMatch === false &&
+        index === activeIndex &&
+        array[index].song !== correct &&
+        isClickAnswer
+      ) {
+        return s.falseActiveAnswerBtn;
+      }
+
+      return s.answerBtnMusic;
+    }
   };
 
   return (

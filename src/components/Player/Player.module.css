@@ -16,30 +16,22 @@
 }
 
 .play {
+  border: 1px solid red;
+  width: 168px;
+  height: 168px;
   display: flex;
   justify-content: center;
   align-items: center;
+  /* 
+
   background: #94cdf5;
+  cursor: pointer; */
+}
+
+.icon g {
   width: 168px;
   height: 168px;
-  border-radius: 50%;
-  position: relative;
-  z-index: 3;
   cursor: pointer;
-}
-
-.icon {
-  fill: #fff;
-  width: 72px;
-  height: 72px;
-}
-
-.play:active {
-  box-shadow: 0px 0px 0px rgba(0, 0, 0, 0);
-}
-
-.play:hover {
-  box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.4);
 }
 
 .hidden {
@@ -47,7 +39,8 @@
   visibility: hidden;
 }
 
-.text {
+.textRobo,
+.textMusic {
   margin: 0;
   margin-top: 37px;
   font-family: 'CircleRoundedAlt';
@@ -57,6 +50,9 @@
   line-height: 2;
   text-align: center;
   color: #94cdf5;
+}
+.textMusic {
+  color: #c972df;
 }
 
 /* VOLUME */
@@ -71,7 +67,7 @@
 }
 
 /* INPUT VOLUME */
-input[type='range'] {
+input[name='volBarRobo'] {
   -webkit-appearance: none;
   width: 114px;
   height: 4px;
@@ -82,9 +78,21 @@ input[type='range'] {
   background-size: 40% 100%;
   background-repeat: no-repeat;
 }
+input[name='volBarMusic'] {
+  -webkit-appearance: none;
+  width: 114px;
+  height: 4px;
+  margin-left: 4px;
+  background: rgba(201, 114, 223, 0.2);
+  border-radius: 5px;
+  background-image: linear-gradient(#c972df, #c972df);
+  background-size: 40% 100%;
+  background-repeat: no-repeat;
+}
 
 /* Input Thumb VOLUME */
-input[type='range']::-webkit-slider-thumb {
+input[name='volBarRobo']::-webkit-slider-thumb,
+input[name='volBarMusic']::-webkit-slider-thumb {
   -webkit-appearance: none;
   height: 20px;
   width: 20px;
@@ -93,8 +101,12 @@ input[type='range']::-webkit-slider-thumb {
   background: #94cdf5;
   cursor: ew-resize;
 }
+input[name='volBarMusic']::-webkit-slider-thumb {
+  background: #c972df;
+}
 
-input[type='range']::-moz-range-thumb {
+input[name='volBarRobo']::-moz-range-thumb,
+input[name='volBarMusic']::-moz-range-thumb {
   -webkit-appearance: none;
   height: 20px;
   width: 20px;
@@ -103,8 +115,12 @@ input[type='range']::-moz-range-thumb {
   background: #94cdf5;
   cursor: ew-resize;
 }
+input[name='volBarMusic']::-moz-range-thumb {
+  background: #c972df;
+}
 
-input[type='range']::-ms-thumb {
+input[name='volBarRobo']::-ms-thumb,
+input[name='volBarMusic']::-ms-thumb {
   -webkit-appearance: none;
   height: 20px;
   width: 20px;
@@ -113,35 +129,50 @@ input[type='range']::-ms-thumb {
   background: #94cdf5;
   cursor: ew-resize;
 }
-
-input[type='range']::-webkit-slider-thumb:hover {
-  background: #94cdf5;
+input[name='volBarMusic']::-ms-thumb {
+  background: #c972df;
 }
 
-input[type='range']::-moz-range-thumb:hover {
+input[name='volBarRobo']::-webkit-slider-thumb:hover {
   background: #94cdf5;
 }
+input[name='volBarMusic']::-webkit-slider-thumb:hover {
+  background: #c972df;
+}
 
-input[type='range']::-ms-thumb:hover {
+input[name='volBarRobo']::-moz-range-thumb:hover {
   background: #94cdf5;
+}
+input[name='volBarMusic']::-moz-range-thumb:hover {
+  background: #c972df;
+}
+
+input[name='volBarRobo']::-ms-thumb:hover {
+  background: #94cdf5;
+}
+input[name='volBarMusic']::-ms-thumb:hover {
+  background: #c972df;
 }
 
 /* Input Track VOLUME */
-input[type='range']::-webkit-slider-runnable-track {
+input[name='volBarRobo']::-webkit-slider-runnable-track,
+input[name='volBarMusic']::-webkit-slider-runnable-track {
   -webkit-appearance: none;
   box-shadow: none;
   border: none;
   background: transparent;
 }
 
-input[type='range']::-moz-range-track {
+input[name='volBarRobo']::-moz-range-track,
+input[name='volBarMusic']::-moz-range-track {
   -webkit-appearance: none;
   box-shadow: none;
   border: none;
   background: transparent;
 }
 
-input[type='range']::-ms-track {
+input[name='volBarRobo']::-ms-track,
+input[name='volBarMusic']::-ms-track {
   -webkit-appearance: none;
   box-shadow: none;
   border: none;

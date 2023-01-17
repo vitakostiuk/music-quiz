@@ -41,6 +41,11 @@
   text-align: center;
 }
 
+.activeStyle {
+  composes: navItem;
+  color: #fff;
+}
+
 /* .navItem:hover,
 .navItem:focus {
   color: #fff;

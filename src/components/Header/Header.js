@@ -1,4 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setQuizMode } from '../../redux/player/playerSlice';
+import { getQuizMode } from '../../redux/player/playerSelectors';
 import { useNavigate, NavLink } from 'react-router-dom';
 import Select from 'react-select';
 import { ReactComponent as Logo } from '../../images/main-logo1.svg';
@@ -17,15 +20,35 @@ const options = [
 ];
 
 const Header = () => {
+  const isRoboQuizMode = useSelector(getQuizMode);
+
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const handleChangeQuizMode = e => {
+    if (e.value === 'Robo-Quiz') {
+      dispatch(setQuizMode(true));
+      navigate('/game');
+    }
+
+    if (e.value === 'Music-Quiz') {
+      dispatch(setQuizMode(false));
+      navigate('/game');
+    }
+  };
   return (
     <div className={s.container}>
-      <Logo className={s.logo} />
+      <Logo className={s.logo} onClick={() => navigate('/')} />
       <div className={s.navigation}>
-        <NavLink className={s.navItem}>Home</NavLink>
+        <NavLink
+          to="/"
+          className={({ isActive }) => (isActive ? s.activeStyle : s.navItem)}
+        >
+          Home
+        </NavLink>
         <Select
           classNamePrefix="custom-select"
-          // onChange={handleChangeCategory}
+          onChange={handleChangeQuizMode}
           required
           options={options}
           placeholder="QuizMode"

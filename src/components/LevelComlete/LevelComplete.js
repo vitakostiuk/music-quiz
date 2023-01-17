@@ -4,6 +4,7 @@ import {
   getLevelCompleteInfo,
   getLevel,
   answerState,
+  getQuizMode,
 } from '../../redux/player/playerSelectors';
 import {
   setSongsArr,
@@ -17,6 +18,9 @@ import {
 } from '../../redux/player/playerSlice';
 import { ReactComponent as WrongIcon } from '../../images/cross.svg';
 import { ReactComponent as TrueIcon } from '../../images/checkmark.svg';
+import { ReactComponent as RestartIcon } from '../../images/restart.svg';
+import { ReactComponent as NextLVLIcon } from '../../images/arrow.svg';
+import { ReactComponent as LeaderboardIcon } from '../../images/leaderboardIcon.svg';
 import congratulation from './congratulation.json';
 import motivation from './motivation.json';
 import { shuffle } from '../../helpers/shuffle';
@@ -30,6 +34,7 @@ const LevelComplete = () => {
   const level = useSelector(getLevel);
   const levelCompleteInfo = useSelector(getLevelCompleteInfo);
   const answersArray = useSelector(answerState);
+  const isRoboQuizMode = useSelector(getQuizMode);
 
   // Перевіряємобчи є хоча б одна неправильна відповідь
   const filteredByWrongAnswers = levelCompleteInfo.filter(
@@ -91,7 +96,9 @@ const LevelComplete = () => {
             levelCompleteInfo.map(
               ({ isRightAnswer, answerSong, time }, idx) => (
                 <li key={idx} className={s.item}>
-                  <p className={s.num}>{idx + 1}.</p>
+                  <p className={isRoboQuizMode ? s.numRobo : s.numMusic}>
+                    {idx + 1}.
+                  </p>
                   <p
                     className={isRightAnswer ? s.trueSongName : s.wrongSongName}
                   >
@@ -117,7 +124,7 @@ const LevelComplete = () => {
             )}
 
           {levelCompleteInfo.length !== 0 && (
-            <p className={s.total}>
+            <p className={isRoboQuizMode ? s.totalRobo : s.totalMusic}>
               total:&nbsp;
               {levelCompleteInfo
                 .reduce((acc, { time }) => {
@@ -130,25 +137,37 @@ const LevelComplete = () => {
         </ul>
       </div>
       {levelCompleteInfo.length !== 0 && (
-        <div className={s.btnsWrapper}>
+        <div className={s.btnsContainer}>
           {' '}
-          <button
-            className={s.button}
-            type="button"
-            onClick={handleRestartLevel}
-          >
-            Restart
-          </button>
-          <button
-            className={s.buttonNextLVL}
-            type="button"
-            onClick={handleClickNextLevel}
-          >
-            NEXT LEVEL
-          </button>
-          <button className={s.button} type="button">
-            leaderboard
-          </button>
+          <div className={s.btnsWrapper}>
+            {' '}
+            <button
+              className={s.button}
+              type="button"
+              onClick={handleRestartLevel}
+            >
+              Restart
+              <RestartIcon className={s.icon} />
+            </button>
+          </div>
+          <div div className={s.btnsWrapper}>
+            {' '}
+            <button
+              className={s.buttonNextLVL}
+              type="button"
+              onClick={handleClickNextLevel}
+            >
+              NEXT LEVEL
+              <NextLVLIcon className={s.icon} />
+            </button>
+          </div>
+          <div div className={s.btnsWrapper}>
+            {' '}
+            <button className={s.button} type="button">
+              leaderboard
+              <LeaderboardIcon className={s.icon} />
+            </button>
+          </div>
         </div>
       )}
     </>
