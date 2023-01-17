@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React from 'react';
+import { useDispatch } from 'react-redux';
 import { setQuizMode } from '../../redux/player/playerSlice';
-import { getQuizMode } from '../../redux/player/playerSelectors';
 import { useNavigate, NavLink } from 'react-router-dom';
 import Select from 'react-select';
 import { ReactComponent as Logo } from '../../images/main-logo1.svg';
@@ -20,27 +19,35 @@ const options = [
 ];
 
 const Header = () => {
-  // const [isClickHome, setIsClickHome] = useState(false);
-  // const [selectValue, setSelectValue] = useState('QuizMode');
-  const isRoboQuizMode = useSelector(getQuizMode);
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  // Select dropdown
   const handleChangeQuizMode = e => {
+    // перехід на сторінку Music-Quiz/Robo-Quiz
     navigate('/game');
 
+    // записуємо в редакс режим гри
     if (e.value === 'Robo-Quiz') {
       dispatch(setQuizMode(true));
-      // setSelectValue('Robo-Quiz');
     }
+
     if (e.value === 'Music-Quiz') {
       dispatch(setQuizMode(false));
-      // setSelectValue('Music-Quiz');
     }
   };
 
+  // Клік по home або leaderboard
   const onClickNavItem = () => {
+    setTimeout(() => {
+      window.location.reload(false);
+    });
+  };
+
+  // Клік по логотипу
+  const onClickLogo = () => {
+    navigate('/');
+
     setTimeout(() => {
       window.location.reload(false);
     });
@@ -48,9 +55,9 @@ const Header = () => {
 
   return (
     <div className={s.container}>
-      <NavLink to="/" onClick={onClickNavItem}>
+      <div onClick={onClickLogo}>
         <Logo className={s.logo} />
-      </NavLink>
+      </div>
       <div className={s.navigation}>
         <NavLink
           to="/"
@@ -65,7 +72,6 @@ const Header = () => {
           required
           options={options}
           placeholder="QuizMode"
-          // placeholder={selectValue}
           isSearchable={false}
           defaultValue="ahdghjafg"
         />

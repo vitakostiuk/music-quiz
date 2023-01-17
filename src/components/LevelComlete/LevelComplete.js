@@ -142,7 +142,7 @@ const LevelComplete = () => {
           <div className={s.btnsWrapper}>
             {' '}
             <button
-              className={s.button}
+              className={isRoboQuizMode ? s.buttonRobo : s.buttonMusic}
               type="button"
               onClick={handleRestartLevel}
             >
@@ -153,7 +153,9 @@ const LevelComplete = () => {
           <div div className={s.btnsWrapper}>
             {' '}
             <button
-              className={s.buttonNextLVL}
+              className={
+                isRoboQuizMode ? s.buttonNextLVLRobo : s.buttonNextLVLMusic
+              }
               type="button"
               onClick={handleClickNextLevel}
             >
@@ -163,7 +165,10 @@ const LevelComplete = () => {
           </div>
           <div div className={s.btnsWrapper}>
             {' '}
-            <button className={s.button} type="button">
+            <button
+              className={isRoboQuizMode ? s.buttonRobo : s.buttonMusic}
+              type="button"
+            >
               leaderboard
               <LeaderboardIcon className={s.icon} />
             </button>

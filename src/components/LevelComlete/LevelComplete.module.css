@@ -125,7 +125,8 @@
   /* border: 1px solid rgb(0, 255, 13); */
 }
 
-.button {
+.buttonRobo,
+.buttonMusic {
   width: 220px;
   height: 50px;
   display: flex;
@@ -145,11 +146,20 @@
   color: #ffffff;
 }
 
-.buttonNextLVL {
-  composes: button;
+.buttonMusic {
+  background-color: #c972df;
+}
+
+.buttonNextLVLRobo,
+.buttonNextLVLMusic {
+  composes: buttonRobo;
   width: 300px;
   height: 64px;
   text-transform: capitalize;
+}
+
+.buttonNextLVLMusic {
+  background-color: #c972df;
 }
 
 .btnsWrapper:not(:last-child) {
