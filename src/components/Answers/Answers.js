@@ -39,12 +39,14 @@ const Answers = () => {
   const [activeIndex, setActiveIndex] = useState(null);
   const [countClicksOnAnswerBtn, setCountClicksOnAnswerBtn] = useState(0);
   const [isLVLComplete, setIsLVLComplete] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(false);
 
   useEffect(() => {
     dispatch(setClickAnswer(false));
     setCountClicksOnAnswerBtn(0);
     setIsMatch(null);
     setIsLVLComplete(false);
+    setIsDisabled(false);
 
     // Списк відповідей,не включачи правильну
     const answers = songsList.find(
@@ -72,8 +74,10 @@ const Answers = () => {
   // ОБРОБКА ВІДПОВІДІ
   const handleClickAnswer = (index, array, event) => {
     setCountClicksOnAnswerBtn(prevCount => prevCount + 1);
+    setIsDisabled(true);
 
     let isRightAnswer = null;
+    let time = null;
 
     // Записуємо в локальний стейт,вгадали чи ні
     setActiveIndex(index);
@@ -84,6 +88,10 @@ const Answers = () => {
     if (array[index].song === correct) {
       setIsMatch(true);
       isRightAnswer = true;
+
+      setTimeout(() => {
+        setIsDisabled(false);
+      }, 2000);
     } else {
       setIsMatch(false);
       isRightAnswer = false;
@@ -98,13 +106,18 @@ const Answers = () => {
 
       const total2 = Math.round(new Date().getTime()) - startPlayingTime;
 
+      if (isRightAnswer === true) {
+        time = Number.parseFloat((total2 / 1000).toFixed(1));
+      } else {
+        time = 20;
+      }
+
       dispatch(setAnswerState(isRightAnswer));
       dispatch(
         setLevelCompleteInfo({
           isRightAnswer,
           answerSong: array[index].song,
-          // time: Math.round(new Date().getTime()) / 1000 - startPlayingTime,
-          time: Number.parseFloat((total2 / 1000).toFixed(1)),
+          time,
         })
       );
     }
@@ -187,6 +200,10 @@ const Answers = () => {
     }
   };
 
+  // const onTimeout = () => {
+  //   setTimeout(() => {}, 1000);
+  // };
+
   return (
     <>
       {!isLVLComplete && (
@@ -199,7 +216,7 @@ const Answers = () => {
                   type="button"
                   className={makeOptionClassName(index, array)}
                   onClick={event => handleClickAnswer(index, array, event)}
-                  // disabled={answersArray.length > 4}
+                  disabled={isDisabled}
                 >
                   {song}
                 </button>
