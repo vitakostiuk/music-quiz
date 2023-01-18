@@ -19,3 +19,22 @@
   composes: homePageWrapper;
   background-image: url('../../images/BG.png');
 }
+
+.container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.paper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* padding: 50px 167px; */
+  width: 1180px;
+  height: 530px;
+  background-color: #fff;
+  border-radius: 25px;
+}

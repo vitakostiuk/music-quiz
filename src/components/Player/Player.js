@@ -64,7 +64,11 @@ const Player = () => {
         ref={audio}
         muted={!playing}
         type="audio/mpeg"
-        src={songsList[currentSong].url}
+        src={
+          isRoboQuizMode
+            ? songsList[currentSong].url
+            : songsList[currentSong].originalUrl
+        }
         // onEnded={() => dispatch(togglePlaying())}
       />
       <div className={s.volume}>

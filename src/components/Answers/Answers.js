@@ -16,6 +16,9 @@ import {
   setClickAnswer,
   setAnswerState,
   setLevelCompleteInfo,
+  setStartPlayingTime,
+  resetAnswerStateArray,
+  resetLevelCompleteInfo,
 } from '../../redux/player/playerSlice';
 import { shuffle } from '../../helpers/shuffle';
 import { wrongAudio } from '../Game/wrongAudio';
@@ -40,6 +43,20 @@ const Answers = () => {
   const [countClicksOnAnswerBtn, setCountClicksOnAnswerBtn] = useState(0);
   const [isLVLComplete, setIsLVLComplete] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
+
+  // Скидання стейту при перемиканні режиму
+  useEffect(() => {
+    setIsMatch(null);
+    setActiveIndex(null);
+    setCountClicksOnAnswerBtn(0);
+    setIsLVLComplete(false);
+    setIsDisabled(false);
+    dispatch(setClickAnswer(false));
+    dispatch(setCurrent(0));
+    dispatch(setStartPlayingTime(''));
+    dispatch(resetAnswerStateArray([]));
+    dispatch(resetLevelCompleteInfo([]));
+  }, [dispatch, isRoboQuizMode]);
 
   useEffect(() => {
     dispatch(setClickAnswer(false));

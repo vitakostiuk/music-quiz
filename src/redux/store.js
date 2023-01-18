@@ -20,9 +20,15 @@ const persistAuthConfig = {
   whitelist: ['token', 'googleToken'],
 };
 
+const persistPlayerConfig = {
+  key: 'isRoboQuizMode',
+  storage,
+  whitelist: ['isRoboQuizMode'],
+};
+
 const rootReducer = combineReducers({
   auth: persistReducer(persistAuthConfig, authSlice),
-  player: playerSlice,
+  player: persistReducer(persistPlayerConfig, playerSlice),
 });
 
 const store = configureStore({
