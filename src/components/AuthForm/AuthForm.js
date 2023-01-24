@@ -11,7 +11,17 @@ import Modal from '../common/Modal';
 import * as Yup from 'yup';
 import s from './AuthForm.module.css';
 
+const SigninSchema = Yup.object().shape({
+  email: Yup.string()
+    .email('Invalid email address')
+    .required('Email is required'),
+  password: Yup.string()
+    .min(8, 'Password is Too short')
+    .required('Password is required'),
+});
+
 const SignupSchema = Yup.object().shape({
+  name: Yup.string().min(2, 'Name is Too short').required('Name is required'),
   email: Yup.string()
     .email('Invalid email address')
     .required('Email is required'),
@@ -62,6 +72,10 @@ const AuthForm = ({
     setEmail(data);
   };
 
+  const initialValues = isForgotPassword
+    ? { email: '', password: '' }
+    : { name: '', email: '', password: '' };
+
   return (
     <div className={s.wrapper}>
       <div className={s.container}>
@@ -72,11 +86,8 @@ const AuthForm = ({
         </button>
         <p className={s.orText}>OR</p>
         <Formik
-          initialValues={{
-            email: '',
-            password: '',
-          }}
-          validationSchema={SignupSchema}
+          initialValues={initialValues}
+          validationSchema={isForgotPassword ? SigninSchema : SignupSchema}
           onSubmit={values => {
             // same shape as initial values
             console.log(values);
@@ -85,20 +96,42 @@ const AuthForm = ({
         >
           {({ errors, touched }) => (
             <Form className={s.form}>
+              {!isForgotPassword && (
+                <>
+                  {' '}
+                  <label className={s.label} htmlFor="name">
+                    Name
+                  </label>
+                  <Field
+                    id="name"
+                    className={
+                      errors.name && touched.name ? s.errInput : s.input
+                    }
+                    name="name"
+                    type="text"
+                    placeholder="your name"
+                  />
+                  {errors.name && touched.name ? (
+                    <div className={s.errName}>{errors.name}</div>
+                  ) : null}
+                </>
+              )}
               <label className={s.label} htmlFor="email">
                 Email
               </label>
               <Field
                 id="email"
-                className={
-                  errors.password && touched.password ? s.errInput : s.input
-                }
+                className={errors.email && touched.email ? s.errInput : s.input}
                 name="email"
                 type="email"
                 placeholder="your@email.com"
               />
               {errors.email && touched.email ? (
-                <div className={s.errEmail}>{errors.email}</div>
+                <div
+                  className={isForgotPassword ? s.errEmailSignin : s.errEmail}
+                >
+                  {errors.email}
+                </div>
               ) : null}
 
               <label className={s.label} htmlFor="password">
@@ -114,7 +147,13 @@ const AuthForm = ({
                 placeholder="your password"
               />
               {errors.password && touched.password ? (
-                <div className={s.errPassword}>{errors.password}</div>
+                <div
+                  className={
+                    isForgotPassword ? s.errPasswordSignin : s.errPassword
+                  }
+                >
+                  {errors.password}
+                </div>
               ) : null}
 
               <div>

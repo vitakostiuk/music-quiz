@@ -1,4 +1,5 @@
 .wrapper {
+  width: 350px;
   height: 530px;
   display: flex;
   justify-content: center;
@@ -7,8 +8,7 @@
 
 .container {
   padding: 10px;
-  width: 350px;
-  height: 530px;
+  width: 100%;
 }
 
 .title {
@@ -22,7 +22,7 @@
 .google {
   display: block;
   margin: 0 auto;
-  margin-top: 20px;
+  margin-top: 15px;
   width: 100px;
   height: 38px;
 
@@ -50,8 +50,8 @@
   justify-content: center;
   align-items: center;
   margin: 0;
-  margin-top: 20px;
-  color: rgba(255, 255, 255, 0.295);
+  margin-top: 15px;
+  color: #000;
   font-size: 14px;
 }
 
@@ -79,14 +79,14 @@
 
 .form {
   position: relative;
-  margin-top: 20px;
+  margin-top: 15px;
 }
 
 .input {
   display: block;
   margin: 0 auto;
   margin-top: 8px;
-  margin-bottom: 30px;
+  margin-bottom: 15px;
   padding: 8px;
   width: 100%;
   height: 45px;
@@ -94,7 +94,7 @@
   font-size: 15px;
   font-weight: 400;
   background-color: transparent;
-  color: #f3f5f8;
+  color: #000;
   border: 1px solid #a1a5be;
 }
 
@@ -119,7 +119,7 @@
 
 .errEmail {
   position: absolute;
-  top: 70px;
+  top: 85px;
   right: 0px;
   margin-top: 8px;
   color: #fc4274;
@@ -131,6 +131,21 @@
 .errPassword {
   composes: errEmail;
   top: 172px;
+}
+
+.errName {
+  composes: errEmail;
+  top: 0px;
+}
+
+.errEmailSignin {
+  composes: errEmail;
+  top: 0px;
+}
+
+.errPasswordSignin {
+  composes: errEmail;
+  top: 85px;
 }
 
 .bigButton {
