@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   getLevelCompleteInfo,
@@ -29,6 +30,8 @@ import s from './LevelComplete.module.css';
 
 const LevelComplete = () => {
   const dispatch = useDispatch();
+
+  const navigate = useNavigate();
 
   // Потім левел будемо брати з бекенда
   const level = useSelector(getLevel);
@@ -168,6 +171,7 @@ const LevelComplete = () => {
             <button
               className={isRoboQuizMode ? s.buttonRobo : s.buttonMusic}
               type="button"
+              onClick={() => navigate('/leaderboard')}
             >
               leaderboard
               <LeaderboardIcon className={s.icon} />

@@ -8,6 +8,7 @@ import SignUpPage from './pages/SignUpPage';
 import GamePage from './pages/GamePage';
 import HomePage from './pages/HomePage';
 import Header from './Header';
+import LeaderboardPage from './pages/LeaderboardPage';
 import s from './App.module.css';
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/game" element={<GamePage />} />
+        <Route path="/leaderboard" element={<LeaderboardPage />} />
         <Route path="/login" element={<SignInPage />} />
         <Route path="/register" element={<SignUpPage />} />
       </Routes>

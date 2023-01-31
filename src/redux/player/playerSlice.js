@@ -1,5 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { buildQueries } from '@testing-library/react';
 import { songs } from '../../components/Game/songs';
+import { getAll } from './playerOperations';
 
 const initialState = {
   isRoboQuizMode: false,
@@ -12,6 +14,9 @@ const initialState = {
   answerState: [],
   startPlayingTime: '',
   levelCompleteInfo: [],
+  leaderboardInfo: [],
+  loading: false,
+  error: null,
 };
 
 const playerSlice = createSlice({
@@ -55,6 +60,23 @@ const playerSlice = createSlice({
     resetLevelCompleteInfo: (state, { payload }) => {
       state.levelCompleteInfo = payload;
     },
+  },
+  extraReducers: builder => {
+    builder
+      // REDUCER FOR ALL INFO FOR LEADERBOARD
+      .addCase(getAll.pending, state => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getAll.fulfilled, (state, { payload }) => {
+        // console.log(payload);
+        state.loading = false;
+        state.leaderboardInfo = payload;
+      })
+      .addCase(getAll.rejected, (state, { payload }) => {
+        state.loading = false;
+        state.error = payload;
+      });
   },
 });
 

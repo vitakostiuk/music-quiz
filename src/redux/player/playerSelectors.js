@@ -7,6 +7,7 @@ const clickAnswer = state => state.player.clickAnswer;
 const answerState = state => state.player.answerState;
 const getStartPlayingTime = state => state.player.startPlayingTime;
 const getLevelCompleteInfo = state => state.player.levelCompleteInfo;
+const getLeaderboardInfo = state => state.player.leaderboardInfo;
 
 export {
   getQuizMode,
@@ -18,4 +19,5 @@ export {
   answerState,
   getStartPlayingTime,
   getLevelCompleteInfo,
+  getLeaderboardInfo,
 };
