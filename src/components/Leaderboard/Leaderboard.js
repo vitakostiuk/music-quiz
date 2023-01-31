@@ -11,10 +11,10 @@ import { getFilteredArrayByOwner } from '../../helpers/getFilteredArrayByOwner';
 import s from './Leaderboard.module.css';
 
 const Leaderboard = () => {
-  const [roboInfo, setRoboInfo] = useState(null);
-  const [musicInfo, setMusicInfo] = useState(null);
-  const [roboWinners, setRoboWinners] = useState(null);
-  const [musicWinners, setMusicWinners] = useState(null);
+  const [roboInfo, setRoboInfo] = useState([]);
+  const [musicInfo, setMusicInfo] = useState([]);
+  const [roboWinners, setRoboWinners] = useState([]);
+  const [musicWinners, setMusicWinners] = useState([]);
   const dispatch = useDispatch();
 
   // Отримуємо з бекенду ВСЮ інформацію для лідерборду
@@ -129,11 +129,18 @@ const Leaderboard = () => {
             <div className={s.smallCircle}>2</div>
             <div className={s.background}>
               {' '}
-              <p className={s.text}>{roboWinners[1][1].user.name}</p>
+              <p className={s.text}>
+                {roboWinners.length !== 0 ? roboWinners[1][1].user.name : ''}
+              </p>
               <div className={s.scoreWrapper}>
                 {' '}
-                <p className={s.text}>{roboWinners[1].length - 1} lvls.</p>
-                <p className={s.text}>{roboWinners[1][0]} sec.</p>
+                <p className={s.text}>
+                  {roboWinners.length !== 0 ? roboWinners[1].length - 1 : ''}{' '}
+                  lvls.
+                </p>
+                <p className={s.text}>
+                  {roboWinners.length !== 0 ? roboWinners[1][0] : ''} sec.
+                </p>
               </div>
             </div>
           </div>
@@ -143,11 +150,18 @@ const Leaderboard = () => {
             <div className={s.smallCircleWinner}>1</div>
             <div className={s.background}>
               {' '}
-              <p className={s.text}>{roboWinners[0][1].user.name}</p>
+              <p className={s.text}>
+                {roboWinners.length !== 0 ? roboWinners[0][1].user.name : ''}
+              </p>
               <div className={s.scoreWrapper}>
                 {' '}
-                <p className={s.text}>{roboWinners[0].length - 1} lvls.</p>
-                <p className={s.text}>{roboWinners[0][0]} sec.</p>
+                <p className={s.text}>
+                  {roboWinners.length !== 0 ? roboWinners[0].length - 1 : ''}{' '}
+                  lvls.
+                </p>
+                <p className={s.text}>
+                  {roboWinners.length !== 0 ? roboWinners[0][0] : ''} sec.
+                </p>
               </div>
             </div>
           </div>
@@ -157,18 +171,25 @@ const Leaderboard = () => {
             <div className={s.smallCircle}>3</div>
             <div className={s.background}>
               {' '}
-              <p className={s.text}>{roboWinners[2][1].user.name}</p>
+              <p className={s.text}>
+                {roboWinners.length !== 0 ? roboWinners[2][1].user.name : ''}
+              </p>
               <div className={s.scoreWrapper}>
                 {' '}
-                <p className={s.text}>{roboWinners[2].length - 1} lvls.</p>
-                <p className={s.text}>{roboWinners[2][0]} sec.</p>
+                <p className={s.text}>
+                  {roboWinners.length !== 0 ? roboWinners[2].length - 1 : ''}{' '}
+                  lvls.
+                </p>
+                <p className={s.text}>
+                  {roboWinners.length !== 0 ? roboWinners[2][0] : ''} sec.
+                </p>
               </div>
             </div>
           </div>
         </div>
         {roboQuizMode && (
           <ol className={s.list}>
-            {roboInfo &&
+            {roboInfo.length !== 0 &&
               roboInfo.map(item => (
                 <li key={item[1].user.name} className={s.itemWrap}>
                   <div className={s.circleItem}></div>
@@ -187,7 +208,7 @@ const Leaderboard = () => {
         {/* Поміняти потім на musicInfio */}
         {!roboQuizMode && (
           <ol className={s.list}>
-            {roboInfo &&
+            {roboInfo.length !== 0 &&
               roboInfo.map(item => (
                 <li key={item[1].user.name} className={s.itemWrap}>
                   <div className={s.circleItem}></div>
