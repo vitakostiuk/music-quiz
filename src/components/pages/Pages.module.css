@@ -7,16 +7,18 @@
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
-  /* overflow: hidden; */
+  /* border: 1px solid red; */
 }
 
 .gamePageWrapperRobo {
   composes: homePageWrapper;
+  padding-top: 103px;
   background-image: url('../../images/BG_blue.svg');
 }
 
 .gamePageWrapperMusic {
   composes: homePageWrapper;
+  padding-top: 103px;
   background-image: url('../../images/BG.png');
 }
 
