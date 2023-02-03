@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { signup, signin, forgotPassword } from './authOperations';
 
 const initialState = {
+  userID: null,
   userEmail: null,
   token: null,
   googleToken: null,
@@ -27,8 +28,9 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(signup.fulfilled, (state, { payload }) => {
-        // console.log(payload);
+        console.log(payload);
         state.loading = false;
+        state.userID = payload.user.id;
         state.userEmail = payload.user.email;
         state.token = payload.token;
       })
@@ -43,7 +45,9 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(signin.fulfilled, (state, { payload }) => {
+        console.log(payload);
         state.loading = false;
+        state.userID = payload.user.id;
         state.userEmail = payload.user.email;
         state.token = payload.token;
       })

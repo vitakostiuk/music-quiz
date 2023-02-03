@@ -1,10 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  setCurrent,
-  togglePlaying,
-  resetAnswerStateArray,
-} from '../../redux/player/playerSlice';
+import { setLevel } from '../../redux/player/playerSlice';
 import {
   getQuizMode,
   getLevel,
@@ -13,7 +9,14 @@ import {
   getSongsListUKR,
   getCurrent,
   answerState,
+  getUserScoreEN,
+  getUserScoreUKR,
 } from '../../redux/player/playerSelectors';
+import {
+  getAllEngByUser,
+  getAllUkrByUser,
+} from '../../redux/player/playerOperations';
+import { getUserID } from '../../redux/auth/authSelectors';
 import audioSingers from './audioSingers.json';
 import Paper from '../common/Paper';
 import Player from '../Player';
@@ -24,6 +27,9 @@ import s from './Game.module.css';
 const Game = () => {
   const dispatch = useDispatch();
 
+  const userID = useSelector(getUserID);
+  const userScoreEN = useSelector(getUserScoreEN);
+  const userScoreUKR = useSelector(getUserScoreUKR);
   const isRoboQuizMode = useSelector(getQuizMode);
   const level = useSelector(getLevel);
   const isEngLang = useSelector(getLanguage);
@@ -31,6 +37,56 @@ const Game = () => {
   const songsListUKR = useSelector(getSongsListUKR);
   const currentSong = useSelector(getCurrent);
   const answers = useSelector(answerState);
+
+  // Витягуэмо з бекенду інформацію про скор юзера.
+  // Це треба для того, щоб потім запускати гру з того левела, на якму юзер закінчив
+  useEffect(() => {
+    if (isEngLang) {
+      dispatch(getAllEngByUser(userID));
+      return;
+    } else {
+      dispatch(getAllUkrByUser(userID));
+      return;
+    }
+  }, [dispatch, isEngLang, userID]);
+
+  // Обробка інформацїї про скор юзера
+  useEffect(() => {
+    if (isEngLang) {
+      // -- 1.1 -- ФІЛЬТРУЄМО ПО РЕЖИМУ РОБОТ (ENG)
+      const userScoreInfoRoboEN = userScoreEN.filter(
+        item => item.isRoboQuizMode === 'true'
+      );
+      // setUserScoreENRobo(userScoreInfoRoboEN);
+      if (userScoreInfoRoboEN.length !== 0) {
+        dispatch(setLevel(userScoreInfoRoboEN));
+      }
+
+      // -- 1.2 -- ФІЛЬТРУЄМО ПО РЕЖИМУ МУЗИКА (ENG)
+      const userScoreInfoMusicEN = userScoreEN.filter(
+        item => item.isRoboQuizMode === 'false'
+      );
+      if (userScoreInfoMusicEN.length !== 0) {
+        dispatch(setLevel(userScoreInfoMusicEN));
+      }
+    } else {
+      // -- 1.1 -- ФІЛЬТРУЄМО ПО РЕЖИМУ РОБОТ (UKR)
+      const userScoreInfoRoboUKR = userScoreUKR.filter(
+        item => item.isRoboQuizMode === 'true'
+      );
+      if (userScoreInfoRoboUKR.length !== 0) {
+        dispatch(setLevel(userScoreInfoRoboUKR));
+      }
+
+      // -- 1.2 -- ФІЛЬТРУЄМО ПО РЕЖИМУ МУЗИКА (UKR)
+      const userScoreInfoMusicUKR = userScoreUKR.filter(
+        item => item.isRoboQuizMode === 'false'
+      );
+      if (userScoreInfoMusicUKR.length !== 0) {
+        dispatch(setLevel(userScoreInfoMusicUKR));
+      }
+    }
+  }, [dispatch, isEngLang, userScoreEN, userScoreUKR]);
 
   const handleClickSong = idx => {
     // console.log(songsListEN[idx].name);

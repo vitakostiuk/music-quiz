@@ -2,7 +2,12 @@ import { createSlice } from '@reduxjs/toolkit';
 import { buildQueries } from '@testing-library/react';
 import { songs } from '../../components/Game/songs';
 import { songsEn } from '../../components/Game/songsEN';
-import { getAllEng, getAllUkr } from './playerOperations';
+import {
+  getAllEng,
+  getAllUkr,
+  getAllEngByUser,
+  getAllUkrByUser,
+} from './playerOperations';
 
 const initialState = {
   isRoboQuizMode: false,
@@ -19,6 +24,8 @@ const initialState = {
   levelCompleteInfo: [],
   leaderboardInfoEN: [],
   leaderboardInfoUKR: [],
+  userScoreUKR: [],
+  userScoreEN: [],
   loading: false,
   error: null,
 };
@@ -34,13 +41,16 @@ const playerSlice = createSlice({
       state.isEngLang = !state.isEngLang;
     },
     setLevel: (state, { payload }) => {
+      state.level = payload.length + 1;
+    },
+    setNextLevel: (state, { payload }) => {
       state.level = state.level + 1;
     },
     restartLevel: (state, { payload }) => {
       state.level = payload;
     },
     setSongsArrEN: (state, { payload }) => {
-      state.songslistENG = payload;
+      state.songslistEN = payload;
     },
     setSongsArrUKR: (state, { payload }) => {
       state.songslistUKR = payload;
@@ -100,6 +110,36 @@ const playerSlice = createSlice({
       .addCase(getAllUkr.rejected, (state, { payload }) => {
         state.loading = false;
         state.error = payload;
+      })
+
+      // REDUCER FOR GET SCORE BY USER (ENG version)
+      .addCase(getAllEngByUser.pending, state => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getAllEngByUser.fulfilled, (state, { payload }) => {
+        // console.log(payload);
+        state.loading = false;
+        state.userScoreEN = payload;
+      })
+      .addCase(getAllEngByUser.rejected, (state, { payload }) => {
+        state.loading = false;
+        state.error = payload;
+      })
+
+      // REDUCER FOR GET SCORE BY USER (UKR version)
+      .addCase(getAllUkrByUser.pending, state => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getAllUkrByUser.fulfilled, (state, { payload }) => {
+        // console.log(payload);
+        state.loading = false;
+        state.userScoreUKR = payload;
+      })
+      .addCase(getAllUkrByUser.rejected, (state, { payload }) => {
+        state.loading = false;
+        state.error = payload;
       });
   },
 });
@@ -108,6 +148,7 @@ export const {
   setQuizMode,
   toggleLanguage,
   setLevel,
+  setNextLevel,
   restartLevel,
   setSongsArrEN,
   setSongsArrUKR,

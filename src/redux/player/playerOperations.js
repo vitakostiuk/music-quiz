@@ -32,4 +32,81 @@ const getAllUkr = createAsyncThunk(
   }
 );
 
-export { getAllEng, getAllUkr };
+const getAllEngByUser = createAsyncThunk(
+  'player/getAllEngByUser',
+  async (userID, { rejectWithValue, getState }) => {
+    try {
+      const { token } = getState().auth;
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
+      const { data } = await axios.get(`/game/en/${userID}`);
+
+      return data;
+    } catch (error) {
+      console.log(error);
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+const getAllUkrByUser = createAsyncThunk(
+  'player/getAllUkrByUser',
+  async (userID, { rejectWithValue, getState }) => {
+    try {
+      const { token } = getState().auth;
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
+      const { data } = await axios.get(`/game/ukr/${userID}`);
+
+      return data;
+    } catch (error) {
+      console.log(error);
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+const addLVLCompleteInfoEN = createAsyncThunk(
+  'player/addLVLCompleteInfoEN',
+  async (dataInfo, { rejectWithValue, getState }) => {
+    try {
+      const { token } = getState().auth;
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
+      const { data } = await axios.post('/game/en', dataInfo);
+      // console.log('data', data);
+
+      return data;
+    } catch (error) {
+      console.log(error);
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+const addLVLCompleteInfoUKR = createAsyncThunk(
+  'player/addLVLCompleteInfoUKR',
+  async (dataInfo, { rejectWithValue, getState }) => {
+    try {
+      const { token } = getState().auth;
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
+      const { data } = await axios.post('/game/ukr', dataInfo);
+      // console.log('data', data);
+
+      return data;
+    } catch (error) {
+      console.log(error);
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export {
+  getAllEng,
+  getAllUkr,
+  addLVLCompleteInfoEN,
+  addLVLCompleteInfoUKR,
+  getAllEngByUser,
+  getAllUkrByUser,
+};

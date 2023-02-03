@@ -11,6 +11,8 @@ const getStartPlayingTime = state => state.player.startPlayingTime;
 const getLevelCompleteInfo = state => state.player.levelCompleteInfo;
 const getLeaderboardInfoEN = state => state.player.leaderboardInfoEN;
 const getLeaderboardInfoUKR = state => state.player.leaderboardInfoUKR;
+const getUserScoreEN = state => state.player.userScoreEN;
+const getUserScoreUKR = state => state.player.userScoreUKR;
 
 export {
   getQuizMode,
@@ -26,4 +28,6 @@ export {
   getLevelCompleteInfo,
   getLeaderboardInfoEN,
   getLeaderboardInfoUKR,
+  getUserScoreEN,
+  getUserScoreUKR,
 };

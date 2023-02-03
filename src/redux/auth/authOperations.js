@@ -40,6 +40,7 @@ const forgotPassword = createAsyncThunk(
       const { data } = await axios.patch(`/users/forgot-password`, email);
 
       toast.success(data.message);
+
       return data.message;
     } catch (error) {
       toast.error(error.response.data.message);
@@ -53,7 +54,7 @@ const google = createAsyncThunk(
   async (credentials, { rejectWithValue }) => {
     try {
       const { data } = await axios.post(`/users/google`, credentials);
-      console.log('data', data);
+      // console.log('data', data);
 
       return data;
     } catch (error) {

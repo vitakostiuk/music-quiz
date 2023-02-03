@@ -11,7 +11,7 @@ import {
 import {
   setSongsArrEN,
   setSongsArrUKR,
-  setLevel,
+  setNextLevel,
   restartLevel,
   setClickAnswer,
   setCurrent,
@@ -19,6 +19,10 @@ import {
   resetLevelCompleteInfo,
   setStartPlayingTime,
 } from '../../redux/player/playerSlice';
+import {
+  addLVLCompleteInfoEN,
+  addLVLCompleteInfoUKR,
+} from '../../redux/player/playerOperations';
 import { ReactComponent as WrongIcon } from '../../images/cross.svg';
 import { ReactComponent as TrueIcon } from '../../images/checkmark.svg';
 import { ReactComponent as RestartIcon } from '../../images/restart.svg';
@@ -40,10 +44,11 @@ const LevelComplete = () => {
   const isEngLang = useSelector(getLanguage);
   const level = useSelector(getLevel);
   const levelCompleteInfo = useSelector(getLevelCompleteInfo);
+  console.log('levelCompleteInfo', levelCompleteInfo);
   const answersArray = useSelector(answerState);
   const isRoboQuizMode = useSelector(getQuizMode);
 
-  // Перевіряємобчи є хоча б одна неправильна відповідь
+  // Перевіряємо, чи є хоча б одна неправильна відповідь
   const filteredByWrongAnswers = levelCompleteInfo.filter(
     ({ isRightAnswer }) => isRightAnswer === false
   );
@@ -64,7 +69,30 @@ const LevelComplete = () => {
   };
 
   const handleClickNextLevel = () => {
-    dispatch(setLevel());
+    // ВІДПРАВЛЯЄМО НА БЕКЕНД levelCompleteInfo
+    // --1-- загальний час, за який пройдено рiвень
+    const totalTime = levelCompleteInfo
+      .reduce((acc, { time }) => {
+        return acc + time;
+      }, 0)
+      .toFixed(2);
+
+    // --2-- Об'єкт,який відправляємо на бекенд
+    const userLevelCompleteInfo = {
+      isRoboQuizMode,
+      level,
+      time: Number(totalTime),
+    };
+
+    // --3-- Діспатчимо об'єкт
+    if (isEngLang) {
+      dispatch(addLVLCompleteInfoEN(userLevelCompleteInfo));
+    } else {
+      dispatch(addLVLCompleteInfoUKR(userLevelCompleteInfo));
+    }
+
+    // Збільшуємо левел на 1 і ресетимо дані
+    dispatch(setNextLevel());
     resetState();
   };
 
@@ -77,13 +105,11 @@ const LevelComplete = () => {
     if (level > 1 && isEngLang) {
       const songsArr = songsEn.find(({ stage }) => stage === level).quizInfo;
       dispatch(setSongsArrEN(songsArr));
-      return;
     }
 
     if (level > 1 && !isEngLang) {
       const songsArr = songs.find(({ stage }) => stage === level).quizInfo;
       dispatch(setSongsArrUKR(songsArr));
-      return;
     }
   }, [dispatch, isEngLang, level]);
 

@@ -17,7 +17,7 @@ import playerSlice from './player/playerSlice';
 const persistAuthConfig = {
   key: 'token',
   storage,
-  whitelist: ['token', 'googleToken'],
+  whitelist: ['token', 'googleToken', 'userID', 'userEmail'],
 };
 
 const persistPlayerConfig = {
