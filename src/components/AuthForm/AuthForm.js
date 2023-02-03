@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { googleAuth } from '../../redux/auth/authSlice';
 import { Formik, Form, Field } from 'formik';
-import { useGoogleLogin } from '@react-oauth/google';
-import { forgotPassword } from '../../redux/auth/authOperations';
+// import { useGoogleLogin } from '@react-oauth/google';
+import { GoogleLogin } from '@react-oauth/google';
+import jwt_decode from 'jwt-decode';
+import { forgotPassword, google } from '../../redux/auth/authOperations';
+import { getGoogleToken } from '../../redux/auth/authSelectors';
 import { ReactComponent as IconGoogle } from '../../images/icon-google.svg';
 import Modal from '../common/Modal';
 import * as Yup from 'yup';
@@ -41,6 +44,9 @@ const AuthForm = ({
   const [isShowModal, setisShowModal] = useState(false);
   const [email, setEmail] = useState(null);
 
+  const googleToken = useSelector(getGoogleToken);
+  // console.log('googleToken', googleToken);
+
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
@@ -51,18 +57,21 @@ const AuthForm = ({
     }
   }, [dispatch, email]);
 
-  const login = useGoogleLogin({
-    onSuccess: tokenResponse => {
-      console.log(tokenResponse);
-      dispatch(googleAuth(tokenResponse));
-      if (tokenResponse) {
-        navigate('/');
-      }
-    },
-    onError: error => {
-      console.log(error);
-    },
-  });
+  // const login = useGoogleLogin({
+  //   flow: 'implicit',
+  //   onSuccess: tokenResponse => {
+  //     console.log(tokenResponse);
+  // const userObject = jwt_decode(tokenResponse.access_token);
+  // console.log('userObject', userObject);
+  //     dispatch(googleAuth(tokenResponse));
+  // if (tokenResponse) {
+  //   navigate('/');
+  // }
+  //   },
+  //   onError: error => {
+  //     console.log(error);
+  //   },
+  // });
 
   const onClickShowModal = () => {
     setisShowModal(prefState => !prefState);
@@ -80,11 +89,43 @@ const AuthForm = ({
     <div className={s.wrapper}>
       <div className={s.container}>
         <h1 className={s.title}>Sign in to Music Quiz</h1>
-        <button className={s.google} type="button" onClick={() => login()}>
+        <div className={s.googleLogin}>
+          {' '}
+          <GoogleLogin
+            onSuccess={credentialResponse => {
+              dispatch(googleAuth(credentialResponse.credential));
+              const userObject = jwt_decode(credentialResponse.credential);
+              // console.log('userObject', userObject);
+              const { email, name, picture } = userObject;
+
+              // Відправляємо на бекенд інформацію про юзера.
+              // Якщо юзер з таким email є, то оновиться тільки avatarURL (для того, щоб потім можна було витянути avatarURL)
+              // Якщо юзера зтаким email немає, то запишеться новий юзер в базу (для того, щоб потім можна було витянути avatarURL)
+              const data = {
+                name,
+                email,
+                googleToken: credentialResponse.credential,
+                avatarURL: picture,
+              };
+              dispatch(google(data));
+
+              console.log(credentialResponse);
+
+              if (credentialResponse?.credential) {
+                navigate('/');
+              }
+            }}
+            onError={() => {
+              console.log('Login Failed');
+            }}
+          />
+        </div>
+        <p className={s.orText}>OR</p>
+        {/* <button className={s.google} type="button" onClick={() => login()}>
           <IconGoogle className={s.icon} />
           Google
         </button>
-        <p className={s.orText}>OR</p>
+        <p className={s.orText}>OR</p> */}
         <Formik
           initialValues={initialValues}
           validationSchema={isForgotPassword ? SigninSchema : SignupSchema}

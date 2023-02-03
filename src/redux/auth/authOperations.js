@@ -48,4 +48,19 @@ const forgotPassword = createAsyncThunk(
   }
 );
 
-export { signup, signin, forgotPassword };
+const google = createAsyncThunk(
+  'auth/google',
+  async (credentials, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.post(`/users/google`, credentials);
+      console.log('data', data);
+
+      return data;
+    } catch (error) {
+      toast.error(error.response.data.message);
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export { signup, signin, forgotPassword, google };

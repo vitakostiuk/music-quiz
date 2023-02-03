@@ -39,6 +39,13 @@
   cursor: pointer;
 }
 
+.googleLogin {
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
+  /* border: 1px solid red; */
+}
+
 .icon {
   width: 20px;
   height: 20px;

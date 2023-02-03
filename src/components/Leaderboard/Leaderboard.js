@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import Paper from '../common/Paper';
 import { useDispatch, useSelector } from 'react-redux';
 import { setQuizMode } from '../../redux/player/playerSlice';
 import {
@@ -28,7 +27,7 @@ const Leaderboard = () => {
     dispatch(getAll());
   }, [dispatch]);
 
-  // ROBO MODE
+  // RENDER LEADERBOARD
   useEffect(() => {
     // -- 1 -- ФІЛЬТРУЄМО ПО РЕЖИМУ
     // -- 1.1 -- РОБОТ
@@ -128,9 +127,108 @@ const Leaderboard = () => {
           Leaderboard
         </h1>
       </div>
-      <div className={s.allWinsWrapper}>
+
+      {/* ROBO WINNERS */}
+      {roboQuizMode && roboWinners.length !== 0 && (
+        <div className={s.allWinsWrapper}>
+          {roboWinners.map((item, idx) => (
+            <li key={idx} className={s.winWrapper}>
+              <div className={idx === 0 ? s.circleWinner : s.circle}>
+                {' '}
+                <img
+                  src={
+                    item[1]?.user?.avatarURL
+                      ? item[1]?.user?.avatarURL
+                      : 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/1.png'
+                  }
+                  alt="avatar"
+                  className={idx === 0 ? s.avatarWinner : s.avatarCircle}
+                />
+              </div>
+              <div className={idx === 0 ? s.smallCircleWinner : s.smallCircle}>
+                {idx + 1}
+              </div>
+              <div className={s.background}>
+                <p className={s.text}>{item[1].user.name}</p>
+                <div className={s.scoreWrapper}>
+                  <p className={s.text}>
+                    {item.length - 1}
+                    lvls.
+                  </p>
+                  <p className={s.text}>
+                    {item[0]}
+                    sec.
+                  </p>
+                </div>
+              </div>
+            </li>
+          ))}
+        </div>
+      )}
+
+      {/* MUSIC WINNERS */}
+      {!roboQuizMode && musicWinners.length !== 0 && (
+        <div className={s.allWinsWrapper}>
+          {musicWinners.map((item, idx) => (
+            <li key={idx} className={s.winWrapper}>
+              <div className={idx === 0 ? s.circleWinner : s.circle}>
+                <img
+                  src={
+                    item[1]?.user?.avatarURL
+                      ? item[1]?.user?.avatarURL
+                      : 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/1.png'
+                  }
+                  alt="avatar"
+                  className={idx === 0 ? s.avatarWinner : s.avatarCircle}
+                />
+              </div>
+              <div className={idx === 0 ? s.smallCircleWinner : s.smallCircle}>
+                {idx + 1}
+              </div>
+              <div className={s.background}>
+                <p className={s.text}>{item[1].user.name}</p>
+                <div className={s.scoreWrapper}>
+                  <p className={s.text}>
+                    {item.length - 1}
+                    lvls.
+                  </p>
+                  <p className={s.text}>
+                    {item[0]}
+                    sec.
+                  </p>
+                </div>
+              </div>
+            </li>
+          ))}
+        </div>
+      )}
+
+      {/* <div className={s.allWinsWrapper}>
         <div className={s.winWrapper}>
-          <div className={s.circle}></div>
+          <div className={s.circle}>
+            {roboQuizMode && roboWinners.length !== 0 && (
+              <img
+                src={
+                  roboWinners[1][1]?.user?.avatarURL
+                    ? roboWinners[1][1]?.user?.avatarURL
+                    : 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/1.png'
+                }
+                alt="avatar"
+                className={s.avatar}
+              />
+            )}
+            {!roboQuizMode && musicWinners.length !== 0 && (
+              <img
+                src={
+                  musicWinners[1][1]?.user?.avatarURL
+                    ? musicWinners[1][1]?.user?.avatarURL
+                    : 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/1.png'
+                }
+                alt="avatar"
+                className={s.avatar}
+              />
+            )}
+          </div>
           <div className={s.smallCircle}>2</div>
           <div className={s.background}>
             {' '}
@@ -167,7 +265,30 @@ const Leaderboard = () => {
         </div>
         <div className={s.winWrapper}>
           {' '}
-          <div className={s.circleWinner}></div>
+          <div className={s.circleWinner}>
+            {roboQuizMode && roboWinners.length !== 0 && (
+              <img
+                src={
+                  roboWinners[0][1]?.user?.avatarURL
+                    ? roboWinners[0][1]?.user?.avatarURL
+                    : 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/1.png'
+                }
+                alt="avatar"
+                className={s.avatar}
+              />
+            )}
+            {!roboQuizMode && musicWinners.length !== 0 && (
+              <img
+                src={
+                  musicWinners[0][1]?.user?.avatarURL
+                    ? musicWinners[0][1]?.user?.avatarURL
+                    : 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/1.png'
+                }
+                alt="avatar"
+                className={s.avatar}
+              />
+            )}
+          </div>
           <div className={s.smallCircleWinner}>1</div>
           <div className={s.background}>
             {' '}
@@ -204,7 +325,30 @@ const Leaderboard = () => {
         </div>
         <div className={s.winWrapper}>
           {' '}
-          <div className={s.circle}></div>
+          <div className={s.circle}>
+            {roboQuizMode && roboWinners.length !== 0 && (
+              <img
+                src={
+                  roboWinners[2][1]?.user?.avatarURL
+                    ? roboWinners[2][1]?.user?.avatarURL
+                    : 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/1.png'
+                }
+                alt="avatar"
+                className={s.avatar}
+              />
+            )}
+            {!roboQuizMode && musicWinners.length !== 0 && (
+              <img
+                src={
+                  musicWinners[2][1]?.user?.avatarURL
+                    ? musicWinners[2][1]?.user?.avatarURL
+                    : 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/1.png'
+                }
+                alt="avatar"
+                className={s.avatar}
+              />
+            )}
+          </div>
           <div className={s.smallCircle}>3</div>
           <div className={s.background}>
             {' '}
@@ -239,7 +383,7 @@ const Leaderboard = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
       {roboQuizMode && (
         <div className={s.listWrapper}>
           {' '}
@@ -248,7 +392,17 @@ const Leaderboard = () => {
               roboInfo.map(item => (
                 <li key={item[1].user.name} className={s.itemWrap}>
                   <div className={s.outerWrapper}>
-                    <div className={s.circleItem}></div>{' '}
+                    <div className={s.circleItem}>
+                      <img
+                        src={
+                          item[1].user.avatarURL
+                            ? item[1].user.avatarURL
+                            : 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/1.png'
+                        }
+                        alt="avatar"
+                        className={s.avatar}
+                      />
+                    </div>{' '}
                     <div className={s.name}>{item[1].user.name}</div>
                     <div className={s.innerWrapper}>
                       <div className={s.lvls}>{item.length - 1} lvls.</div>
@@ -269,7 +423,17 @@ const Leaderboard = () => {
               musicInfo.map(item => (
                 <li key={item[1].user.name} className={s.itemWrap}>
                   <div className={s.outerWrapper}>
-                    <div className={s.circleItem}></div>{' '}
+                    <div className={s.circleItem}>
+                      <img
+                        src={
+                          item[1].user.avatarURL
+                            ? item[1].user.avatarURL
+                            : 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/1.png'
+                        }
+                        alt="avatar"
+                        className={s.avatar}
+                      />
+                    </div>{' '}
                     <div className={s.name}>{item[1].user.name}</div>
                     <div className={s.innerWrapper}>
                       <div className={s.lvls}>{item.length - 1} lvls.</div>
