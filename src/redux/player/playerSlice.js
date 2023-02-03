@@ -1,12 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { buildQueries } from '@testing-library/react';
 import { songs } from '../../components/Game/songs';
-import { getAll } from './playerOperations';
+import { songsEn } from '../../components/Game/songsEN';
+import { getAllEng, getAllUkr } from './playerOperations';
 
 const initialState = {
   isRoboQuizMode: false,
+  isEngLang: true,
   level: 1,
-  songslist: songs.find(({ stage }) => stage === 1).quizInfo,
+  songslistUKR: songs.find(({ stage }) => stage === 1).quizInfo,
+  songslistEN: songsEn.find(({ stage }) => stage === 1).quizInfo,
   // currentSong = 0, бо прив'язано до індекса пісні
   currentSong: 0,
   playing: false,
@@ -14,7 +17,8 @@ const initialState = {
   answerState: [],
   startPlayingTime: '',
   levelCompleteInfo: [],
-  leaderboardInfo: [],
+  leaderboardInfoEN: [],
+  leaderboardInfoUKR: [],
   loading: false,
   error: null,
 };
@@ -26,15 +30,20 @@ const playerSlice = createSlice({
     setQuizMode: (state, { payload }) => {
       state.isRoboQuizMode = payload;
     },
+    toggleLanguage: (state, { payload }) => {
+      state.isEngLang = !state.isEngLang;
+    },
     setLevel: (state, { payload }) => {
       state.level = state.level + 1;
     },
     restartLevel: (state, { payload }) => {
       state.level = payload;
     },
-    setSongsArr: (state, { payload }) => {
-      state.songslist = payload;
-      // state.songslist = songs.find(({ stage }) => stage === payload).quizInfo;
+    setSongsArrEN: (state, { payload }) => {
+      state.songslistENG = payload;
+    },
+    setSongsArrUKR: (state, { payload }) => {
+      state.songslistUKR = payload;
     },
     togglePlaying: (state, { payload }) => {
       state.playing = state.playing ? false : true;
@@ -63,17 +72,32 @@ const playerSlice = createSlice({
   },
   extraReducers: builder => {
     builder
-      // REDUCER FOR ALL INFO FOR LEADERBOARD
-      .addCase(getAll.pending, state => {
+      // REDUCER FOR ALL INFO FOR LEADERBOARD (ENG version)
+      .addCase(getAllEng.pending, state => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(getAll.fulfilled, (state, { payload }) => {
+      .addCase(getAllEng.fulfilled, (state, { payload }) => {
         // console.log(payload);
         state.loading = false;
-        state.leaderboardInfo = payload;
+        state.leaderboardInfoEN = payload;
       })
-      .addCase(getAll.rejected, (state, { payload }) => {
+      .addCase(getAllEng.rejected, (state, { payload }) => {
+        state.loading = false;
+        state.error = payload;
+      })
+
+      // REDUCER FOR ALL INFO FOR LEADERBOARD (UKR version)
+      .addCase(getAllUkr.pending, state => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getAllUkr.fulfilled, (state, { payload }) => {
+        // console.log(payload);
+        state.loading = false;
+        state.leaderboardInfoUKR = payload;
+      })
+      .addCase(getAllUkr.rejected, (state, { payload }) => {
         state.loading = false;
         state.error = payload;
       });
@@ -82,9 +106,11 @@ const playerSlice = createSlice({
 
 export const {
   setQuizMode,
+  toggleLanguage,
   setLevel,
   restartLevel,
-  setSongsArr,
+  setSongsArrEN,
+  setSongsArrUKR,
   togglePlaying,
   setCurrent,
   setClickAnswer,

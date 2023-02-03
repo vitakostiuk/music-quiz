@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   getQuizMode,
-  getSongsList,
+  getLanguage,
+  getSongsListEN,
+  getSongsListUKR,
   getCurrent,
   isPlaying,
   clickAnswer,
@@ -27,7 +29,9 @@ import s from './Answers.module.css';
 
 const Answers = () => {
   const isRoboQuizMode = useSelector(getQuizMode);
-  const songsList = useSelector(getSongsList);
+  const isEngLang = useSelector(getLanguage);
+  const songsListEN = useSelector(getSongsListEN);
+  const songsListUKR = useSelector(getSongsListUKR);
   const currentSong = useSelector(getCurrent);
   const playing = useSelector(isPlaying);
   const isClickAnswer = useSelector(clickAnswer);
@@ -66,9 +70,9 @@ const Answers = () => {
     setIsDisabled(false);
 
     // Списк відповідей,не включачи правильну
-    const answers = songsList.find(
-      ({ url }) => url === songsList[currentSong].url
-    );
+    const answers = isEngLang
+      ? songsListEN.find(({ url }) => url === songsListEN[currentSong].url)
+      : songsListUKR.find(({ url }) => url === songsListUKR[currentSong].url);
 
     // Копія відповідей,не включачи правильну. Щоб можна було рандомно перемішати масив(ф-я shuffle)
     const incorrectAnswers = [...answers.incorrectSingers];
@@ -86,7 +90,7 @@ const Answers = () => {
     // Записуємо в локальний стейт коретну відповідь
     const correctAnaswer = result.find(answer => answer.isCorrect);
     setCorrect(correctAnaswer.song);
-  }, [currentSong, dispatch, songsList]);
+  }, [currentSong, dispatch, isEngLang, songsListEN, songsListUKR]);
 
   // ОБРОБКА ВІДПОВІДІ
   const handleClickAnswer = (index, array, event) => {
@@ -243,7 +247,11 @@ const Answers = () => {
           {isMatch && (
             <audio
               type="audio/mpeg"
-              src={songsList[currentSong].originalUrl}
+              src={
+                isEngLang
+                  ? songsListEN[currentSong].originalUrl
+                  : songsListUKR[currentSong].originalUrl
+              }
               autoPlay
             />
           )}

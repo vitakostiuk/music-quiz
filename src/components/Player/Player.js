@@ -4,7 +4,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setStartPlayingTime } from '../../redux/player/playerSlice';
 import {
   getQuizMode,
-  getSongsList,
+  getLanguage,
+  getSongsListEN,
+  getSongsListUKR,
   getCurrent,
   isPlaying,
   clickAnswer,
@@ -23,7 +25,9 @@ const Player = () => {
   const dispatch = useDispatch();
 
   const isRoboQuizMode = useSelector(getQuizMode);
-  const songsList = useSelector(getSongsList);
+  const isEngLang = useSelector(getLanguage);
+  const songsListEN = useSelector(getSongsListEN);
+  const songsListUKR = useSelector(getSongsListUKR);
   const currentSong = useSelector(getCurrent);
   const playing = useSelector(isPlaying);
   const isClickAnswer = useSelector(clickAnswer);
@@ -60,17 +64,36 @@ const Player = () => {
   }, [currentSong]);
   return (
     <div className={s.controls}>
-      <audio
-        ref={audio}
-        muted={!playing}
-        type="audio/mpeg"
-        src={
-          isRoboQuizMode
-            ? songsList[currentSong].url
-            : songsList[currentSong].originalUrl
-        }
-        // onEnded={() => dispatch(togglePlaying())}
-      />
+      {/* ENG */}
+      {isEngLang && (
+        <audio
+          ref={audio}
+          muted={!playing}
+          type="audio/mpeg"
+          src={
+            isRoboQuizMode
+              ? songsListEN[currentSong].url
+              : songsListEN[currentSong].originalUrl
+          }
+          // onEnded={() => dispatch(togglePlaying())}
+        />
+      )}
+
+      {/* UKR */}
+      {!isEngLang && (
+        <audio
+          ref={audio}
+          muted={!playing}
+          type="audio/mpeg"
+          src={
+            isRoboQuizMode
+              ? songsListUKR[currentSong].url
+              : songsListUKR[currentSong].originalUrl
+          }
+          // onEnded={() => dispatch(togglePlaying())}
+        />
+      )}
+
       <div className={s.volume}>
         {stateVolume > 0 && (
           <span className={s.volumeControl}>

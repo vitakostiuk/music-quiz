@@ -3,13 +3,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   setCurrent,
   togglePlaying,
-  setSongsArr,
   resetAnswerStateArray,
 } from '../../redux/player/playerSlice';
 import {
   getQuizMode,
   getLevel,
-  getSongsList,
+  getLanguage,
+  getSongsListEN,
+  getSongsListUKR,
   getCurrent,
   answerState,
 } from '../../redux/player/playerSelectors';
@@ -25,12 +26,14 @@ const Game = () => {
 
   const isRoboQuizMode = useSelector(getQuizMode);
   const level = useSelector(getLevel);
-  const songsList = useSelector(getSongsList);
+  const isEngLang = useSelector(getLanguage);
+  const songsListEN = useSelector(getSongsListEN);
+  const songsListUKR = useSelector(getSongsListUKR);
   const currentSong = useSelector(getCurrent);
   const answers = useSelector(answerState);
 
   const handleClickSong = idx => {
-    console.log(songsList[idx].name);
+    // console.log(songsListEN[idx].name);
     // // dispatch(togglePlaying());
     // dispatch(setCurrent(idx));
   };
@@ -158,8 +161,29 @@ const Game = () => {
           )}
         </div>
         <ul className={s.list}>
+          {/* ENG */}
           {audioSingers &&
-            songsList.map(({ id, name }, idx) => (
+            isEngLang &&
+            songsListEN.map(({ id, name }, idx) => (
+              <li key={id} className={s.itemWrapper}>
+                <div
+                  className={setClassnameButtons(idx)}
+                  onClick={() => handleClickSong(idx)}
+                >
+                  {currentSong <= idx && answers.length <= 4 && idx + 1}
+                </div>
+                {idx < 4 && (
+                  <div className={s.lineWrapper}>
+                    <div className={setClassnameLine(idx)}></div>
+                  </div>
+                )}
+              </li>
+            ))}
+
+          {/* UKR */}
+          {audioSingers &&
+            !isEngLang &&
+            songsListUKR.map(({ id, name }, idx) => (
               <li key={id} className={s.itemWrapper}>
                 <div
                   className={setClassnameButtons(idx)}

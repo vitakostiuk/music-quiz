@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setQuizMode } from '../../redux/player/playerSlice';
 import {
-  getLeaderboardInfo,
+  getLanguage,
+  getLeaderboardInfoEN,
+  getLeaderboardInfoUKR,
   getQuizMode,
 } from '../../redux/player/playerSelectors';
-import { getAll } from '../../redux/player/playerOperations';
+import { getAllEng, getAllUkr } from '../../redux/player/playerOperations';
 import { getFilteredArrayByOwner } from '../../helpers/getFilteredArrayByOwner';
 import { getSortedArrayByTimeAndLevels } from '../../helpers/getSortedArrayByTimeAndLevels';
 import s from './Leaderboard.module.css';
@@ -18,27 +20,31 @@ const Leaderboard = () => {
   const dispatch = useDispatch();
 
   // Отримуємо з бекенду ВСЮ інформацію для лідерборду
-  const leaderboardInfo = useSelector(getLeaderboardInfo);
-  // console.log(leaderboardInfo);
+  const leaderboardInfoEN = useSelector(getLeaderboardInfoEN);
+  const leaderboardInfoUKR = useSelector(getLeaderboardInfoUKR);
+  // console.log('leaderboardInfoEN', leaderboardInfoEN);
+  // console.log('leaderboardInfoUKR', leaderboardInfoUKR);
   const roboQuizMode = useSelector(getQuizMode);
+  const isEngLang = useSelector(getLanguage);
 
   // Діспатчимо асинхронну операцію, щоб отримати ВСЮ інформацію для лідерборду
   useEffect(() => {
-    dispatch(getAll());
-  }, [dispatch]);
+    dispatch(getAllEng());
+    dispatch(getAllUkr());
+  }, [dispatch, isEngLang]);
 
   // RENDER LEADERBOARD
   useEffect(() => {
     // -- 1 -- ФІЛЬТРУЄМО ПО РЕЖИМУ
     // -- 1.1 -- РОБОТ
-    const leaderboardInfoRobo = leaderboardInfo?.filter(
-      item => item.isRoboQuizMode === 'true'
-    );
+    const leaderboardInfoRobo = isEngLang
+      ? leaderboardInfoEN?.filter(item => item.isRoboQuizMode === 'true')
+      : leaderboardInfoUKR?.filter(item => item.isRoboQuizMode === 'true');
     // console.log('leaderboardInfoRobo', leaderboardInfoRobo);
     // -- 1.2 -- МУЗИКА
-    const leaderboardInfoMusic = leaderboardInfo.filter(
-      item => item.isRoboQuizMode === 'false'
-    );
+    const leaderboardInfoMusic = isEngLang
+      ? leaderboardInfoEN?.filter(item => item.isRoboQuizMode === 'false')
+      : leaderboardInfoUKR?.filter(item => item.isRoboQuizMode === 'false');
     // console.log('leaderboardInfoMusic', leaderboardInfoMusic);
     // -----------------------------------------------------------------
 
@@ -88,7 +94,7 @@ const Leaderboard = () => {
     setMusicWinners(winnersArrMusic);
     // console.log('winnersArrMusic', winnersArrMusic);
     // ----------------------------------------------------------------------------
-  }, [leaderboardInfo]);
+  }, [isEngLang, leaderboardInfoEN, leaderboardInfoUKR]);
 
   // Перемикач режимів
   const handleClickModeBtn = mode => {
@@ -103,349 +109,182 @@ const Leaderboard = () => {
     }
   };
   return (
-    <div className={s.paper}>
-      <div className={s.titleWrapper}>
-        {' '}
-        <div className={s.btnsWrapper}>
+    <>
+      <div className={s.paper}>
+        <div className={s.titleWrapper}>
           {' '}
-          <button
-            className={roboQuizMode ? s.btnRoboIsRobo : s.btnRoboIsMusic}
-            type="button"
-            onClick={() => handleClickModeBtn('robo')}
-          >
-            Robo
-          </button>
-          <button
-            className={roboQuizMode ? s.btnMusicIsRobo : s.btnMusicIsMusic}
-            type="button"
-            onClick={() => handleClickModeBtn('music')}
-          >
-            Music
-          </button>
+          <div className={s.btnsWrapper}>
+            {' '}
+            <button
+              className={roboQuizMode ? s.btnRoboIsRobo : s.btnRoboIsMusic}
+              type="button"
+              onClick={() => handleClickModeBtn('robo')}
+            >
+              Robo
+            </button>
+            <button
+              className={roboQuizMode ? s.btnMusicIsRobo : s.btnMusicIsMusic}
+              type="button"
+              onClick={() => handleClickModeBtn('music')}
+            >
+              Music
+            </button>
+          </div>
+          <h1 className={roboQuizMode ? s.titleRobo : s.titleMusic}>
+            Leaderboard
+          </h1>
         </div>
-        <h1 className={roboQuizMode ? s.titleRobo : s.titleMusic}>
-          Leaderboard
-        </h1>
+
+        {/* ERROR TEXT */}
+        {roboQuizMode && roboInfo.length === 0 && (
+          <h2 className={s.errorText}>Leaderboard is empty</h2>
+        )}
+        {!roboQuizMode && musicInfo.length === 0 && (
+          <h2 className={s.errorText}>Leaderboard is empty</h2>
+        )}
+
+        {/* ROBO WINNERS */}
+        {roboQuizMode && roboWinners.length !== 0 && (
+          <div className={s.allWinsWrapper}>
+            {roboWinners.map((item, idx) => (
+              <li key={idx} className={s.winWrapper}>
+                <div className={idx === 0 ? s.circleWinner : s.circle}>
+                  {' '}
+                  <img
+                    src={
+                      item[1]?.user?.avatarURL
+                        ? item[1]?.user?.avatarURL
+                        : 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/1.png'
+                    }
+                    alt="avatar"
+                    className={idx === 0 ? s.avatarWinner : s.avatarCircle}
+                  />
+                </div>
+                <div
+                  className={idx === 0 ? s.smallCircleWinner : s.smallCircle}
+                >
+                  {idx + 1}
+                </div>
+                <div className={s.background}>
+                  <p className={s.text}>{item[1].user.name}</p>
+                  <div className={s.scoreWrapper}>
+                    <p className={s.text}>
+                      {item.length - 1}
+                      lvls.
+                    </p>
+                    <p className={s.text}>
+                      {item[0]}
+                      sec.
+                    </p>
+                  </div>
+                </div>
+              </li>
+            ))}
+          </div>
+        )}
+
+        {/* MUSIC WINNERS */}
+        {!roboQuizMode && musicWinners.length !== 0 && (
+          <div className={s.allWinsWrapper}>
+            {musicWinners.map((item, idx) => (
+              <li key={idx} className={s.winWrapper}>
+                <div className={idx === 0 ? s.circleWinner : s.circle}>
+                  <img
+                    src={
+                      item[1]?.user?.avatarURL
+                        ? item[1]?.user?.avatarURL
+                        : 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/1.png'
+                    }
+                    alt="avatar"
+                    className={idx === 0 ? s.avatarWinner : s.avatarCircle}
+                  />
+                </div>
+                <div
+                  className={idx === 0 ? s.smallCircleWinner : s.smallCircle}
+                >
+                  {idx + 1}
+                </div>
+                <div className={s.background}>
+                  <p className={s.text}>{item[1].user.name}</p>
+                  <div className={s.scoreWrapper}>
+                    <p className={s.text}>
+                      {item.length - 1}
+                      lvls.
+                    </p>
+                    <p className={s.text}>
+                      {item[0]}
+                      sec.
+                    </p>
+                  </div>
+                </div>
+              </li>
+            ))}
+          </div>
+        )}
+
+        {roboQuizMode && (
+          <div className={s.listWrapper}>
+            {' '}
+            <ol className={s.list}>
+              {roboInfo.length !== 0 &&
+                roboInfo.map(item => (
+                  <li key={item[1].user.name} className={s.itemWrap}>
+                    <div className={s.outerWrapper}>
+                      <div className={s.circleItem}>
+                        <img
+                          src={
+                            item[1].user.avatarURL
+                              ? item[1].user.avatarURL
+                              : 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/1.png'
+                          }
+                          alt="avatar"
+                          className={s.avatar}
+                        />
+                      </div>{' '}
+                      <div className={s.name}>{item[1].user.name}</div>
+                      <div className={s.innerWrapper}>
+                        <div className={s.lvls}>{item.length - 1} lvls.</div>
+                        <div className={s.time}>{item[0]} sec.</div>
+                      </div>
+                    </div>
+                  </li>
+                ))}
+            </ol>
+          </div>
+        )}
+        {/* Поміняти потім на musicInfio */}
+        {!roboQuizMode && (
+          <div className={s.listWrapper}>
+            {' '}
+            <ol className={s.list}>
+              {musicInfo.length !== 0 &&
+                musicInfo.map(item => (
+                  <li key={item[1].user.name} className={s.itemWrap}>
+                    <div className={s.outerWrapper}>
+                      <div className={s.circleItem}>
+                        <img
+                          src={
+                            item[1].user.avatarURL
+                              ? item[1].user.avatarURL
+                              : 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/1.png'
+                          }
+                          alt="avatar"
+                          className={s.avatar}
+                        />
+                      </div>{' '}
+                      <div className={s.name}>{item[1].user.name}</div>
+                      <div className={s.innerWrapper}>
+                        <div className={s.lvls}>{item.length - 1} lvls.</div>
+                        <div className={s.time}>{item[0]} sec.</div>
+                      </div>
+                    </div>
+                  </li>
+                ))}
+            </ol>
+          </div>
+        )}
       </div>
-
-      {/* ROBO WINNERS */}
-      {roboQuizMode && roboWinners.length !== 0 && (
-        <div className={s.allWinsWrapper}>
-          {roboWinners.map((item, idx) => (
-            <li key={idx} className={s.winWrapper}>
-              <div className={idx === 0 ? s.circleWinner : s.circle}>
-                {' '}
-                <img
-                  src={
-                    item[1]?.user?.avatarURL
-                      ? item[1]?.user?.avatarURL
-                      : 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/1.png'
-                  }
-                  alt="avatar"
-                  className={idx === 0 ? s.avatarWinner : s.avatarCircle}
-                />
-              </div>
-              <div className={idx === 0 ? s.smallCircleWinner : s.smallCircle}>
-                {idx + 1}
-              </div>
-              <div className={s.background}>
-                <p className={s.text}>{item[1].user.name}</p>
-                <div className={s.scoreWrapper}>
-                  <p className={s.text}>
-                    {item.length - 1}
-                    lvls.
-                  </p>
-                  <p className={s.text}>
-                    {item[0]}
-                    sec.
-                  </p>
-                </div>
-              </div>
-            </li>
-          ))}
-        </div>
-      )}
-
-      {/* MUSIC WINNERS */}
-      {!roboQuizMode && musicWinners.length !== 0 && (
-        <div className={s.allWinsWrapper}>
-          {musicWinners.map((item, idx) => (
-            <li key={idx} className={s.winWrapper}>
-              <div className={idx === 0 ? s.circleWinner : s.circle}>
-                <img
-                  src={
-                    item[1]?.user?.avatarURL
-                      ? item[1]?.user?.avatarURL
-                      : 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/1.png'
-                  }
-                  alt="avatar"
-                  className={idx === 0 ? s.avatarWinner : s.avatarCircle}
-                />
-              </div>
-              <div className={idx === 0 ? s.smallCircleWinner : s.smallCircle}>
-                {idx + 1}
-              </div>
-              <div className={s.background}>
-                <p className={s.text}>{item[1].user.name}</p>
-                <div className={s.scoreWrapper}>
-                  <p className={s.text}>
-                    {item.length - 1}
-                    lvls.
-                  </p>
-                  <p className={s.text}>
-                    {item[0]}
-                    sec.
-                  </p>
-                </div>
-              </div>
-            </li>
-          ))}
-        </div>
-      )}
-
-      {/* <div className={s.allWinsWrapper}>
-        <div className={s.winWrapper}>
-          <div className={s.circle}>
-            {roboQuizMode && roboWinners.length !== 0 && (
-              <img
-                src={
-                  roboWinners[1][1]?.user?.avatarURL
-                    ? roboWinners[1][1]?.user?.avatarURL
-                    : 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/1.png'
-                }
-                alt="avatar"
-                className={s.avatar}
-              />
-            )}
-            {!roboQuizMode && musicWinners.length !== 0 && (
-              <img
-                src={
-                  musicWinners[1][1]?.user?.avatarURL
-                    ? musicWinners[1][1]?.user?.avatarURL
-                    : 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/1.png'
-                }
-                alt="avatar"
-                className={s.avatar}
-              />
-            )}
-          </div>
-          <div className={s.smallCircle}>2</div>
-          <div className={s.background}>
-            {' '}
-            <p className={s.text}>
-              {roboQuizMode && roboWinners.length !== 0
-                ? roboWinners[1][1].user.name
-                : ''}
-              {!roboQuizMode && musicWinners.length !== 0
-                ? musicWinners[1][1].user.name
-                : ''}
-            </p>
-            <div className={s.scoreWrapper}>
-              {' '}
-              <p className={s.text}>
-                {roboQuizMode && roboWinners.length !== 0
-                  ? roboWinners[1].length - 1
-                  : ''}{' '}
-                {!roboQuizMode && musicWinners.length !== 0
-                  ? musicWinners[1].length - 1
-                  : ''}{' '}
-                lvls.
-              </p>
-              <p className={s.text}>
-                {roboQuizMode && roboWinners.length !== 0
-                  ? roboWinners[1][0]
-                  : ''}
-                {!roboQuizMode && musicWinners.length !== 0
-                  ? musicWinners[1][0]
-                  : ''}
-                sec.
-              </p>
-            </div>
-          </div>
-        </div>
-        <div className={s.winWrapper}>
-          {' '}
-          <div className={s.circleWinner}>
-            {roboQuizMode && roboWinners.length !== 0 && (
-              <img
-                src={
-                  roboWinners[0][1]?.user?.avatarURL
-                    ? roboWinners[0][1]?.user?.avatarURL
-                    : 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/1.png'
-                }
-                alt="avatar"
-                className={s.avatar}
-              />
-            )}
-            {!roboQuizMode && musicWinners.length !== 0 && (
-              <img
-                src={
-                  musicWinners[0][1]?.user?.avatarURL
-                    ? musicWinners[0][1]?.user?.avatarURL
-                    : 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/1.png'
-                }
-                alt="avatar"
-                className={s.avatar}
-              />
-            )}
-          </div>
-          <div className={s.smallCircleWinner}>1</div>
-          <div className={s.background}>
-            {' '}
-            <p className={s.text}>
-              {roboQuizMode && roboWinners.length !== 0
-                ? roboWinners[0][1].user.name
-                : ''}
-              {!roboQuizMode && musicWinners.length !== 0
-                ? musicWinners[0][1].user.name
-                : ''}
-            </p>
-            <div className={s.scoreWrapper}>
-              {' '}
-              <p className={s.text}>
-                {roboQuizMode && roboWinners.length !== 0
-                  ? roboWinners[0].length - 1
-                  : ''}{' '}
-                {!roboQuizMode && musicWinners.length !== 0
-                  ? musicWinners[0].length - 1
-                  : ''}{' '}
-                lvls.
-              </p>
-              <p className={s.text}>
-                {roboQuizMode && roboWinners.length !== 0
-                  ? roboWinners[0][0]
-                  : ''}
-                {!roboQuizMode && musicWinners.length !== 0
-                  ? musicWinners[0][0]
-                  : ''}
-                sec.
-              </p>
-            </div>
-          </div>
-        </div>
-        <div className={s.winWrapper}>
-          {' '}
-          <div className={s.circle}>
-            {roboQuizMode && roboWinners.length !== 0 && (
-              <img
-                src={
-                  roboWinners[2][1]?.user?.avatarURL
-                    ? roboWinners[2][1]?.user?.avatarURL
-                    : 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/1.png'
-                }
-                alt="avatar"
-                className={s.avatar}
-              />
-            )}
-            {!roboQuizMode && musicWinners.length !== 0 && (
-              <img
-                src={
-                  musicWinners[2][1]?.user?.avatarURL
-                    ? musicWinners[2][1]?.user?.avatarURL
-                    : 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/1.png'
-                }
-                alt="avatar"
-                className={s.avatar}
-              />
-            )}
-          </div>
-          <div className={s.smallCircle}>3</div>
-          <div className={s.background}>
-            {' '}
-            <p className={s.text}>
-              {roboQuizMode && roboWinners.length !== 0
-                ? roboWinners[2][1].user.name
-                : ''}
-              {!roboQuizMode && musicWinners.length !== 0
-                ? musicWinners[2][1].user.name
-                : ''}
-            </p>
-            <div className={s.scoreWrapper}>
-              {' '}
-              <p className={s.text}>
-                {roboQuizMode && roboWinners.length !== 0
-                  ? roboWinners[2].length - 1
-                  : ''}{' '}
-                {!roboQuizMode && musicWinners.length !== 0
-                  ? musicWinners[2].length - 1
-                  : ''}{' '}
-                lvls.
-              </p>
-              <p className={s.text}>
-                {roboQuizMode && roboWinners.length !== 0
-                  ? roboWinners[2][0]
-                  : ''}{' '}
-                {!roboQuizMode && musicWinners.length !== 0
-                  ? musicWinners[2][0]
-                  : ''}{' '}
-                sec.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div> */}
-      {roboQuizMode && (
-        <div className={s.listWrapper}>
-          {' '}
-          <ol className={s.list}>
-            {roboInfo.length !== 0 &&
-              roboInfo.map(item => (
-                <li key={item[1].user.name} className={s.itemWrap}>
-                  <div className={s.outerWrapper}>
-                    <div className={s.circleItem}>
-                      <img
-                        src={
-                          item[1].user.avatarURL
-                            ? item[1].user.avatarURL
-                            : 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/1.png'
-                        }
-                        alt="avatar"
-                        className={s.avatar}
-                      />
-                    </div>{' '}
-                    <div className={s.name}>{item[1].user.name}</div>
-                    <div className={s.innerWrapper}>
-                      <div className={s.lvls}>{item.length - 1} lvls.</div>
-                      <div className={s.time}>{item[0]} sec.</div>
-                    </div>
-                  </div>
-                </li>
-              ))}
-          </ol>
-        </div>
-      )}
-      {/* Поміняти потім на musicInfio */}
-      {!roboQuizMode && (
-        <div className={s.listWrapper}>
-          {' '}
-          <ol className={s.list}>
-            {musicInfo.length !== 0 &&
-              musicInfo.map(item => (
-                <li key={item[1].user.name} className={s.itemWrap}>
-                  <div className={s.outerWrapper}>
-                    <div className={s.circleItem}>
-                      <img
-                        src={
-                          item[1].user.avatarURL
-                            ? item[1].user.avatarURL
-                            : 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/1.png'
-                        }
-                        alt="avatar"
-                        className={s.avatar}
-                      />
-                    </div>{' '}
-                    <div className={s.name}>{item[1].user.name}</div>
-                    <div className={s.innerWrapper}>
-                      <div className={s.lvls}>{item.length - 1} lvls.</div>
-                      <div className={s.time}>{item[0]} sec.</div>
-                    </div>
-                  </div>
-                </li>
-              ))}
-          </ol>
-        </div>
-      )}
-    </div>
+    </>
   );
 };
 

@@ -1,8 +1,10 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setQuizMode } from '../../redux/player/playerSlice';
 import { useNavigate, NavLink } from 'react-router-dom';
 import Select from 'react-select';
+import { toggleLanguage } from '../../redux/player/playerSlice';
+import { getLanguage } from '../../redux/player/playerSelectors';
 import { ReactComponent as Logo } from '../../images/main-logo1.svg';
 import s from './Header.module.css';
 import './SelectList.scss';
@@ -21,6 +23,8 @@ const options = [
 const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const isEngLang = useSelector(getLanguage);
 
   // Select dropdown
   const handleChangeQuizMode = e => {
@@ -51,6 +55,11 @@ const Header = () => {
     setTimeout(() => {
       window.location.reload(false);
     });
+  };
+
+  // Клік по перемикачу мови
+  const onClickLangBtn = () => {
+    dispatch(toggleLanguage());
   };
 
   return (
@@ -97,7 +106,9 @@ const Header = () => {
       >
         Sign Up
       </button>
-      <button className={s.language}>EN</button>
+      <button className={s.language} onClick={onClickLangBtn}>
+        {isEngLang ? 'EN' : 'UKR'}
+      </button>
     </div>
   );
 };

@@ -4,11 +4,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import {
   getLevelCompleteInfo,
   getLevel,
+  getLanguage,
   answerState,
   getQuizMode,
 } from '../../redux/player/playerSelectors';
 import {
-  setSongsArr,
+  setSongsArrEN,
+  setSongsArrUKR,
   setLevel,
   restartLevel,
   setClickAnswer,
@@ -26,6 +28,7 @@ import congratulation from './congratulation.json';
 import motivation from './motivation.json';
 import { shuffle } from '../../helpers/shuffle';
 import { songs } from '../Game/songs';
+import { songsEn } from '../Game/songsEN';
 import s from './LevelComplete.module.css';
 
 const LevelComplete = () => {
@@ -34,6 +37,7 @@ const LevelComplete = () => {
   const navigate = useNavigate();
 
   // Потім левел будемо брати з бекенда
+  const isEngLang = useSelector(getLanguage);
   const level = useSelector(getLevel);
   const levelCompleteInfo = useSelector(getLevelCompleteInfo);
   const answersArray = useSelector(answerState);
@@ -70,11 +74,18 @@ const LevelComplete = () => {
   };
 
   useEffect(() => {
-    if (level > 1) {
-      const songsArr = songs.find(({ stage }) => stage === level).quizInfo;
-      dispatch(setSongsArr(songsArr));
+    if (level > 1 && isEngLang) {
+      const songsArr = songsEn.find(({ stage }) => stage === level).quizInfo;
+      dispatch(setSongsArrEN(songsArr));
+      return;
     }
-  }, [dispatch, level]);
+
+    if (level > 1 && !isEngLang) {
+      const songsArr = songs.find(({ stage }) => stage === level).quizInfo;
+      dispatch(setSongsArrUKR(songsArr));
+      return;
+    }
+  }, [dispatch, isEngLang, level]);
 
   return (
     <>
