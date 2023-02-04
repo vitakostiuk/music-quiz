@@ -1,9 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setLevel } from '../../redux/player/playerSlice';
+import {
+  setLevelRoboEN,
+  setLevelMusicEN,
+  setLevelRoboUKR,
+  setLevelMusicUKR,
+  setSongsArrEN,
+  setSongsArrUKR,
+} from '../../redux/player/playerSlice';
 import {
   getQuizMode,
-  getLevel,
+  getLevelRoboEN,
+  getLevelMusicEN,
+  getLevelRoboUKR,
+  getLevelMusicUKR,
   getLanguage,
   getSongsListEN,
   getSongsListUKR,
@@ -17,11 +27,11 @@ import {
   getAllUkrByUser,
 } from '../../redux/player/playerOperations';
 import { getUserID } from '../../redux/auth/authSelectors';
-import audioSingers from './audioSingers.json';
 import Paper from '../common/Paper';
 import Player from '../Player';
 import Answers from '../Answers';
 import { songs } from './songs';
+import { songsEn } from '../Game/songsEN';
 import s from './Game.module.css';
 
 const Game = () => {
@@ -31,62 +41,80 @@ const Game = () => {
   const userScoreEN = useSelector(getUserScoreEN);
   const userScoreUKR = useSelector(getUserScoreUKR);
   const isRoboQuizMode = useSelector(getQuizMode);
-  const level = useSelector(getLevel);
+
+  const levelRoboEN = useSelector(getLevelRoboEN);
+  const levelMusicEN = useSelector(getLevelMusicEN);
+
+  const levelRoboUKR = useSelector(getLevelRoboUKR);
+  const levelMusicUKR = useSelector(getLevelMusicUKR);
+
   const isEngLang = useSelector(getLanguage);
   const songsListEN = useSelector(getSongsListEN);
   const songsListUKR = useSelector(getSongsListUKR);
   const currentSong = useSelector(getCurrent);
   const answers = useSelector(answerState);
 
-  // Витягуэмо з бекенду інформацію про скор юзера.
+  // Витягуэмо з бекенду інформацію про скор юзера (ENG).
   // Це треба для того, щоб потім запускати гру з того левела, на якму юзер закінчив
   useEffect(() => {
-    if (isEngLang) {
-      dispatch(getAllEngByUser(userID));
-      return;
-    } else {
-      dispatch(getAllUkrByUser(userID));
-      return;
-    }
-  }, [dispatch, isEngLang, userID]);
+    if (!isEngLang) return;
 
-  // Обробка інформацїї про скор юзера
+    dispatch(getAllEngByUser(userID));
+  }, [dispatch, userID, isRoboQuizMode, isEngLang]);
+
+  // Витягуэмо з бекенду інформацію про скор юзера (UKR).
+  // Це треба для того, щоб потім запускати гру з того левела, на якму юзер закінчив
   useEffect(() => {
-    if (isEngLang) {
-      // -- 1.1 -- ФІЛЬТРУЄМО ПО РЕЖИМУ РОБОТ (ENG)
-      const userScoreInfoRoboEN = userScoreEN.filter(
-        item => item.isRoboQuizMode === 'true'
-      );
-      // setUserScoreENRobo(userScoreInfoRoboEN);
-      if (userScoreInfoRoboEN.length !== 0) {
-        dispatch(setLevel(userScoreInfoRoboEN));
-      }
+    if (isEngLang) return;
 
-      // -- 1.2 -- ФІЛЬТРУЄМО ПО РЕЖИМУ МУЗИКА (ENG)
-      const userScoreInfoMusicEN = userScoreEN.filter(
-        item => item.isRoboQuizMode === 'false'
-      );
-      if (userScoreInfoMusicEN.length !== 0) {
-        dispatch(setLevel(userScoreInfoMusicEN));
-      }
-    } else {
-      // -- 1.1 -- ФІЛЬТРУЄМО ПО РЕЖИМУ РОБОТ (UKR)
-      const userScoreInfoRoboUKR = userScoreUKR.filter(
-        item => item.isRoboQuizMode === 'true'
-      );
-      if (userScoreInfoRoboUKR.length !== 0) {
-        dispatch(setLevel(userScoreInfoRoboUKR));
-      }
+    dispatch(getAllUkrByUser(userID));
+  }, [dispatch, userID, isRoboQuizMode, isEngLang]);
 
-      // -- 1.2 -- ФІЛЬТРУЄМО ПО РЕЖИМУ МУЗИКА (UKR)
-      const userScoreInfoMusicUKR = userScoreUKR.filter(
-        item => item.isRoboQuizMode === 'false'
-      );
-      if (userScoreInfoMusicUKR.length !== 0) {
-        dispatch(setLevel(userScoreInfoMusicUKR));
-      }
+  // Обробка інформацїї про скор юзера (ENG)
+  useEffect(() => {
+    if (!isEngLang) return;
+
+    // -- 1.1 -- ФІЛЬТРУЄМО ПО РЕЖИМУ РОБОТ (ENG)
+    const userScoreInfoRoboEN = userScoreEN.filter(
+      item => item.isRoboQuizMode === 'true'
+    );
+    console.log('userScoreInfoRoboEN', userScoreInfoRoboEN);
+    if (userScoreInfoRoboEN.length !== 0) {
+      dispatch(setLevelRoboEN(userScoreInfoRoboEN));
     }
-  }, [dispatch, isEngLang, userScoreEN, userScoreUKR]);
+
+    // -- 1.2 -- ФІЛЬТРУЄМО ПО РЕЖИМУ МУЗИКА (ENG)
+    const userScoreInfoMusicEN = userScoreEN.filter(
+      item => item.isRoboQuizMode === 'false'
+    );
+    console.log('userScoreInfoMusicEN', userScoreInfoMusicEN);
+    if (userScoreInfoMusicEN.length !== 0) {
+      dispatch(setLevelMusicEN(userScoreInfoMusicEN));
+    }
+  }, [dispatch, isEngLang, isRoboQuizMode, userScoreEN]);
+
+  // Обробка інформацїї про скор юзера (UKR)
+  useEffect(() => {
+    if (isEngLang) return;
+
+    // -- 1.1 -- ФІЛЬТРУЄМО ПО РЕЖИМУ РОБОТ (UKR)
+    const userScoreInfoRoboUKR = userScoreUKR.filter(
+      item => item.isRoboQuizMode === 'true'
+    );
+    // console.log('userScoreInfoRoboUKR', userScoreInfoRoboUKR);
+    if (userScoreInfoRoboUKR.length !== 0) {
+      dispatch(setLevelRoboUKR(userScoreInfoRoboUKR));
+    }
+
+    // -- 1.2 -- ФІЛЬТРУЄМО ПО РЕЖИМУ МУЗИКА (UKR)
+    const userScoreInfoMusicUKR = userScoreUKR.filter(
+      item => item.isRoboQuizMode === 'false'
+    );
+    // console.log('userScoreInfoMusicUKR', userScoreInfoMusicUKR);
+    if (userScoreInfoMusicUKR.length !== 0) {
+      dispatch(setLevelMusicUKR(userScoreInfoMusicUKR));
+    }
+  }, [dispatch, isEngLang, isRoboQuizMode, userScoreEN, userScoreUKR]);
 
   const handleClickSong = idx => {
     // console.log(songsListEN[idx].name);
@@ -205,21 +233,81 @@ const Game = () => {
     return s.line;
   };
 
+  // Оновлення левела (ENG)
+  useEffect(() => {
+    if (!isEngLang) return;
+
+    if ((levelRoboEN > 1 || levelRoboEN === 1) && isRoboQuizMode) {
+      const songsArr = songsEn.find(
+        ({ stage }) => stage === levelRoboEN
+      ).quizInfo;
+      dispatch(setSongsArrEN(songsArr));
+    }
+    if ((levelMusicEN > 1 || levelMusicEN === 1) && !isRoboQuizMode) {
+      const songsArr = songsEn.find(
+        ({ stage }) => stage === levelMusicEN
+      ).quizInfo;
+      dispatch(setSongsArrEN(songsArr));
+    }
+  }, [dispatch, isEngLang, isRoboQuizMode, levelMusicEN, levelRoboEN]);
+
+  // Оновлення левела (UKR)
+  useEffect(() => {
+    if (isEngLang) return;
+
+    if ((levelRoboUKR > 1 || levelRoboUKR === 1) && isRoboQuizMode) {
+      const songsArr = songs.find(
+        ({ stage }) => stage === levelRoboUKR
+      ).quizInfo;
+      dispatch(setSongsArrUKR(songsArr));
+    }
+    if ((levelMusicUKR > 1 || levelMusicUKR === 1) && !isRoboQuizMode) {
+      const songsArr = songs.find(
+        ({ stage }) => stage === levelMusicUKR
+      ).quizInfo;
+      dispatch(setSongsArrUKR(songsArr));
+    }
+  }, [dispatch, isEngLang, isRoboQuizMode, levelMusicUKR, levelRoboUKR]);
+
   return (
     <>
       <Paper>
         <div className={s.titleWrapper}>
-          {isRoboQuizMode && (
-            <h1 className={s.titleRobo}>Robo Mode. Level {`${level}`}</h1>
+          {isEngLang && (
+            <>
+              {' '}
+              {isRoboQuizMode && (
+                <h1 className={s.titleRobo}>
+                  Robo Mode. Level {`${levelRoboEN}`}
+                </h1>
+              )}
+              {!isRoboQuizMode && (
+                <h1 className={s.titleMusic}>
+                  Music Mode. Level {`${levelMusicEN}`}
+                </h1>
+              )}
+            </>
           )}
-          {!isRoboQuizMode && (
-            <h1 className={s.titleMusic}>Music Mode. Level {`${level}`}</h1>
+
+          {!isEngLang && (
+            <>
+              {' '}
+              {isRoboQuizMode && (
+                <h1 className={s.titleRobo}>
+                  Robo Mode. Level {`${levelRoboUKR}`}
+                </h1>
+              )}
+              {!isRoboQuizMode && (
+                <h1 className={s.titleMusic}>
+                  Music Mode. Level {`${levelMusicUKR}`}
+                </h1>
+              )}
+            </>
           )}
         </div>
         <ul className={s.list}>
           {/* ENG */}
-          {audioSingers &&
-            isEngLang &&
+          {isEngLang &&
             songsListEN.map(({ id, name }, idx) => (
               <li key={id} className={s.itemWrapper}>
                 <div
@@ -237,8 +325,7 @@ const Game = () => {
             ))}
 
           {/* UKR */}
-          {audioSingers &&
-            !isEngLang &&
+          {!isEngLang &&
             songsListUKR.map(({ id, name }, idx) => (
               <li key={id} className={s.itemWrapper}>
                 <div

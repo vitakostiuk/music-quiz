@@ -3,16 +3,25 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   getLevelCompleteInfo,
-  getLevel,
+  getLevelRoboEN,
+  getLevelMusicEN,
+  getLevelRoboUKR,
+  getLevelMusicUKR,
+  getQuizMode,
   getLanguage,
   answerState,
-  getQuizMode,
 } from '../../redux/player/playerSelectors';
 import {
   setSongsArrEN,
   setSongsArrUKR,
-  setNextLevel,
-  restartLevel,
+  setNextLevelRoboEN,
+  setNextLevelMusicEN,
+  restartLevelRoboEN,
+  restartLevelMusicEN,
+  setNextLevelRoboUKR,
+  setNextLevelMusicUKR,
+  restartLevelRoboUKR,
+  restartLevelMusicUKR,
   setClickAnswer,
   setCurrent,
   resetAnswerStateArray,
@@ -42,7 +51,13 @@ const LevelComplete = () => {
 
   // Потім левел будемо брати з бекенда
   const isEngLang = useSelector(getLanguage);
-  const level = useSelector(getLevel);
+
+  const levelRoboEN = useSelector(getLevelRoboEN);
+  const levelMusicEN = useSelector(getLevelMusicEN);
+
+  const levelRoboUKR = useSelector(getLevelRoboUKR);
+  const levelMusicUKR = useSelector(getLevelMusicUKR);
+
   const levelCompleteInfo = useSelector(getLevelCompleteInfo);
   console.log('levelCompleteInfo', levelCompleteInfo);
   const answersArray = useSelector(answerState);
@@ -68,7 +83,9 @@ const LevelComplete = () => {
     dispatch(setStartPlayingTime(''));
   };
 
-  const handleClickNextLevel = () => {
+  const handleClickNextLevelEN = () => {
+    if (!isEngLang) return;
+
     // ВІДПРАВЛЯЄМО НА БЕКЕНД levelCompleteInfo
     // --1-- загальний час, за який пройдено рiвень
     const totalTime = levelCompleteInfo
@@ -80,38 +97,101 @@ const LevelComplete = () => {
     // --2-- Об'єкт,який відправляємо на бекенд
     const userLevelCompleteInfo = {
       isRoboQuizMode,
-      level,
+      level: isRoboQuizMode ? levelRoboEN : levelMusicEN,
       time: Number(totalTime),
     };
 
     // --3-- Діспатчимо об'єкт
-    if (isEngLang) {
-      dispatch(addLVLCompleteInfoEN(userLevelCompleteInfo));
-    } else {
-      dispatch(addLVLCompleteInfoUKR(userLevelCompleteInfo));
-    }
+    dispatch(addLVLCompleteInfoEN(userLevelCompleteInfo));
 
     // Збільшуємо левел на 1 і ресетимо дані
-    dispatch(setNextLevel());
+    if (isRoboQuizMode) {
+      dispatch(setNextLevelRoboEN());
+    } else {
+      dispatch(setNextLevelMusicEN());
+    }
+
     resetState();
   };
 
-  const handleRestartLevel = () => {
-    dispatch(restartLevel(level));
+  const handleClickNextLevelUKR = () => {
+    if (isEngLang) return;
+
+    // ВІДПРАВЛЯЄМО НА БЕКЕНД levelCompleteInfo
+    // --1-- загальний час, за який пройдено рiвень
+    const totalTime = levelCompleteInfo
+      .reduce((acc, { time }) => {
+        return acc + time;
+      }, 0)
+      .toFixed(2);
+
+    // --2-- Об'єкт,який відправляємо на бекенд
+    const userLevelCompleteInfo = {
+      isRoboQuizMode,
+      level: isRoboQuizMode ? levelRoboUKR : levelMusicUKR,
+      time: Number(totalTime),
+    };
+
+    // --3-- Діспатчимо об'єкт
+    dispatch(addLVLCompleteInfoUKR(userLevelCompleteInfo));
+
+    // Збільшуємо левел на 1 і ресетимо дані
+    if (isRoboQuizMode) {
+      dispatch(setNextLevelRoboUKR());
+    } else {
+      dispatch(setNextLevelMusicUKR());
+    }
+
     resetState();
   };
 
-  useEffect(() => {
-    if (level > 1 && isEngLang) {
-      const songsArr = songsEn.find(({ stage }) => stage === level).quizInfo;
-      dispatch(setSongsArrEN(songsArr));
+  const handleRestartLevelEN = () => {
+    if (!isEngLang) return;
+
+    if (isRoboQuizMode) {
+      dispatch(restartLevelRoboEN(levelRoboEN));
+    } else {
+      dispatch(restartLevelMusicEN(levelMusicEN));
     }
 
-    if (level > 1 && !isEngLang) {
-      const songsArr = songs.find(({ stage }) => stage === level).quizInfo;
-      dispatch(setSongsArrUKR(songsArr));
+    resetState();
+  };
+
+  const handleRestartLevelUKR = () => {
+    if (isEngLang) return;
+
+    if (isRoboQuizMode) {
+      dispatch(restartLevelRoboUKR(levelRoboUKR));
+    } else {
+      dispatch(restartLevelMusicUKR(levelMusicUKR));
     }
-  }, [dispatch, isEngLang, level]);
+
+    resetState();
+  };
+
+  // useEffect(() => {
+  //   if (levelRoboEN > 1) {
+  //     const songsArr = songsEn.find(
+  //       ({ stage }) => stage === levelRoboEN
+  //     ).quizInfo;
+  //     dispatch(setSongsArrEN(songsArr));
+  //   }
+  //   if (levelMusicEN > 1) {
+  //     const songsArr = songsEn.find(
+  //       ({ stage }) => stage === levelMusicEN
+  //     ).quizInfo;
+  //     dispatch(setSongsArrEN(songsArr));
+  //   }
+
+  //   // if (levelRoboUKR > 1) {
+  //   //   const songsArr = songs.find(({ stage }) => stage === levelRoboUKR).quizInfo;
+  //   //   dispatch(setSongsArrUKR(songsArr));
+  //   // }
+  //   // if (levelMusicUKR > 1) {
+  //   //   const songsArr = songs.find(({ stage }) => stage === levelMusicUKR).quizInfo;
+  //   //   dispatch(setSongsArrUKR(songsArr));
+  //   // }
+  // }, [dispatch, levelMusicEN, levelRoboEN]);
 
   return (
     <>
@@ -184,7 +264,7 @@ const LevelComplete = () => {
             <button
               className={isRoboQuizMode ? s.buttonRobo : s.buttonMusic}
               type="button"
-              onClick={handleRestartLevel}
+              onClick={isEngLang ? handleRestartLevelEN : handleRestartLevelUKR}
             >
               Restart
               <RestartIcon className={s.icon} />
@@ -197,7 +277,9 @@ const LevelComplete = () => {
                 isRoboQuizMode ? s.buttonNextLVLRobo : s.buttonNextLVLMusic
               }
               type="button"
-              onClick={handleClickNextLevel}
+              onClick={
+                isEngLang ? handleClickNextLevelEN : handleClickNextLevelUKR
+              }
             >
               NEXT LEVEL
               <NextLVLIcon className={s.icon} />

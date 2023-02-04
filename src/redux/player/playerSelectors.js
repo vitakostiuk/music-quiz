@@ -1,6 +1,12 @@
 const getQuizMode = state => state.player.isRoboQuizMode;
 const getLanguage = state => state.player.isEngLang;
-const getLevel = state => state.player.level;
+
+const getLevelRoboEN = state => state.player.levelRoboEN;
+const getLevelMusicEN = state => state.player.levelMusicEN;
+
+const getLevelRoboUKR = state => state.player.levelRoboUKR;
+const getLevelMusicUKR = state => state.player.levelMusicUKR;
+
 const getSongsListEN = state => state.player.songslistEN;
 const getSongsListUKR = state => state.player.songslistUKR;
 const getCurrent = state => state.player.currentSong;
@@ -17,7 +23,10 @@ const getUserScoreUKR = state => state.player.userScoreUKR;
 export {
   getQuizMode,
   getLanguage,
-  getLevel,
+  getLevelRoboEN,
+  getLevelMusicEN,
+  getLevelRoboUKR,
+  getLevelMusicUKR,
   getSongsListEN,
   getSongsListUKR,
   getCurrent,

@@ -23,7 +23,7 @@ const persistAuthConfig = {
 const persistPlayerConfig = {
   key: 'isRoboQuizMode',
   storage,
-  whitelist: ['isRoboQuizMode'],
+  whitelist: ['isRoboQuizMode', 'isEngLang'],
 };
 
 const rootReducer = combineReducers({

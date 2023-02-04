@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { buildQueries } from '@testing-library/react';
 import { songs } from '../../components/Game/songs';
 import { songsEn } from '../../components/Game/songsEN';
 import {
@@ -12,7 +11,13 @@ import {
 const initialState = {
   isRoboQuizMode: false,
   isEngLang: true,
-  level: 1,
+
+  levelRoboEN: 1,
+  levelMusicEN: 1,
+
+  levelRoboUKR: 1,
+  levelMusicUKR: 1,
+
   songslistUKR: songs.find(({ stage }) => stage === 1).quizInfo,
   songslistEN: songsEn.find(({ stage }) => stage === 1).quizInfo,
   // currentSong = 0, бо прив'язано до індекса пісні
@@ -40,15 +45,47 @@ const playerSlice = createSlice({
     toggleLanguage: (state, { payload }) => {
       state.isEngLang = !state.isEngLang;
     },
-    setLevel: (state, { payload }) => {
-      state.level = payload.length + 1;
+
+    // EN
+    setLevelRoboEN: (state, { payload }) => {
+      state.levelRoboEN = payload.length + 1;
     },
-    setNextLevel: (state, { payload }) => {
-      state.level = state.level + 1;
+    setLevelMusicEN: (state, { payload }) => {
+      state.levelMusicEN = payload.length + 1;
     },
-    restartLevel: (state, { payload }) => {
-      state.level = payload;
+    setNextLevelRoboEN: (state, { payload }) => {
+      state.levelRoboEN = state.levelRoboEN + 1;
     },
+    setNextLevelMusicEN: (state, { payload }) => {
+      state.levelMusicEN = state.levelMusicEN + 1;
+    },
+    restartLevelRoboEN: (state, { payload }) => {
+      state.levelRoboEN = payload;
+    },
+    restartLevelMusicEN: (state, { payload }) => {
+      state.levelMusicEN = payload;
+    },
+
+    // UKR
+    setLevelRoboUKR: (state, { payload }) => {
+      state.levelRoboUKR = payload.length + 1;
+    },
+    setLevelMusicUKR: (state, { payload }) => {
+      state.levelMusicUKR = payload.length + 1;
+    },
+    setNextLevelRoboUKR: (state, { payload }) => {
+      state.levelRoboUKR = state.levelRoboUKR + 1;
+    },
+    setNextLevelMusicUKR: (state, { payload }) => {
+      state.levelMusicUKR = state.levelMusicUKR + 1;
+    },
+    restartLevelRoboUKR: (state, { payload }) => {
+      state.levelRoboUKR = payload;
+    },
+    restartLevelMusicUKR: (state, { payload }) => {
+      state.levelMusicUKR = payload;
+    },
+
     setSongsArrEN: (state, { payload }) => {
       state.songslistEN = payload;
     },
@@ -147,11 +184,24 @@ const playerSlice = createSlice({
 export const {
   setQuizMode,
   toggleLanguage,
-  setLevel,
-  setNextLevel,
-  restartLevel,
+
+  setLevelRoboEN,
+  setLevelMusicEN,
+  setNextLevelRoboEN,
+  setNextLevelMusicEN,
+  restartLevelRoboEN,
+  restartLevelMusicEN,
+
+  setLevelRoboUKR,
+  setLevelMusicUKR,
+  setNextLevelRoboUKR,
+  setNextLevelMusicUKR,
+  restartLevelRoboUKR,
+  restartLevelMusicUKR,
+
   setSongsArrEN,
   setSongsArrUKR,
+
   togglePlaying,
   setCurrent,
   setClickAnswer,

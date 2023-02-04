@@ -136,12 +136,14 @@ const Leaderboard = () => {
         </div>
 
         {/* ERROR TEXT */}
-        {roboQuizMode && roboInfo.length === 0 && (
+        {roboQuizMode && roboInfo.length === 0 && roboWinners.length === 0 && (
           <h2 className={s.errorText}>Leaderboard is empty</h2>
         )}
-        {!roboQuizMode && musicInfo.length === 0 && (
-          <h2 className={s.errorText}>Leaderboard is empty</h2>
-        )}
+        {!roboQuizMode &&
+          musicInfo.length === 0 &&
+          musicWinners.length === 0 && (
+            <h2 className={s.errorText}>Leaderboard is empty</h2>
+          )}
 
         {/* ROBO WINNERS */}
         {roboQuizMode && roboWinners.length !== 0 && (
