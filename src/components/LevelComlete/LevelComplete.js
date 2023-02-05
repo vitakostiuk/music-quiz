@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import {
@@ -9,11 +9,8 @@ import {
   getLevelMusicUKR,
   getQuizMode,
   getLanguage,
-  answerState,
 } from '../../redux/player/playerSelectors';
 import {
-  setSongsArrEN,
-  setSongsArrUKR,
   setNextLevelRoboEN,
   setNextLevelMusicEN,
   restartLevelRoboEN,
@@ -40,8 +37,6 @@ import { ReactComponent as LeaderboardIcon } from '../../images/leaderboardIcon.
 import congratulation from './congratulation.json';
 import motivation from './motivation.json';
 import { shuffle } from '../../helpers/shuffle';
-import { songs } from '../Game/songs';
-import { songsEn } from '../Game/songsEN';
 import s from './LevelComplete.module.css';
 
 const LevelComplete = () => {
@@ -59,8 +54,7 @@ const LevelComplete = () => {
   const levelMusicUKR = useSelector(getLevelMusicUKR);
 
   const levelCompleteInfo = useSelector(getLevelCompleteInfo);
-  console.log('levelCompleteInfo', levelCompleteInfo);
-  const answersArray = useSelector(answerState);
+  // console.log('levelCompleteInfo', levelCompleteInfo);
   const isRoboQuizMode = useSelector(getQuizMode);
 
   // Перевіряємо, чи є хоча б одна неправильна відповідь
@@ -168,30 +162,6 @@ const LevelComplete = () => {
 
     resetState();
   };
-
-  // useEffect(() => {
-  //   if (levelRoboEN > 1) {
-  //     const songsArr = songsEn.find(
-  //       ({ stage }) => stage === levelRoboEN
-  //     ).quizInfo;
-  //     dispatch(setSongsArrEN(songsArr));
-  //   }
-  //   if (levelMusicEN > 1) {
-  //     const songsArr = songsEn.find(
-  //       ({ stage }) => stage === levelMusicEN
-  //     ).quizInfo;
-  //     dispatch(setSongsArrEN(songsArr));
-  //   }
-
-  //   // if (levelRoboUKR > 1) {
-  //   //   const songsArr = songs.find(({ stage }) => stage === levelRoboUKR).quizInfo;
-  //   //   dispatch(setSongsArrUKR(songsArr));
-  //   // }
-  //   // if (levelMusicUKR > 1) {
-  //   //   const songsArr = songs.find(({ stage }) => stage === levelMusicUKR).quizInfo;
-  //   //   dispatch(setSongsArrUKR(songsArr));
-  //   // }
-  // }, [dispatch, levelMusicEN, levelRoboEN]);
 
   return (
     <>

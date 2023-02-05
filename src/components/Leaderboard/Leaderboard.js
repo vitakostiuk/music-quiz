@@ -8,7 +8,13 @@ import {
   getQuizMode,
 } from '../../redux/player/playerSelectors';
 import { getAllEng, getAllUkr } from '../../redux/player/playerOperations';
+import {
+  getUserID,
+  getToken,
+  getGoogleToken,
+} from '../../redux/auth/authSelectors';
 import { getFilteredArrayByOwner } from '../../helpers/getFilteredArrayByOwner';
+import { findUserById } from '../../helpers/findUserById';
 import { getSortedArrayByTimeAndLevels } from '../../helpers/getSortedArrayByTimeAndLevels';
 import s from './Leaderboard.module.css';
 
@@ -17,15 +23,20 @@ const Leaderboard = () => {
   const [musicInfo, setMusicInfo] = useState([]);
   const [roboWinners, setRoboWinners] = useState([]);
   const [musicWinners, setMusicWinners] = useState([]);
+  const [userIdxRobo, setUserIdxRobo] = useState(null);
+  const [userIdxMusic, setUserIdxMusic] = useState(null);
+  const [userIdxWinnersRobo, setUserIdxWinnersRobo] = useState(null);
+  const [userIdxWinnersMusic, setUserIdxWinnersMusic] = useState(null);
   const dispatch = useDispatch();
 
   // Отримуємо з бекенду ВСЮ інформацію для лідерборду
   const leaderboardInfoEN = useSelector(getLeaderboardInfoEN);
   const leaderboardInfoUKR = useSelector(getLeaderboardInfoUKR);
-  // console.log('leaderboardInfoEN', leaderboardInfoEN);
-  // console.log('leaderboardInfoUKR', leaderboardInfoUKR);
   const roboQuizMode = useSelector(getQuizMode);
   const isEngLang = useSelector(getLanguage);
+  const userID = useSelector(getUserID);
+  const token = useSelector(getToken);
+  const googleToken = useSelector(getGoogleToken);
 
   // Діспатчимо асинхронну операцію, щоб отримати ВСЮ інформацію для лідерборду
   useEffect(() => {
@@ -77,24 +88,36 @@ const Leaderboard = () => {
     // console.log('sortedByTimeAndLevelsMusic', sortedByTimeAndLevelsMusic);
     // -------------------------------------------------------------------------
 
-    // -- 5 -- Записуємо в стейт готовий масив для рендеру (без перших 3-х переможців)
-    // -- 5.1 -- РОБОТ
+    // -- 6 -- Записуємо в стейт готовий масив для рендеру (без перших 3-х переможців)
+    // -- 6.1 -- РОБОТ
     setRoboInfo(sortedByTimeAndLevelsRobo.slice(3));
-    // -- 5.2 -- МУЗИКА
+    // Шукаємо індекс залогіненого юзера (серед загального списку)
+    const findedUserRoboIdx = findUserById(roboInfo, userID);
+    setUserIdxRobo(findedUserRoboIdx);
+    // -- 6.2 -- МУЗИКА
     setMusicInfo(sortedByTimeAndLevelsMusic.slice(3));
+    // Шукаємо індекс залогіненого юзера (серед загального списку)
+    const findedUserMusicIdx = findUserById(musicInfo, userID);
+    setUserIdxMusic(findedUserMusicIdx);
     // ---------------------------------------------------------------------------
 
-    // -- 6 -- Масив для рендеру переможців (перших три з відсортованого масиву)
-    // -- 6.1 -- РОБОТ
+    // -- 7 -- Масив для рендеру переможців (перших три з відсортованого масиву)
+    // -- 7.1 -- РОБОТ
     const winnersArrRobo = sortedByTimeAndLevelsRobo.slice(0, 3);
     setRoboWinners(winnersArrRobo);
-    // console.log('winnersArrRobo', winnersArrRobo);
-    // -- 6.2 -- МУЗИКА
+    // Шукаємо індекс залогіненого юзера (серед списку переможців)
+    const findedUserWinnersRoboIdx = findUserById(roboWinners, userID);
+    setUserIdxWinnersRobo(findedUserWinnersRoboIdx);
+    // -- 7.2 -- МУЗИКА
     const winnersArrMusic = sortedByTimeAndLevelsMusic.slice(0, 3);
     setMusicWinners(winnersArrMusic);
-    // console.log('winnersArrMusic', winnersArrMusic);
+    // Шукаємо індекс залогіненого юзера (серед списку переможців)
+    const findedUserWinnersMusicIdx = findUserById(musicWinners, userID);
+    setUserIdxWinnersMusic(findedUserWinnersMusicIdx);
     // ----------------------------------------------------------------------------
-  }, [isEngLang, leaderboardInfoEN, leaderboardInfoUKR]);
+    // НЕ ДОДАВАТИ ЗАЛЕЖНОСТІ!!!
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isEngLang, leaderboardInfoEN, leaderboardInfoUKR, userID]);
 
   // Перемикач режимів
   const handleClickModeBtn = mode => {
@@ -167,17 +190,43 @@ const Leaderboard = () => {
                 >
                   {idx + 1}
                 </div>
-                <div className={s.background}>
-                  <p className={s.text}>{item[1].user.name}</p>
+                <div
+                  className={
+                    userIdxWinnersRobo === idx
+                      ? s.backgroundUserRobo
+                      : s.background
+                  }
+                >
+                  <p
+                    className={
+                      userIdxWinnersRobo === idx ? s.textWhite : s.text
+                    }
+                  >
+                    {item[1].user.name}
+                  </p>
                   <div className={s.scoreWrapper}>
-                    <p className={s.text}>
+                    <p
+                      className={
+                        userIdxWinnersRobo === idx ? s.textWhite : s.text
+                      }
+                    >
                       {item.length - 1}
                       lvls.
                     </p>
-                    <p className={s.text}>
+                    <p
+                      className={
+                        userIdxWinnersRobo === idx ? s.textWhite : s.text
+                      }
+                    >
                       {item[0]}
                       sec.
                     </p>
+                    {/* Кнопка збереження результатів (поки що не реалізуємо) */}
+                    {/* {userIdxWinnersRobo === idx && !token && !googleToken && (
+                      <button type="button" className={s.saveResultBtnWinner}>
+                        Save result
+                      </button>
+                    )} */}
                   </div>
                 </div>
               </li>
@@ -206,17 +255,44 @@ const Leaderboard = () => {
                 >
                   {idx + 1}
                 </div>
-                <div className={s.background}>
-                  <p className={s.text}>{item[1].user.name}</p>
+                <div
+                  className={
+                    userIdxWinnersMusic === idx
+                      ? s.backgroundUserMusic
+                      : s.background
+                  }
+                >
+                  {' '}
+                  <p
+                    className={
+                      userIdxWinnersMusic === idx ? s.textWhite : s.text
+                    }
+                  >
+                    {item[1].user.name}
+                  </p>
                   <div className={s.scoreWrapper}>
-                    <p className={s.text}>
+                    <p
+                      className={
+                        userIdxWinnersMusic === idx ? s.textWhite : s.text
+                      }
+                    >
                       {item.length - 1}
                       lvls.
                     </p>
-                    <p className={s.text}>
+                    <p
+                      className={
+                        userIdxWinnersMusic === idx ? s.textWhite : s.text
+                      }
+                    >
                       {item[0]}
                       sec.
                     </p>
+                    {/* Кнопка збереження результатів (поки що не реалізуємо) */}
+                    {/* {userIdxWinnersMusic === idx && !token && !googleToken && (
+                      <button type="button" className={s.saveResultBtnWinner}>
+                        Save result
+                      </button>
+                    )} */}
                   </div>
                 </div>
               </li>
@@ -224,13 +300,19 @@ const Leaderboard = () => {
           </div>
         )}
 
+        {/* Список гравців РОБОТ */}
         {roboQuizMode && (
           <div className={s.listWrapper}>
             {' '}
             <ol className={s.list}>
               {roboInfo.length !== 0 &&
-                roboInfo.map(item => (
-                  <li key={item[1].user.name} className={s.itemWrap}>
+                roboInfo.map((item, idx) => (
+                  <li
+                    key={item[1].user.name}
+                    className={
+                      userIdxRobo === idx ? s.itemWrapUserRobo : s.itemWrap
+                    }
+                  >
                     <div className={s.outerWrapper}>
                       <div className={s.circleItem}>
                         <img
@@ -243,10 +325,28 @@ const Leaderboard = () => {
                           className={s.avatar}
                         />
                       </div>{' '}
-                      <div className={s.name}>{item[1].user.name}</div>
+                      <div
+                        className={userIdxRobo === idx ? s.nameWhite : s.name}
+                      >
+                        {item[1].user.name}
+                      </div>
+                      {/* Кнопка збереження результатів (поки що не реалізуємо) */}
+                      {/* {userIdxRobo === idx && !token && !googleToken && (
+                        <button type="button" className={s.saveResultBtnList}>
+                          Save result
+                        </button>
+                      )} */}
                       <div className={s.innerWrapper}>
-                        <div className={s.lvls}>{item.length - 1} lvls.</div>
-                        <div className={s.time}>{item[0]} sec.</div>
+                        <div
+                          className={userIdxRobo === idx ? s.textWhite : s.text}
+                        >
+                          {item.length - 1} lvls.
+                        </div>
+                        <div
+                          className={userIdxRobo === idx ? s.textWhite : s.text}
+                        >
+                          {item[0]} sec.
+                        </div>
                       </div>
                     </div>
                   </li>
@@ -254,14 +354,20 @@ const Leaderboard = () => {
             </ol>
           </div>
         )}
-        {/* Поміняти потім на musicInfio */}
+
+        {/* Список гравців МУЗИКА */}
         {!roboQuizMode && (
           <div className={s.listWrapper}>
             {' '}
             <ol className={s.list}>
               {musicInfo.length !== 0 &&
-                musicInfo.map(item => (
-                  <li key={item[1].user.name} className={s.itemWrap}>
+                musicInfo.map((item, idx) => (
+                  <li
+                    key={item[1].user.name}
+                    className={
+                      userIdxMusic === idx ? s.itemWrapUserMusic : s.itemWrap
+                    }
+                  >
                     <div className={s.outerWrapper}>
                       <div className={s.circleItem}>
                         <img
@@ -274,10 +380,32 @@ const Leaderboard = () => {
                           className={s.avatar}
                         />
                       </div>{' '}
-                      <div className={s.name}>{item[1].user.name}</div>
+                      <div
+                        className={userIdxMusic === idx ? s.nameWhite : s.name}
+                      >
+                        {item[1].user.name}
+                      </div>
+                      {/* Кнопка збереження результатів (поки що не реалізуємо) */}
+                      {/* {userIdxMusic === idx && !token && !googleToken && (
+                        <button type="button" className={s.saveResultBtnList}>
+                          Save result
+                        </button>
+                      )} */}
                       <div className={s.innerWrapper}>
-                        <div className={s.lvls}>{item.length - 1} lvls.</div>
-                        <div className={s.time}>{item[0]} sec.</div>
+                        <div
+                          className={
+                            userIdxMusic === idx ? s.textWhite : s.text
+                          }
+                        >
+                          {item.length - 1} lvls.
+                        </div>
+                        <div
+                          className={
+                            userIdxMusic === idx ? s.textWhite : s.text
+                          }
+                        >
+                          {item[0]} sec.
+                        </div>
                       </div>
                     </div>
                   </li>

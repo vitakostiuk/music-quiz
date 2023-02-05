@@ -26,11 +26,18 @@ const initialState = {
   clickAnswer: false,
   answerState: [],
   startPlayingTime: '',
+
   levelCompleteInfo: [],
+
   leaderboardInfoEN: [],
   leaderboardInfoUKR: [],
+
+  newUserGameInfoEN: [],
+  newUserGameInfoUKR: [],
+
   userScoreUKR: [],
   userScoreEN: [],
+
   loading: false,
   error: null,
 };
@@ -86,12 +93,21 @@ const playerSlice = createSlice({
       state.levelMusicUKR = payload;
     },
 
+    // Збереження скору нового юзера
+    setNewUserGameInfoEN: (state, { payload }) => {
+      state.newUserGameInfoEN = [...state.newUserGameInfoEN, payload];
+    },
+    setNewUserGameInfoUKR: (state, { payload }) => {
+      state.newUserGameInfoUKR = [...state.newUserGameInfoUKR, payload];
+    },
+
     setSongsArrEN: (state, { payload }) => {
       state.songslistEN = payload;
     },
     setSongsArrUKR: (state, { payload }) => {
       state.songslistUKR = payload;
     },
+
     togglePlaying: (state, { payload }) => {
       state.playing = state.playing ? false : true;
     },
@@ -198,6 +214,9 @@ export const {
   setNextLevelMusicUKR,
   restartLevelRoboUKR,
   restartLevelMusicUKR,
+
+  setNewUserGameInfoEN,
+  setNewUserGameInfoUKR,
 
   setSongsArrEN,
   setSongsArrUKR,
