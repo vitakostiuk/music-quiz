@@ -162,6 +162,11 @@
   background-color: #c972df;
 }
 
+.buttonNextLVLRobo:disabled,
+.buttonNextLVLMusic {
+  background-color: #d9d9d9;
+}
+
 .btnsWrapper:not(:last-child) {
   margin-right: 47px;
 }

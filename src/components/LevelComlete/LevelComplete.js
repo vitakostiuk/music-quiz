@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import {
@@ -43,6 +44,9 @@ const LevelComplete = () => {
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
+
+  const [isDisabledNextLevelEN, setIsDisabledNextLevelEN] = useState(false);
+  const [isDisabledNextLevelUKR, setIsDisabledNextLevelUKR] = useState(false);
 
   // Потім левел будемо брати з бекенда
   const isEngLang = useSelector(getLanguage);
@@ -163,6 +167,72 @@ const LevelComplete = () => {
     resetState();
   };
 
+  // DISABLE NEXT LEVEL BUTTON (ENG)
+  useEffect(() => {
+    if (!isEngLang) return;
+
+    if (
+      (isRoboQuizMode && levelRoboEN === 5) ||
+      (!isRoboQuizMode && levelMusicEN === 5)
+    ) {
+      setIsDisabledNextLevelEN(true);
+    }
+  }, [isEngLang, isRoboQuizMode, levelMusicEN, levelRoboEN]);
+
+  // DISABLE NEXT LEVEL BUTTON (UKR)
+  useEffect(() => {
+    if (isEngLang) return;
+
+    if (
+      (isRoboQuizMode && levelRoboUKR === 5) ||
+      (!isRoboQuizMode && levelMusicUKR === 5)
+    ) {
+      setIsDisabledNextLevelUKR(true);
+    }
+  }, [isEngLang, isRoboQuizMode, levelMusicUKR, levelRoboUKR]);
+
+  const handleLeaderboardEN = () => {
+    // --1-- загальний час, за який пройдено рiвень
+    const totalTime = levelCompleteInfo
+      .reduce((acc, { time }) => {
+        return acc + time;
+      }, 0)
+      .toFixed(2);
+
+    // --2-- Об'єкт,який відправляємо на бекенд
+    const userLevelCompleteInfo = {
+      isRoboQuizMode,
+      level: isRoboQuizMode ? levelRoboEN : levelMusicEN,
+      time: Number(totalTime),
+    };
+
+    // --3-- Діспатчимо об'єкт
+    dispatch(addLVLCompleteInfoEN(userLevelCompleteInfo));
+
+    navigate('/leaderboard');
+  };
+
+  const handleLeaderboardUKR = () => {
+    // --1-- загальний час, за який пройдено рiвень
+    const totalTime = levelCompleteInfo
+      .reduce((acc, { time }) => {
+        return acc + time;
+      }, 0)
+      .toFixed(2);
+
+    // --2-- Об'єкт,який відправляємо на бекенд
+    const userLevelCompleteInfo = {
+      isRoboQuizMode,
+      level: isRoboQuizMode ? levelRoboEN : levelMusicEN,
+      time: Number(totalTime),
+    };
+
+    // --3-- Діспатчимо об'єкт
+    dispatch(addLVLCompleteInfoUKR(userLevelCompleteInfo));
+
+    navigate('/leaderboard');
+  };
+
   return (
     <>
       {' '}
@@ -250,6 +320,9 @@ const LevelComplete = () => {
               onClick={
                 isEngLang ? handleClickNextLevelEN : handleClickNextLevelUKR
               }
+              disabled={
+                isEngLang ? isDisabledNextLevelEN : isDisabledNextLevelUKR
+              }
             >
               NEXT LEVEL
               <NextLVLIcon className={s.icon} />
@@ -260,7 +333,8 @@ const LevelComplete = () => {
             <button
               className={isRoboQuizMode ? s.buttonRobo : s.buttonMusic}
               type="button"
-              onClick={() => navigate('/leaderboard')}
+              // onClick={() => navigate('/leaderboard')}
+              onClick={isEngLang ? handleLeaderboardEN : handleLeaderboardUKR}
             >
               leaderboard
               <LeaderboardIcon className={s.icon} />

@@ -10,7 +10,6 @@ import {
   clickAnswer,
   answerState,
   getStartPlayingTime,
-  getLevelCompleteInfo,
 } from '../../redux/player/playerSelectors';
 import {
   setCurrent,
@@ -120,10 +119,10 @@ const Answers = () => {
 
     // Записуємо в масив, правильна чи неправильна відповідь
     if (countClicksOnAnswerBtn === 0) {
-      console.log(
-        'total2',
-        Math.round(new Date().getTime()) - startPlayingTime
-      );
+      // console.log(
+      //   'total2',
+      //   Math.round(new Date().getTime()) - startPlayingTime
+      // );
 
       const total2 = Math.round(new Date().getTime()) - startPlayingTime;
 
