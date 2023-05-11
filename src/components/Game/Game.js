@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -37,6 +38,8 @@ import s from './Game.module.css';
 
 const Game = () => {
   const dispatch = useDispatch();
+
+  const navigate = useNavigate();
 
   const { t } = useTranslation();
 
@@ -81,9 +84,12 @@ const Game = () => {
     const userScoreInfoRoboEN = userScoreEN.filter(
       item => item.isRoboQuizMode === 'true'
     );
-    console.log('userScoreInfoRoboEN', userScoreInfoRoboEN);
-    if (userScoreInfoRoboEN.length !== 0) {
+    // console.log('userScoreInfoRoboEN', userScoreInfoRoboEN);
+    if (userScoreInfoRoboEN.length !== 0 && userScoreInfoRoboEN.length !== 5) {
       dispatch(setLevelRoboEN(userScoreInfoRoboEN));
+    }
+    if (isRoboQuizMode && userScoreInfoRoboEN.length === 5) {
+      navigate('/leaderboard');
     }
 
     // -- 1.2 -- ФІЛЬТРУЄМО ПО РЕЖИМУ МУЗИКА (ENG)
@@ -91,10 +97,17 @@ const Game = () => {
       item => item.isRoboQuizMode === 'false'
     );
     console.log('userScoreInfoMusicEN', userScoreInfoMusicEN);
-    if (userScoreInfoMusicEN.length !== 0) {
+    console.log(userScoreInfoMusicEN.length);
+    if (
+      userScoreInfoMusicEN.length !== 0 &&
+      userScoreInfoMusicEN.length !== 5
+    ) {
       dispatch(setLevelMusicEN(userScoreInfoMusicEN));
     }
-  }, [dispatch, isEngLang, isRoboQuizMode, userScoreEN]);
+    if (!isRoboQuizMode && userScoreInfoMusicEN.length === 5) {
+      navigate('/leaderboard');
+    }
+  }, [dispatch, isEngLang, isRoboQuizMode, navigate, userScoreEN]);
 
   // Обробка інформацїї про скор юзера (UKR)
   useEffect(() => {
@@ -105,8 +118,14 @@ const Game = () => {
       item => item.isRoboQuizMode === 'true'
     );
     // console.log('userScoreInfoRoboUKR', userScoreInfoRoboUKR);
-    if (userScoreInfoRoboUKR.length !== 0) {
+    if (
+      userScoreInfoRoboUKR.length !== 0 &&
+      userScoreInfoRoboUKR.length !== 5
+    ) {
       dispatch(setLevelRoboUKR(userScoreInfoRoboUKR));
+    }
+    if (userScoreInfoRoboUKR.length === 5) {
+      navigate('/leaderboard');
     }
 
     // -- 1.2 -- ФІЛЬТРУЄМО ПО РЕЖИМУ МУЗИКА (UKR)
@@ -114,10 +133,23 @@ const Game = () => {
       item => item.isRoboQuizMode === 'false'
     );
     // console.log('userScoreInfoMusicUKR', userScoreInfoMusicUKR);
-    if (userScoreInfoMusicUKR.length !== 0) {
+    if (
+      userScoreInfoMusicUKR.length !== 0 &&
+      userScoreInfoMusicUKR.length !== 5
+    ) {
       dispatch(setLevelMusicUKR(userScoreInfoMusicUKR));
     }
-  }, [dispatch, isEngLang, isRoboQuizMode, userScoreEN, userScoreUKR]);
+    if (userScoreInfoMusicUKR.length === 5) {
+      navigate('/leaderboard');
+    }
+  }, [
+    dispatch,
+    isEngLang,
+    isRoboQuizMode,
+    navigate,
+    userScoreEN,
+    userScoreUKR,
+  ]);
 
   const handleClickSong = idx => {
     // console.log(songsListEN[idx].name);

@@ -39,7 +39,7 @@ const Player = () => {
 
   // PLAY
   const handleClikPlay = () => {
-    console.log('total1', Math.round(new Date().getTime()));
+    // console.log('total1', Math.round(new Date().getTime()));
 
     dispatch(setStartPlayingTime(Math.round(new Date().getTime())));
     dispatch(togglePlaying());
