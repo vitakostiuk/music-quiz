@@ -6,7 +6,7 @@ export const getSortedArrayByTimeAndLevels = array =>
         return acc + item.time;
       }, 0);
 
-      return [time, ...item];
+      return [time.toFixed(1), ...item];
     })
     .sort((b, a) => b[0] - a[0])
     .sort((b, a) => a.length - b.length);

@@ -5,7 +5,11 @@ import { setQuizMode } from '../../redux/player/playerSlice';
 import { useNavigate, NavLink } from 'react-router-dom';
 import Select from 'react-select';
 import { toggleLanguage } from '../../redux/player/playerSlice';
-import { getLanguage } from '../../redux/player/playerSelectors';
+import {
+  getLanguage,
+  getCurrent,
+  answerState,
+} from '../../redux/player/playerSelectors';
 import { ReactComponent as Logo } from '../../images/main-logo1.svg';
 import s from './Header.module.css';
 import './SelectList.scss';
@@ -17,6 +21,8 @@ const Header = () => {
   const { t, i18n } = useTranslation();
 
   const isEngLang = useSelector(getLanguage);
+  const currentSong = useSelector(getCurrent);
+  const answersArray = useSelector(answerState);
 
   const options = [
     {
@@ -47,11 +53,11 @@ const Header = () => {
     navigate('/game');
 
     // записуємо в редакс режим гри
-    if (e.value === 'Robo-Quiz') {
+    if (e.value === 'Robo-Quiz' || e.value === 'Режим робота') {
       dispatch(setQuizMode(true));
     }
 
-    if (e.value === 'Music-Quiz') {
+    if (e.value === 'Music-Quiz' || e.value === 'Режим музики') {
       dispatch(setQuizMode(false));
     }
   };

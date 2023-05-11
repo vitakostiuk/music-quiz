@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { signup, signin, forgotPassword } from './authOperations';
+import { signup, signin, forgotPassword, google } from './authOperations';
 
 const initialState = {
   userID: null,
@@ -14,14 +14,25 @@ const initialState = {
 const authSlice = createSlice({
   name: 'auth',
   initialState,
-  reducers: {
-    googleAuth: (state, { payload }) => {
-      // state.googleToken = payload.access_token;
-      state.googleToken = payload;
-    },
-  },
+  reducers: {},
   extraReducers: builder => {
     builder
+      // REDUCER FOR GOOGLE AUTH
+      .addCase(google.pending, state => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(google.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        state.userID = payload.user.id;
+        state.userEmail = payload.user.email;
+        state.token = payload.token;
+      })
+      .addCase(google.rejected, (state, { payload }) => {
+        state.loading = false;
+        state.error = payload;
+      })
+
       // REDUCER FOR SIGN_UP
       .addCase(signup.pending, state => {
         state.loading = true;
@@ -71,7 +82,5 @@ const authSlice = createSlice({
       });
   },
 });
-
-export const { googleAuth } = authSlice.actions;
 
 export default authSlice.reducer;

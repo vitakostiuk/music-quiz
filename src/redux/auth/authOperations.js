@@ -55,7 +55,6 @@ const google = createAsyncThunk(
   async (credentials, { rejectWithValue }) => {
     try {
       const { data } = await axios.post(`/users/google`, credentials);
-      // console.log('data', data);
 
       return data;
     } catch (error) {

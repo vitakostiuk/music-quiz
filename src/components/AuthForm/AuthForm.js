@@ -1,15 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { googleAuth } from '../../redux/auth/authSlice';
+import { useDispatch } from 'react-redux';
 import { Formik, Form, Field } from 'formik';
-// import { useGoogleLogin } from '@react-oauth/google';
 import { GoogleLogin } from '@react-oauth/google';
 import jwt_decode from 'jwt-decode';
 import { forgotPassword, google } from '../../redux/auth/authOperations';
-import { getGoogleToken } from '../../redux/auth/authSelectors';
-import { ReactComponent as IconGoogle } from '../../images/icon-google.svg';
 import Modal from '../common/Modal';
 import * as Yup from 'yup';
 import s from './AuthForm.module.css';
@@ -44,9 +40,6 @@ const AuthForm = ({
   const [isShowModal, setisShowModal] = useState(false);
   const [email, setEmail] = useState(null);
 
-  const googleToken = useSelector(getGoogleToken);
-  // console.log('googleToken', googleToken);
-
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
@@ -56,22 +49,6 @@ const AuthForm = ({
       dispatch(forgotPassword(email));
     }
   }, [dispatch, email]);
-
-  // const login = useGoogleLogin({
-  //   flow: 'implicit',
-  //   onSuccess: tokenResponse => {
-  //     console.log(tokenResponse);
-  // const userObject = jwt_decode(tokenResponse.access_token);
-  // console.log('userObject', userObject);
-  //     dispatch(googleAuth(tokenResponse));
-  // if (tokenResponse) {
-  //   navigate('/');
-  // }
-  //   },
-  //   onError: error => {
-  //     console.log(error);
-  //   },
-  // });
 
   const onClickShowModal = () => {
     setisShowModal(prefState => !prefState);
@@ -93,9 +70,7 @@ const AuthForm = ({
           {' '}
           <GoogleLogin
             onSuccess={credentialResponse => {
-              dispatch(googleAuth(credentialResponse.credential));
               const userObject = jwt_decode(credentialResponse.credential);
-              // console.log('userObject', userObject);
               const { email, name, picture } = userObject;
 
               // Відправляємо на бекенд інформацію про юзера.
@@ -108,8 +83,6 @@ const AuthForm = ({
                 avatarURL: picture,
               };
               dispatch(google(data));
-
-              console.log(credentialResponse);
 
               if (credentialResponse?.credential) {
                 navigate('/');

@@ -65,10 +65,10 @@ const Leaderboard = () => {
     // -- 2 -- ФІЛЬТРУЄМО ПО ЮЗЕРУ, викор. спец. ф-ю
     // -- 2.1 -- РОБОТ
     const filteredByOwnerRobo = getFilteredArrayByOwner(leaderboardInfoRobo);
-    // console.log('filteredByOwner', filteredByOwner);
+    // console.log('filteredByOwnerRobo', filteredByOwnerRobo);
     // -- 2.2 -- МУЗИКА
     const filteredByOwnerMusic = getFilteredArrayByOwner(leaderboardInfoMusic);
-    // console.log('filteredByOwner', filteredByOwner);
+    // console.log('filteredByOwnerRobo', filteredByOwnerRobo);
     // -------------------------------------------------------------------
 
     // -- 3 -- Створюємо масив вкладених масивів по кожному юзеру
