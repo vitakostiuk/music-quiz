@@ -1,0 +1,37 @@
+{
+  "header": {
+    "home": "Home",
+    "quizMode": "QuizMode",
+    "roboQuiz": "Robo-Quiz",
+    "musicQuiz": "Music-Quiz",
+    "leaderboard": "Leaderboard",
+    "signin": "Sign In",
+    "signup": "Sign Up"
+  },
+  "home": {
+    "title": "MUSIC ROBO QUIZ",
+    "subtitle": "Exciting music trivia game. You'll hear familiar songs from the other side!",
+    "textBtnRobo": "Robo-quiz",
+    "subTextBtnRobo": "ROBOT SINGING — you guess",
+    "textBtnMusic": "Music-quiz",
+    "subTextBtnMusic": "Original song sounds — you guess"
+  },
+  "leaderboard": {
+    "leaderboard": "Leaderboard",
+    "robo": "Robo",
+    "music": "Music",
+    "emptyLeaderboard": "Leaderboard is empty"
+  },
+  "game": {
+    "tapToStart": "Tap to start",
+    "levelRobo": "Robo Mode. Level",
+    "levelMusic": "Music Mode. Level"
+  },
+  "levelComplete": {
+    "restart": "Restart",
+    "nextLevel": "NEXT LEVEL",
+    "leaderboard": "Leaderboard",
+    "sec": "sec",
+    "total": "total"
+  }
+}

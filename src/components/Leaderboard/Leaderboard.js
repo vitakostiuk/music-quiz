@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { setQuizMode } from '../../redux/player/playerSlice';
 import {
@@ -28,6 +29,8 @@ const Leaderboard = () => {
   const [userIdxWinnersRobo, setUserIdxWinnersRobo] = useState(null);
   const [userIdxWinnersMusic, setUserIdxWinnersMusic] = useState(null);
   const dispatch = useDispatch();
+
+  const { t } = useTranslation();
 
   // Отримуємо з бекенду ВСЮ інформацію для лідерборду
   const leaderboardInfoEN = useSelector(getLeaderboardInfoEN);
@@ -135,37 +138,35 @@ const Leaderboard = () => {
     <>
       <div className={s.paper}>
         <div className={s.titleWrapper}>
-          {' '}
           <div className={s.btnsWrapper}>
-            {' '}
             <button
               className={roboQuizMode ? s.btnRoboIsRobo : s.btnRoboIsMusic}
               type="button"
               onClick={() => handleClickModeBtn('robo')}
             >
-              Robo
+              {t('leaderboard.robo')}
             </button>
             <button
               className={roboQuizMode ? s.btnMusicIsRobo : s.btnMusicIsMusic}
               type="button"
               onClick={() => handleClickModeBtn('music')}
             >
-              Music
+              {t('leaderboard.music')}
             </button>
           </div>
           <h1 className={roboQuizMode ? s.titleRobo : s.titleMusic}>
-            Leaderboard
+            {t('leaderboard.leaderboard')}
           </h1>
         </div>
 
         {/* ERROR TEXT */}
         {roboQuizMode && roboInfo.length === 0 && roboWinners.length === 0 && (
-          <h2 className={s.errorText}>Leaderboard is empty</h2>
+          <h2 className={s.errorText}>{t('leaderboard.emptyLeaderboard')}</h2>
         )}
         {!roboQuizMode &&
           musicInfo.length === 0 &&
           musicWinners.length === 0 && (
-            <h2 className={s.errorText}>Leaderboard is empty</h2>
+            <h2 className={s.errorText}>{t('leaderboard.emptyLeaderboard')}</h2>
           )}
 
         {/* ROBO WINNERS */}

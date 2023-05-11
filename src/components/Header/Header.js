@@ -1,4 +1,5 @@
-import React from 'react';
+import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { setQuizMode } from '../../redux/player/playerSlice';
 import { useNavigate, NavLink } from 'react-router-dom';
@@ -9,22 +10,36 @@ import { ReactComponent as Logo } from '../../images/main-logo1.svg';
 import s from './Header.module.css';
 import './SelectList.scss';
 
-const options = [
-  {
-    value: 'Robo-Quiz',
-    label: 'Robo-Quiz',
-  },
-  {
-    value: 'Music-Quiz',
-    label: 'Music-Quiz',
-  },
-];
-
 const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const { t, i18n } = useTranslation();
+
   const isEngLang = useSelector(getLanguage);
+
+  const options = [
+    {
+      value: t('header.roboQuiz'),
+      label: t('header.roboQuiz'),
+    },
+    {
+      value: t('header.musicQuiz'),
+      label: t('header.musicQuiz'),
+    },
+  ];
+
+  useEffect(() => {
+    if (isEngLang) {
+      i18n.changeLanguage('en');
+      return;
+    }
+
+    if (!isEngLang) {
+      i18n.changeLanguage('uk');
+      return;
+    }
+  }, [i18n, isEngLang]);
 
   // Select dropdown
   const handleChangeQuizMode = e => {
@@ -73,14 +88,14 @@ const Header = () => {
           className={({ isActive }) => (isActive ? s.activeStyle : s.navItem)}
           onClick={onClickNavItem}
         >
-          Home
+          {t('header.home')}
         </NavLink>
         <Select
           classNamePrefix="custom-select"
           onChange={handleChangeQuizMode}
           required
           options={options}
-          placeholder="QuizMode"
+          placeholder={t('header.quizMode')}
           isSearchable={false}
           defaultValue="ahdghjafg"
         />
@@ -89,7 +104,7 @@ const Header = () => {
           className={({ isActive }) => (isActive ? s.activeStyle : s.navItem)}
           onClick={onClickNavItem}
         >
-          Leaderboard
+          {t('header.leaderboard')}
         </NavLink>
       </div>
       <button
@@ -97,17 +112,17 @@ const Header = () => {
         type="button"
         onClick={() => navigate('/login')}
       >
-        Sign In
+        {t('header.signin')}
       </button>
       <button
         className={s.signup}
         type="button"
         onClick={() => navigate('/register')}
       >
-        Sign Up
+        {t('header.signup')}
       </button>
       <button className={s.language} onClick={onClickLangBtn}>
-        {isEngLang ? 'EN' : 'UKR'}
+        {isEngLang ? 'ENG' : 'UA'}
       </button>
     </div>
   );

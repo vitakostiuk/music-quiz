@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import {
@@ -42,6 +43,8 @@ import s from './LevelComplete.module.css';
 const LevelComplete = () => {
   const dispatch = useDispatch();
 
+  const { t } = useTranslation();
+
   const navigate = useNavigate();
 
   // Потім левел будемо брати з бекенда
@@ -65,7 +68,7 @@ const LevelComplete = () => {
   // Ф-я перемішує масив, щоб коджного разу були рандомні вислови
   const shuffleText = array => {
     const shuffleArray = shuffle(array);
-    return shuffleArray[0].eng;
+    return isEngLang ? shuffleArray[0].eng : shuffleArray[0].ukr;
   };
 
   // Ф-я скидає всі стейти до початкового (InitialState)
@@ -165,9 +168,7 @@ const LevelComplete = () => {
 
   return (
     <>
-      {' '}
       <div className={s.wrapper}>
-        {' '}
         {levelCompleteInfo.length !== 0 && (
           <h1
             className={
@@ -196,12 +197,10 @@ const LevelComplete = () => {
                     .................................................................................
                   </p>
                   <div className={s.timeAndIconsWrapper}>
-                    {' '}
                     <p className={isRightAnswer ? s.trueTime : s.wrongTime}>
-                      {time} sec.
+                      {time} {t('levelComplete.sec')}.
                     </p>
                     <div className={s.iconsWrapper}>
-                      {' '}
                       {isRightAnswer ? (
                         <TrueIcon className={s.trueIcon} />
                       ) : (
@@ -215,13 +214,13 @@ const LevelComplete = () => {
 
           {levelCompleteInfo.length !== 0 && (
             <p className={isRoboQuizMode ? s.totalRobo : s.totalMusic}>
-              total:&nbsp;
+              {t('levelComplete.total')}:&nbsp;
               {levelCompleteInfo
                 .reduce((acc, { time }) => {
                   return acc + time;
                 }, 0)
                 .toFixed(2)}
-              &nbsp;sec.
+              &nbsp;{t('levelComplete.sec')}.
             </p>
           )}
         </ul>
@@ -236,7 +235,7 @@ const LevelComplete = () => {
               type="button"
               onClick={isEngLang ? handleRestartLevelEN : handleRestartLevelUKR}
             >
-              Restart
+              {t('levelComplete.restart')}
               <RestartIcon className={s.icon} />
             </button>
           </div>
@@ -251,7 +250,7 @@ const LevelComplete = () => {
                 isEngLang ? handleClickNextLevelEN : handleClickNextLevelUKR
               }
             >
-              NEXT LEVEL
+              {t('levelComplete.nextLevel')}
               <NextLVLIcon className={s.icon} />
             </button>
           </div>
@@ -262,7 +261,7 @@ const LevelComplete = () => {
               type="button"
               onClick={() => navigate('/leaderboard')}
             >
-              leaderboard
+              {t('levelComplete.leaderboard')}
               <LeaderboardIcon className={s.icon} />
             </button>
           </div>

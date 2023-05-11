@@ -1,0 +1,37 @@
+{
+  "header": {
+    "home": "Головна",
+    "quizMode": "Режим гри",
+    "roboQuiz": "Режим робота",
+    "musicQuiz": "Режим музики",
+    "leaderboard": "Лідерборд",
+    "signin": "Увійти",
+    "signup": "Зареєструватися"
+  },
+  "home": {
+    "title": "Музична вікторина",
+    "subtitle": "Захоплююча музична гра-викторина. Ви почуєте знайомі пісні з іншого боку!",
+    "textBtnRobo": "Режим робота",
+    "subTextBtnRobo": "Робот співає — ти вгадуєш",
+    "textBtnMusic": "Режим музики",
+    "subTextBtnMusic": "Звучить оригінальна пісня — ти вгадуєш"
+  },
+  "leaderboard": {
+    "leaderboard": "Таблиця лідерів",
+    "robo": "Робот",
+    "music": "Музика",
+    "emptyLeaderboard": "Таблиця лідерів пуста"
+  },
+  "game": {
+    "tapToStart": "Натисни для старту",
+    "levelRobo": "Peжим робота. Рівень",
+    "levelMusic": "Peжим музики. Рівень"
+  },
+    "levelComplete": {
+    "restart": "Переграти",
+    "nextLevel": "Наступний рівень",
+    "leaderboard": "Таблиця лідерів",
+    "sec": "ceк",
+    "total": "Загально"
+  }
+}

@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   setLevelRoboEN,
@@ -36,6 +37,8 @@ import s from './Game.module.css';
 
 const Game = () => {
   const dispatch = useDispatch();
+
+  const { t } = useTranslation();
 
   const userID = useSelector(getUserID);
   const userScoreEN = useSelector(getUserScoreEN);
@@ -275,15 +278,14 @@ const Game = () => {
         <div className={s.titleWrapper}>
           {isEngLang && (
             <>
-              {' '}
               {isRoboQuizMode && (
                 <h1 className={s.titleRobo}>
-                  Robo Mode. Level {`${levelRoboEN}`}
+                  {t('game.levelRobo')} {`${levelRoboEN}`}
                 </h1>
               )}
               {!isRoboQuizMode && (
                 <h1 className={s.titleMusic}>
-                  Music Mode. Level {`${levelMusicEN}`}
+                  {t('game.levelMusic')} {`${levelMusicEN}`}
                 </h1>
               )}
             </>
@@ -291,15 +293,14 @@ const Game = () => {
 
           {!isEngLang && (
             <>
-              {' '}
               {isRoboQuizMode && (
                 <h1 className={s.titleRobo}>
-                  Robo Mode. Level {`${levelRoboUKR}`}
+                  {t('game.levelRobo')} {`${levelRoboUKR}`}
                 </h1>
               )}
               {!isRoboQuizMode && (
                 <h1 className={s.titleMusic}>
-                  Music Mode. Level {`${levelMusicUKR}`}
+                  {t('game.levelMusic')} {`${levelMusicUKR}`}
                 </h1>
               )}
             </>

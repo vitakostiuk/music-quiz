@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { togglePlaying } from '../../redux/player/playerSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { setStartPlayingTime } from '../../redux/player/playerSlice';
@@ -21,6 +22,8 @@ import s from './Player.module.css';
 
 const Player = () => {
   const [stateVolume, setStateVolume] = useState(0.3);
+
+  const { t } = useTranslation();
 
   const dispatch = useDispatch();
 
@@ -139,7 +142,7 @@ const Player = () => {
           {/* </div> */}
 
           <p className={isRoboQuizMode ? s.textRobo : s.textMusic}>
-            Tap to start
+            {t('game.tapToStart')}
           </p>
         </div>
       </div>
