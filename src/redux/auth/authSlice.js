@@ -1,9 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { signup, signin, forgotPassword, google } from './authOperations';
+import {
+  signup,
+  signin,
+  forgotPassword,
+  google,
+  logout,
+} from './authOperations';
 
 const initialState = {
   userID: null,
   userEmail: null,
+  userAvatar: null,
   token: null,
   googleToken: null,
   loading: false,
@@ -27,6 +34,7 @@ const authSlice = createSlice({
         state.userID = payload.user.id;
         state.userEmail = payload.user.email;
         state.token = payload.token;
+        state.userAvatar = payload.user.avatarURL;
       })
       .addCase(google.rejected, (state, { payload }) => {
         state.loading = false;
@@ -44,6 +52,7 @@ const authSlice = createSlice({
         state.userID = payload.user.id;
         state.userEmail = payload.user.email;
         state.token = payload.token;
+        state.userAvatar = payload.user.avatarURL;
       })
       .addCase(signup.rejected, (state, { payload }) => {
         state.loading = false;
@@ -61,6 +70,7 @@ const authSlice = createSlice({
         state.userID = payload.user.id;
         state.userEmail = payload.user.email;
         state.token = payload.token;
+        state.userAvatar = payload.user.avatarURL;
       })
       .addCase(signin.rejected, (state, { payload }) => {
         state.loading = false;
@@ -77,6 +87,23 @@ const authSlice = createSlice({
         state.sentEmail = payload;
       })
       .addCase(forgotPassword.rejected, (state, { payload }) => {
+        state.loading = false;
+        state.error = payload;
+      })
+
+      // REDUCER FOR LOGOUT
+      .addCase(logout.pending, state => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(logout.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        state.userID = null;
+        state.userEmail = null;
+        state.token = null;
+        state.userAvatar = null;
+      })
+      .addCase(logout.rejected, (state, { payload }) => {
         state.loading = false;
         state.error = payload;
       });

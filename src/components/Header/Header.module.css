@@ -99,5 +99,26 @@
 
 .navBar {
   background-color: transparent;
-  border: 1px solid red !important;
+}
+
+/* AVATAR */
+.avatarWrapper {
+  position: relative;
+}
+
+.circle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid #2a9fff;
+  filter: drop-shadow(0px 3px 5px #d9d9d9);
+  overflow: hidden;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
 }

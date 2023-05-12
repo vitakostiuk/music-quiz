@@ -64,4 +64,18 @@ const google = createAsyncThunk(
   }
 );
 
-export { signup, signin, forgotPassword, google };
+const logout = createAsyncThunk(
+  'auth/logOut',
+  async (_, { rejectWithValue, getState }) => {
+    try {
+      const { token } = getState().auth;
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
+      await axios.get('/users/logout');
+    } catch (err) {
+      return rejectWithValue(err.response);
+    }
+  }
+);
+
+export { signup, signin, forgotPassword, google, logout };
