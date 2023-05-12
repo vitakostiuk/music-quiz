@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { signin } from '../../redux/auth/authOperations';
@@ -10,6 +11,8 @@ import s from './Pages.module.css';
 const SignInPage = () => {
   const [credentials, setCredentials] = useState(null);
   // console.log('credentials', credentials);
+
+  const { t } = useTranslation();
 
   const isRoboQuizMode = useSelector(getQuizMode);
   const token = useSelector(getToken);
@@ -43,10 +46,10 @@ const SignInPage = () => {
         <div className={s.paper}>
           {' '}
           <AuthForm
-            questionText="Need an account?"
+            questionText={t('auth.questionForSignup')}
             hash="register"
-            buttonText="Sign In"
-            buttonTextToNavigate="Sign Up"
+            buttonText={t('auth.signin')}
+            buttonTextToNavigate={t('auth.signup')}
             handleSetCredentials={handleSetCredentials}
             isForgotPassword
           />

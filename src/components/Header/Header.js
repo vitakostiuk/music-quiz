@@ -147,20 +147,24 @@ const Header = () => {
           {t('header.leaderboard')}
         </NavLink>
       </div>
-      <button
-        className={s.signin}
-        type="button"
-        onClick={() => navigate('/login')}
-      >
-        {t('header.signin')}
-      </button>
-      <button
-        className={s.signup}
-        type="button"
-        onClick={() => navigate('/register')}
-      >
-        {t('header.signup')}
-      </button>
+      {!token && (
+        <button
+          className={s.signin}
+          type="button"
+          onClick={() => navigate('/login')}
+        >
+          {t('header.signin')}
+        </button>
+      )}
+      {!token && (
+        <button
+          className={s.signup}
+          type="button"
+          onClick={() => navigate('/register')}
+        >
+          {t('header.signup')}
+        </button>
+      )}
       <button className={s.language} onClick={onClickLangBtn}>
         {isEngLang ? 'ENG' : 'UA'}
       </button>

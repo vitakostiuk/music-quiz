@@ -34,5 +34,25 @@
     "leaderboard": "Leaderboard",
     "sec": "sec",
     "total": "total"
+  },
+  "auth": {
+    "questionForSignup": "Need an account?",
+    "questionForSignin": "Already have an account?",
+    "signin": "Sign In",
+    "signup": "Sign Up",
+    "resetPassword": "Reset Your Password",
+    "resetIt": "Reset it"
+  },
+  "form": {
+    "greeting": "Sign in to Music Quiz",
+    "or": "OR",
+    "name": "Name",
+    "namePlaceholder": "your name",
+    "email": "Email",
+    "emailPlaceholder": "your@email.com",
+    "password": "Password",
+    "passwordPlaceholder": "your password",
+    "resetYourPassword": "Reset Your Password",
+    "textBtn": "reset password"
   }
 }

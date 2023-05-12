@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -40,6 +41,8 @@ const AuthForm = ({
   const [isShowModal, setisShowModal] = useState(false);
   const [email, setEmail] = useState(null);
 
+  const { t } = useTranslation();
+
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
@@ -65,7 +68,7 @@ const AuthForm = ({
   return (
     <div className={s.wrapper}>
       <div className={s.container}>
-        <h1 className={s.title}>Sign in to Music Quiz</h1>
+        <h1 className={s.title}>{t('form.greeting')}</h1>
         <div className={s.googleLogin}>
           {' '}
           <GoogleLogin
@@ -93,7 +96,7 @@ const AuthForm = ({
             }}
           />
         </div>
-        <p className={s.orText}>OR</p>
+        <p className={s.orText}>{t('form.or')}</p>
         {/* <button className={s.google} type="button" onClick={() => login()}>
           <IconGoogle className={s.icon} />
           Google
@@ -114,7 +117,7 @@ const AuthForm = ({
                 <>
                   {' '}
                   <label className={s.label} htmlFor="name">
-                    Name
+                    {t('form.name')}
                   </label>
                   <Field
                     id="name"
@@ -123,7 +126,7 @@ const AuthForm = ({
                     }
                     name="name"
                     type="text"
-                    placeholder="your name"
+                    placeholder={t('form.namePlaceholder')}
                   />
                   {errors.name && touched.name ? (
                     <div className={s.errName}>{errors.name}</div>
@@ -131,14 +134,14 @@ const AuthForm = ({
                 </>
               )}
               <label className={s.label} htmlFor="email">
-                Email
+                {t('form.email')}
               </label>
               <Field
                 id="email"
                 className={errors.email && touched.email ? s.errInput : s.input}
                 name="email"
                 type="email"
-                placeholder="your@email.com"
+                placeholder={t('form.emailPlaceholder')}
               />
               {errors.email && touched.email ? (
                 <div
@@ -149,7 +152,7 @@ const AuthForm = ({
               ) : null}
 
               <label className={s.label} htmlFor="password">
-                Password
+                {t('form.password')}
               </label>
               <Field
                 id="password"
@@ -158,7 +161,7 @@ const AuthForm = ({
                 }
                 name="password"
                 type="password"
-                placeholder="your password"
+                placeholder={t('form.passwordPlaceholder')}
               />
               {errors.password && touched.password ? (
                 <div
@@ -186,13 +189,13 @@ const AuthForm = ({
                 </div>
                 {isForgotPassword && (
                   <div className={s.questionContainr}>
-                    <p className={s.questionText}>Forgot your password?</p>
+                    <p className={s.questionText}>{t('auth.resetPassword')}</p>
                     <p
                       className={s.reset}
                       type="button"
                       onClick={() => onClickShowModal()}
                     >
-                      Reset it
+                      {t('auth.resetIt')}
                     </p>
                   </div>
                 )}
@@ -204,8 +207,8 @@ const AuthForm = ({
           <Modal
             onClickShowModal={onClickShowModal}
             setEmailforForgotPassword={setEmailforForgotPassword}
-            text="Reset Your Password"
-            btnText="reset password"
+            text={t('form.resetYourPassword')}
+            btnText={t('form.textBtn')}
             input
           />
         )}

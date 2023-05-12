@@ -34,5 +34,25 @@
     "leaderboard": "Таблиця лідерів",
     "sec": "ceк",
     "total": "Загально"
+  },
+  "auth": {
+    "questionForSignup": "Немає аккаунту?",
+    "questionForSignin": "Вже є аккаунт?",
+    "signin": "Увійти",
+    "signup": "Зареєструватись",
+    "resetPassword": "Скинути пароль",
+    "resetIt": "Так"
+  },
+  "form": {
+    "greeting": "Увійти до музичної вікторини",
+    "or": "АБО",
+    "name": "Ім'я",
+    "namePlaceholder": "Ваше ім'я",
+    "email": "Ел. пошта",
+    "emailPlaceholder": "your@email.com",
+    "password": "Пароль",
+    "passwordPlaceholder": "Ваш пароль",
+    "resetYourPassword": "Скинути пароль",
+    "textBtn": "Скинути"
   }
 }

@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
@@ -15,6 +16,8 @@ const Modal = ({
   input,
 }) => {
   const sentEmail = useSelector(isSentEmail);
+
+  const { t } = useTranslation();
 
   useEffect(() => {
     const handleKeyDown = e => {
@@ -70,7 +73,7 @@ const Modal = ({
             {({ errors, touched }) => (
               <Form className={s.form}>
                 <label className={s.label} htmlFor="email">
-                  Email
+                  {t('form.email')}
                 </label>
                 <Field
                   id="email"
@@ -79,7 +82,7 @@ const Modal = ({
                   }
                   name="email"
                   type="email"
-                  placeholder="your@email.com"
+                  placeholder={t('form.emailPlaceholder')}
                 />
                 {errors.email && touched.email ? (
                   <div className={s.errEmail}>{errors.email}</div>
