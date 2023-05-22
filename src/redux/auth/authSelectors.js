@@ -4,6 +4,7 @@ const getUserID = state => state.auth.userID;
 const getGoogleToken = state => state.auth.googleToken;
 const isSentEmail = state => state.auth.sentEmail;
 const getAvatarURL = state => state.auth.userAvatar;
+const getIsLoading = state => state.auth.loading;
 
 export {
   getToken,
@@ -12,4 +13,5 @@ export {
   isSentEmail,
   getUserID,
   getAvatarURL,
+  getIsLoading,
 };

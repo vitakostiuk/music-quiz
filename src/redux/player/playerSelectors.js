@@ -20,6 +20,8 @@ const getLeaderboardInfoUKR = state => state.player.leaderboardInfoUKR;
 const getUserScoreEN = state => state.player.userScoreEN;
 const getUserScoreUKR = state => state.player.userScoreUKR;
 
+const getIsLoading = state => state.player.loading;
+
 export {
   getQuizMode,
   getLanguage,
@@ -39,4 +41,5 @@ export {
   getLeaderboardInfoUKR,
   getUserScoreEN,
   getUserScoreUKR,
+  getIsLoading,
 };

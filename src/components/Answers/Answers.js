@@ -8,8 +8,13 @@ import {
   getCurrent,
   isPlaying,
   clickAnswer,
-  answerState,
   getStartPlayingTime,
+  getLevelCompleteInfo,
+  getLevelRoboEN,
+  getLevelMusicEN,
+  getLevelRoboUKR,
+  getLevelMusicUKR,
+  getIsLoading,
 } from '../../redux/player/playerSelectors';
 import {
   setCurrent,
@@ -21,9 +26,14 @@ import {
   resetAnswerStateArray,
   resetLevelCompleteInfo,
 } from '../../redux/player/playerSlice';
+import {
+  addLVLCompleteInfoEN,
+  addLVLCompleteInfoUKR,
+} from '../../redux/player/playerOperations';
 import { shuffle } from '../../helpers/shuffle';
 import { wrongAudio } from '../Game/wrongAudio';
 import LevelComlete from '../LevelComlete';
+import Loader from '../common/Loader/Loader';
 import s from './Answers.module.css';
 
 const Answers = () => {
@@ -34,8 +44,14 @@ const Answers = () => {
   const currentSong = useSelector(getCurrent);
   const playing = useSelector(isPlaying);
   const isClickAnswer = useSelector(clickAnswer);
-  const answersArray = useSelector(answerState);
   const startPlayingTime = useSelector(getStartPlayingTime);
+  const levelCompleteInfo = useSelector(getLevelCompleteInfo);
+
+  const levelRoboEN = useSelector(getLevelRoboEN);
+  const levelMusicEN = useSelector(getLevelMusicEN);
+
+  const levelRoboUKR = useSelector(getLevelRoboUKR);
+  const levelMusicUKR = useSelector(getLevelMusicUKR);
 
   const dispatch = useDispatch();
 
@@ -46,6 +62,41 @@ const Answers = () => {
   const [countClicksOnAnswerBtn, setCountClicksOnAnswerBtn] = useState(0);
   const [isLVLComplete, setIsLVLComplete] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
+
+  const isLoading = useSelector(getIsLoading);
+
+  // Запис результату на бекенд
+  const postResult = levelInfo => {
+    const totalTime = levelInfo
+      .reduce((acc, { time }) => {
+        return acc + time;
+      }, 0)
+      .toFixed(2);
+
+    // запис результату на бекенд ENG
+    if (isEngLang) {
+      const userLevelCompleteInfo = {
+        isRoboQuizMode,
+        level: isRoboQuizMode ? levelRoboEN : levelMusicEN,
+        time: Number(totalTime),
+      };
+      dispatch(addLVLCompleteInfoEN(userLevelCompleteInfo));
+
+      console.log('addLVLCompleteInfoEN');
+    }
+
+    // запис результату на бекенд UKR
+    if (!isEngLang) {
+      const userLevelCompleteInfo = {
+        isRoboQuizMode,
+        level: isRoboQuizMode ? levelRoboUKR : levelMusicUKR,
+        time: Number(totalTime),
+      };
+      dispatch(addLVLCompleteInfoUKR(userLevelCompleteInfo));
+
+      console.log('addLVLCompleteInfoUKR');
+    }
+  };
 
   // Скидання стейту при перемиканні режиму
   useEffect(() => {
@@ -119,11 +170,6 @@ const Answers = () => {
 
     // Записуємо в масив, правильна чи неправильна відповідь
     if (countClicksOnAnswerBtn === 0) {
-      // console.log(
-      //   'total2',
-      //   Math.round(new Date().getTime()) - startPlayingTime
-      // );
-
       const total2 = Math.round(new Date().getTime()) - startPlayingTime;
 
       if (isRightAnswer === true) {
@@ -163,11 +209,18 @@ const Answers = () => {
     // Автоматичнтй перехід на LEVEL COMPLETE
     setTimeout(() => {
       if (currentSong !== 4) return;
+
+      // запис результату на бекенд
+      postResult(levelCompleteInfo);
+
       setIsLVLComplete(true);
     }, DELAY);
 
     // Передчасне закінчення останньої пісні - Перехід на LEVEL COMPLETE
     if (countClicksOnAnswerBtn > 0 && currentSong === 4) {
+      // запис результату на бекенд
+      postResult(levelCompleteInfo);
+
       setIsLVLComplete(true);
       dispatch(togglePlaying());
     }
@@ -220,12 +273,9 @@ const Answers = () => {
     }
   };
 
-  // const onTimeout = () => {
-  //   setTimeout(() => {}, 1000);
-  // };
-
   return (
     <>
+      {isLoading && <Loader />}
       {!isLVLComplete && (
         <div className={!playing && !isClickAnswer ? s.hidden : s.wrapper}>
           {answersList && (

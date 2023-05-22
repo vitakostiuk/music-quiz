@@ -23,6 +23,7 @@ import {
   answerState,
   getUserScoreEN,
   getUserScoreUKR,
+  getIsLoading,
 } from '../../redux/player/playerSelectors';
 import {
   getAllEngByUser,
@@ -34,6 +35,7 @@ import Player from '../Player';
 import Answers from '../Answers';
 import { songs } from './songs';
 import { songsEn } from '../Game/songsEN';
+import Loader from '../common/Loader';
 import s from './Game.module.css';
 
 const Game = () => {
@@ -60,12 +62,16 @@ const Game = () => {
   const currentSong = useSelector(getCurrent);
   const answers = useSelector(answerState);
 
+  const isLoading = useSelector(getIsLoading);
+
   // Витягуэмо з бекенду інформацію про скор юзера (ENG).
   // Це треба для того, щоб потім запускати гру з того левела, на якму юзер закінчив
   useEffect(() => {
     if (!isEngLang) return;
 
-    dispatch(getAllEngByUser(userID));
+    if (userID) {
+      dispatch(getAllEngByUser(userID));
+    }
   }, [dispatch, userID, isRoboQuizMode, isEngLang]);
 
   // Витягуэмо з бекенду інформацію про скор юзера (UKR).
@@ -73,7 +79,9 @@ const Game = () => {
   useEffect(() => {
     if (isEngLang) return;
 
-    dispatch(getAllUkrByUser(userID));
+    if (userID) {
+      dispatch(getAllUkrByUser(userID));
+    }
   }, [dispatch, userID, isRoboQuizMode, isEngLang]);
 
   // Обробка інформацїї про скор юзера (ENG)
@@ -306,77 +314,84 @@ const Game = () => {
 
   return (
     <>
+      {' '}
       <Paper>
-        <div className={s.titleWrapper}>
-          {isEngLang && (
-            <>
-              {isRoboQuizMode && (
-                <h1 className={s.titleRobo}>
-                  {t('game.levelRobo')} {`${levelRoboEN}`}
-                </h1>
-              )}
-              {!isRoboQuizMode && (
-                <h1 className={s.titleMusic}>
-                  {t('game.levelMusic')} {`${levelMusicEN}`}
-                </h1>
-              )}
-            </>
-          )}
+        {isLoading && <Loader />}
 
-          {!isEngLang && (
-            <>
-              {isRoboQuizMode && (
-                <h1 className={s.titleRobo}>
-                  {t('game.levelRobo')} {`${levelRoboUKR}`}
-                </h1>
+        {!isLoading && (
+          <div>
+            <div className={s.titleWrapper}>
+              {isEngLang && (
+                <>
+                  {isRoboQuizMode && (
+                    <h1 className={s.titleRobo}>
+                      {t('game.levelRobo')} {`${levelRoboEN}`}
+                    </h1>
+                  )}
+                  {!isRoboQuizMode && (
+                    <h1 className={s.titleMusic}>
+                      {t('game.levelMusic')} {`${levelMusicEN}`}
+                    </h1>
+                  )}
+                </>
               )}
-              {!isRoboQuizMode && (
-                <h1 className={s.titleMusic}>
-                  {t('game.levelMusic')} {`${levelMusicUKR}`}
-                </h1>
-              )}
-            </>
-          )}
-        </div>
-        <ul className={s.list}>
-          {/* ENG */}
-          {isEngLang &&
-            songsListEN.map(({ id, name }, idx) => (
-              <li key={id} className={s.itemWrapper}>
-                <div
-                  className={setClassnameButtons(idx)}
-                  onClick={() => handleClickSong(idx)}
-                >
-                  {currentSong <= idx && answers.length <= 4 && idx + 1}
-                </div>
-                {idx < 4 && (
-                  <div className={s.lineWrapper}>
-                    <div className={setClassnameLine(idx)}></div>
-                  </div>
-                )}
-              </li>
-            ))}
 
-          {/* UKR */}
-          {!isEngLang &&
-            songsListUKR.map(({ id, name }, idx) => (
-              <li key={id} className={s.itemWrapper}>
-                <div
-                  className={setClassnameButtons(idx)}
-                  onClick={() => handleClickSong(idx)}
-                >
-                  {currentSong <= idx && answers.length <= 4 && idx + 1}
-                </div>
-                {idx < 4 && (
-                  <div className={s.lineWrapper}>
-                    <div className={setClassnameLine(idx)}></div>
-                  </div>
-                )}
-              </li>
-            ))}
-        </ul>
-        <Player />
-        <Answers />
+              {!isEngLang && (
+                <>
+                  {isRoboQuizMode && (
+                    <h1 className={s.titleRobo}>
+                      {t('game.levelRobo')} {`${levelRoboUKR}`}
+                    </h1>
+                  )}
+                  {!isRoboQuizMode && (
+                    <h1 className={s.titleMusic}>
+                      {t('game.levelMusic')} {`${levelMusicUKR}`}
+                    </h1>
+                  )}
+                </>
+              )}
+            </div>
+            <ul className={s.list}>
+              {/* ENG */}
+              {isEngLang &&
+                songsListEN.map(({ id, name }, idx) => (
+                  <li key={id} className={s.itemWrapper}>
+                    <div
+                      className={setClassnameButtons(idx)}
+                      onClick={() => handleClickSong(idx)}
+                    >
+                      {currentSong <= idx && answers.length <= 4 && idx + 1}
+                    </div>
+                    {idx < 4 && (
+                      <div className={s.lineWrapper}>
+                        <div className={setClassnameLine(idx)}></div>
+                      </div>
+                    )}
+                  </li>
+                ))}
+
+              {/* UKR */}
+              {!isEngLang &&
+                songsListUKR.map(({ id, name }, idx) => (
+                  <li key={id} className={s.itemWrapper}>
+                    <div
+                      className={setClassnameButtons(idx)}
+                      onClick={() => handleClickSong(idx)}
+                    >
+                      {currentSong <= idx && answers.length <= 4 && idx + 1}
+                    </div>
+                    {idx < 4 && (
+                      <div className={s.lineWrapper}>
+                        <div className={setClassnameLine(idx)}></div>
+                      </div>
+                    )}
+                  </li>
+                ))}
+            </ul>
+            <Player />
+            <Answers />
+          </div>
+        )}
       </Paper>
     </>
   );

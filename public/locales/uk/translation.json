@@ -35,6 +35,7 @@
     "sec": "ceк",
     "total": "Загально"
   },
+  
   "auth": {
     "questionForSignup": "Немає аккаунту?",
     "questionForSignin": "Вже є аккаунт?",

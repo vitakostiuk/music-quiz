@@ -7,6 +7,7 @@ import {
   getLeaderboardInfoEN,
   getLeaderboardInfoUKR,
   getQuizMode,
+  getIsLoading,
 } from '../../redux/player/playerSelectors';
 import { getAllEng, getAllUkr } from '../../redux/player/playerOperations';
 import {
@@ -17,6 +18,7 @@ import {
 import { getFilteredArrayByOwner } from '../../helpers/getFilteredArrayByOwner';
 import { findUserById } from '../../helpers/findUserById';
 import { getSortedArrayByTimeAndLevels } from '../../helpers/getSortedArrayByTimeAndLevels';
+import Loader from '../common/Loader/Loader';
 import s from './Leaderboard.module.css';
 
 const Leaderboard = () => {
@@ -38,8 +40,7 @@ const Leaderboard = () => {
   const roboQuizMode = useSelector(getQuizMode);
   const isEngLang = useSelector(getLanguage);
   const userID = useSelector(getUserID);
-  const token = useSelector(getToken);
-  const googleToken = useSelector(getGoogleToken);
+  const isLoading = useSelector(getIsLoading);
 
   // Діспатчимо асинхронну операцію, щоб отримати ВСЮ інформацію для лідерборду
   useEffect(() => {
@@ -136,285 +137,300 @@ const Leaderboard = () => {
   };
   return (
     <>
-      <div className={s.paper}>
-        <div className={s.titleWrapper}>
-          <div className={s.btnsWrapper}>
-            <button
-              className={roboQuizMode ? s.btnRoboIsRobo : s.btnRoboIsMusic}
-              type="button"
-              onClick={() => handleClickModeBtn('robo')}
-            >
-              {t('leaderboard.robo')}
-            </button>
-            <button
-              className={roboQuizMode ? s.btnMusicIsRobo : s.btnMusicIsMusic}
-              type="button"
-              onClick={() => handleClickModeBtn('music')}
-            >
-              {t('leaderboard.music')}
-            </button>
+      {isLoading && <Loader />}
+      {!isLoading && (
+        <div className={s.paper}>
+          <div className={s.titleWrapper}>
+            <div className={s.btnsWrapper}>
+              <button
+                className={roboQuizMode ? s.btnRoboIsRobo : s.btnRoboIsMusic}
+                type="button"
+                onClick={() => handleClickModeBtn('robo')}
+              >
+                {t('leaderboard.robo')}
+              </button>
+              <button
+                className={roboQuizMode ? s.btnMusicIsRobo : s.btnMusicIsMusic}
+                type="button"
+                onClick={() => handleClickModeBtn('music')}
+              >
+                {t('leaderboard.music')}
+              </button>
+            </div>
+            <h1 className={roboQuizMode ? s.titleRobo : s.titleMusic}>
+              {t('leaderboard.leaderboard')}
+            </h1>
           </div>
-          <h1 className={roboQuizMode ? s.titleRobo : s.titleMusic}>
-            {t('leaderboard.leaderboard')}
-          </h1>
-        </div>
 
-        {/* ERROR TEXT */}
-        {roboQuizMode && roboInfo.length === 0 && roboWinners.length === 0 && (
-          <h2 className={s.errorText}>{t('leaderboard.emptyLeaderboard')}</h2>
-        )}
-        {!roboQuizMode &&
-          musicInfo.length === 0 &&
-          musicWinners.length === 0 && (
-            <h2 className={s.errorText}>{t('leaderboard.emptyLeaderboard')}</h2>
+          {/* ERROR TEXT */}
+          {roboQuizMode &&
+            roboInfo.length === 0 &&
+            roboWinners.length === 0 && (
+              <h2 className={s.errorText}>
+                {t('leaderboard.emptyLeaderboard')}
+              </h2>
+            )}
+          {!roboQuizMode &&
+            musicInfo.length === 0 &&
+            musicWinners.length === 0 && (
+              <h2 className={s.errorText}>
+                {t('leaderboard.emptyLeaderboard')}
+              </h2>
+            )}
+
+          {/* ROBO WINNERS */}
+          {roboQuizMode && roboWinners.length !== 0 && (
+            <div className={s.allWinsWrapper}>
+              {roboWinners.map((item, idx) => (
+                <li key={idx} className={s.winWrapper}>
+                  <div className={idx === 0 ? s.circleWinner : s.circle}>
+                    {' '}
+                    <img
+                      src={
+                        item[1]?.user?.avatarURL
+                          ? item[1]?.user?.avatarURL
+                          : 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/1.png'
+                      }
+                      alt="avatar"
+                      className={idx === 0 ? s.avatarWinner : s.avatarCircle}
+                    />
+                  </div>
+                  <div
+                    className={idx === 0 ? s.smallCircleWinner : s.smallCircle}
+                  >
+                    {idx + 1}
+                  </div>
+                  <div
+                    className={
+                      userIdxWinnersRobo === idx
+                        ? s.backgroundUserRobo
+                        : s.background
+                    }
+                  >
+                    <p
+                      className={
+                        userIdxWinnersRobo === idx ? s.textWhite : s.text
+                      }
+                    >
+                      {item[1].user.name}
+                    </p>
+                    <div className={s.scoreWrapper}>
+                      <p
+                        className={
+                          userIdxWinnersRobo === idx ? s.textWhite : s.text
+                        }
+                      >
+                        {item.length - 1}
+                        lvls.
+                      </p>
+                      <p
+                        className={
+                          userIdxWinnersRobo === idx ? s.textWhite : s.text
+                        }
+                      >
+                        {item[0]}
+                        sec.
+                      </p>
+                      {/* Кнопка збереження результатів (поки що не реалізуємо) */}
+                      {/* {userIdxWinnersRobo === idx && !token && !googleToken && (
+                      <button type="button" className={s.saveResultBtnWinner}>
+                        Save result
+                      </button>
+                    )} */}
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </div>
           )}
 
-        {/* ROBO WINNERS */}
-        {roboQuizMode && roboWinners.length !== 0 && (
-          <div className={s.allWinsWrapper}>
-            {roboWinners.map((item, idx) => (
-              <li key={idx} className={s.winWrapper}>
-                <div className={idx === 0 ? s.circleWinner : s.circle}>
-                  {' '}
-                  <img
-                    src={
-                      item[1]?.user?.avatarURL
-                        ? item[1]?.user?.avatarURL
-                        : 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/1.png'
-                    }
-                    alt="avatar"
-                    className={idx === 0 ? s.avatarWinner : s.avatarCircle}
-                  />
-                </div>
-                <div
-                  className={idx === 0 ? s.smallCircleWinner : s.smallCircle}
-                >
-                  {idx + 1}
-                </div>
-                <div
-                  className={
-                    userIdxWinnersRobo === idx
-                      ? s.backgroundUserRobo
-                      : s.background
-                  }
-                >
-                  <p
-                    className={
-                      userIdxWinnersRobo === idx ? s.textWhite : s.text
-                    }
-                  >
-                    {item[1].user.name}
-                  </p>
-                  <div className={s.scoreWrapper}>
-                    <p
-                      className={
-                        userIdxWinnersRobo === idx ? s.textWhite : s.text
+          {/* MUSIC WINNERS */}
+          {!roboQuizMode && musicWinners.length !== 0 && (
+            <div className={s.allWinsWrapper}>
+              {musicWinners.map((item, idx) => (
+                <li key={idx} className={s.winWrapper}>
+                  <div className={idx === 0 ? s.circleWinner : s.circle}>
+                    <img
+                      src={
+                        item[1]?.user?.avatarURL
+                          ? item[1]?.user?.avatarURL
+                          : 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/1.png'
                       }
-                    >
-                      {item.length - 1}
-                      lvls.
-                    </p>
-                    <p
-                      className={
-                        userIdxWinnersRobo === idx ? s.textWhite : s.text
-                      }
-                    >
-                      {item[0]}
-                      sec.
-                    </p>
-                    {/* Кнопка збереження результатів (поки що не реалізуємо) */}
-                    {/* {userIdxWinnersRobo === idx && !token && !googleToken && (
-                      <button type="button" className={s.saveResultBtnWinner}>
-                        Save result
-                      </button>
-                    )} */}
+                      alt="avatar"
+                      className={idx === 0 ? s.avatarWinner : s.avatarCircle}
+                    />
                   </div>
-                </div>
-              </li>
-            ))}
-          </div>
-        )}
-
-        {/* MUSIC WINNERS */}
-        {!roboQuizMode && musicWinners.length !== 0 && (
-          <div className={s.allWinsWrapper}>
-            {musicWinners.map((item, idx) => (
-              <li key={idx} className={s.winWrapper}>
-                <div className={idx === 0 ? s.circleWinner : s.circle}>
-                  <img
-                    src={
-                      item[1]?.user?.avatarURL
-                        ? item[1]?.user?.avatarURL
-                        : 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/1.png'
-                    }
-                    alt="avatar"
-                    className={idx === 0 ? s.avatarWinner : s.avatarCircle}
-                  />
-                </div>
-                <div
-                  className={idx === 0 ? s.smallCircleWinner : s.smallCircle}
-                >
-                  {idx + 1}
-                </div>
-                <div
-                  className={
-                    userIdxWinnersMusic === idx
-                      ? s.backgroundUserMusic
-                      : s.background
-                  }
-                >
-                  {' '}
-                  <p
+                  <div
+                    className={idx === 0 ? s.smallCircleWinner : s.smallCircle}
+                  >
+                    {idx + 1}
+                  </div>
+                  <div
                     className={
-                      userIdxWinnersMusic === idx ? s.textWhite : s.text
+                      userIdxWinnersMusic === idx
+                        ? s.backgroundUserMusic
+                        : s.background
                     }
                   >
-                    {item[1].user.name}
-                  </p>
-                  <div className={s.scoreWrapper}>
+                    {' '}
                     <p
                       className={
                         userIdxWinnersMusic === idx ? s.textWhite : s.text
                       }
                     >
-                      {item.length - 1}
-                      lvls.
+                      {item[1].user.name}
                     </p>
-                    <p
-                      className={
-                        userIdxWinnersMusic === idx ? s.textWhite : s.text
-                      }
-                    >
-                      {item[0]}
-                      sec.
-                    </p>
-                    {/* Кнопка збереження результатів (поки що не реалізуємо) */}
-                    {/* {userIdxWinnersMusic === idx && !token && !googleToken && (
+                    <div className={s.scoreWrapper}>
+                      <p
+                        className={
+                          userIdxWinnersMusic === idx ? s.textWhite : s.text
+                        }
+                      >
+                        {item.length - 1}
+                        lvls.
+                      </p>
+                      <p
+                        className={
+                          userIdxWinnersMusic === idx ? s.textWhite : s.text
+                        }
+                      >
+                        {item[0]}
+                        sec.
+                      </p>
+                      {/* Кнопка збереження результатів (поки що не реалізуємо) */}
+                      {/* {userIdxWinnersMusic === idx && !token && !googleToken && (
                       <button type="button" className={s.saveResultBtnWinner}>
                         Save result
                       </button>
                     )} */}
+                    </div>
                   </div>
-                </div>
-              </li>
-            ))}
-          </div>
-        )}
+                </li>
+              ))}
+            </div>
+          )}
 
-        {/* Список гравців РОБОТ */}
-        {roboQuizMode && (
-          <div className={s.listWrapper}>
-            {' '}
-            <ol className={s.list}>
-              {roboInfo.length !== 0 &&
-                roboInfo.map((item, idx) => (
-                  <li
-                    key={item[1].user.name}
-                    className={
-                      userIdxRobo === idx ? s.itemWrapUserRobo : s.itemWrap
-                    }
-                  >
-                    <div className={s.outerWrapper}>
-                      <div className={s.circleItem}>
-                        <img
-                          src={
-                            item[1].user.avatarURL
-                              ? item[1].user.avatarURL
-                              : 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/1.png'
-                          }
-                          alt="avatar"
-                          className={s.avatar}
-                        />
-                      </div>{' '}
-                      <div
-                        className={userIdxRobo === idx ? s.nameWhite : s.name}
-                      >
-                        {item[1].user.name}
-                      </div>
-                      {/* Кнопка збереження результатів (поки що не реалізуємо) */}
-                      {/* {userIdxRobo === idx && !token && !googleToken && (
+          {/* Список гравців РОБОТ */}
+          {roboQuizMode && (
+            <div className={s.listWrapper}>
+              {' '}
+              <ol className={s.list}>
+                {roboInfo.length !== 0 &&
+                  roboInfo.map((item, idx) => (
+                    <li
+                      key={item[1].user.name}
+                      className={
+                        userIdxRobo === idx ? s.itemWrapUserRobo : s.itemWrap
+                      }
+                    >
+                      <div className={s.outerWrapper}>
+                        <div className={s.circleItem}>
+                          <img
+                            src={
+                              item[1].user.avatarURL
+                                ? item[1].user.avatarURL
+                                : 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/1.png'
+                            }
+                            alt="avatar"
+                            className={s.avatar}
+                          />
+                        </div>{' '}
+                        <div
+                          className={userIdxRobo === idx ? s.nameWhite : s.name}
+                        >
+                          {item[1].user.name}
+                        </div>
+                        {/* Кнопка збереження результатів (поки що не реалізуємо) */}
+                        {/* {userIdxRobo === idx && !token && !googleToken && (
                         <button type="button" className={s.saveResultBtnList}>
                           Save result
                         </button>
                       )} */}
-                      <div className={s.innerWrapper}>
-                        <div
-                          className={userIdxRobo === idx ? s.textWhite : s.text}
-                        >
-                          {item.length - 1} lvls.
-                        </div>
-                        <div
-                          className={userIdxRobo === idx ? s.textWhite : s.text}
-                        >
-                          {item[0]} sec.
+                        <div className={s.innerWrapper}>
+                          <div
+                            className={
+                              userIdxRobo === idx ? s.textWhite : s.text
+                            }
+                          >
+                            {item.length - 1} lvls.
+                          </div>
+                          <div
+                            className={
+                              userIdxRobo === idx ? s.textWhite : s.text
+                            }
+                          >
+                            {item[0]} sec.
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </li>
-                ))}
-            </ol>
-          </div>
-        )}
+                    </li>
+                  ))}
+              </ol>
+            </div>
+          )}
 
-        {/* Список гравців МУЗИКА */}
-        {!roboQuizMode && (
-          <div className={s.listWrapper}>
-            {' '}
-            <ol className={s.list}>
-              {musicInfo.length !== 0 &&
-                musicInfo.map((item, idx) => (
-                  <li
-                    key={item[1].user.name}
-                    className={
-                      userIdxMusic === idx ? s.itemWrapUserMusic : s.itemWrap
-                    }
-                  >
-                    <div className={s.outerWrapper}>
-                      <div className={s.circleItem}>
-                        <img
-                          src={
-                            item[1].user.avatarURL
-                              ? item[1].user.avatarURL
-                              : 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/1.png'
+          {/* Список гравців МУЗИКА */}
+          {!roboQuizMode && (
+            <div className={s.listWrapper}>
+              {' '}
+              <ol className={s.list}>
+                {musicInfo.length !== 0 &&
+                  musicInfo.map((item, idx) => (
+                    <li
+                      key={item[1].user.name}
+                      className={
+                        userIdxMusic === idx ? s.itemWrapUserMusic : s.itemWrap
+                      }
+                    >
+                      <div className={s.outerWrapper}>
+                        <div className={s.circleItem}>
+                          <img
+                            src={
+                              item[1].user.avatarURL
+                                ? item[1].user.avatarURL
+                                : 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/1.png'
+                            }
+                            alt="avatar"
+                            className={s.avatar}
+                          />
+                        </div>{' '}
+                        <div
+                          className={
+                            userIdxMusic === idx ? s.nameWhite : s.name
                           }
-                          alt="avatar"
-                          className={s.avatar}
-                        />
-                      </div>{' '}
-                      <div
-                        className={userIdxMusic === idx ? s.nameWhite : s.name}
-                      >
-                        {item[1].user.name}
-                      </div>
-                      {/* Кнопка збереження результатів (поки що не реалізуємо) */}
-                      {/* {userIdxMusic === idx && !token && !googleToken && (
+                        >
+                          {item[1].user.name}
+                        </div>
+                        {/* Кнопка збереження результатів (поки що не реалізуємо) */}
+                        {/* {userIdxMusic === idx && !token && !googleToken && (
                         <button type="button" className={s.saveResultBtnList}>
                           Save result
                         </button>
                       )} */}
-                      <div className={s.innerWrapper}>
-                        <div
-                          className={
-                            userIdxMusic === idx ? s.textWhite : s.text
-                          }
-                        >
-                          {item.length - 1} lvls.
-                        </div>
-                        <div
-                          className={
-                            userIdxMusic === idx ? s.textWhite : s.text
-                          }
-                        >
-                          {item[0]} sec.
+                        <div className={s.innerWrapper}>
+                          <div
+                            className={
+                              userIdxMusic === idx ? s.textWhite : s.text
+                            }
+                          >
+                            {item.length - 1} lvls.
+                          </div>
+                          <div
+                            className={
+                              userIdxMusic === idx ? s.textWhite : s.text
+                            }
+                          >
+                            {item[0]} sec.
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </li>
-                ))}
-            </ol>
-          </div>
-        )}
-      </div>
+                    </li>
+                  ))}
+              </ol>
+            </div>
+          )}
+        </div>
+      )}
     </>
   );
 };

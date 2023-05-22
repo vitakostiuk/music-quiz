@@ -76,7 +76,7 @@ const addLVLCompleteInfoEN = createAsyncThunk(
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
       const { data } = await axios.post('/game/en', dataInfo);
-      // console.log('data', data);
+      console.log('addLVLCompleteInfoEN', data);
 
       return data;
     } catch (error) {
@@ -99,7 +99,7 @@ const addLVLCompleteInfoUKR = createAsyncThunk(
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
       const { data } = await axios.post('/game/ukr', dataInfo);
-      // console.log('data', data);
+      console.log('addLVLCompleteInfoUKR', data);
 
       return data;
     } catch (error) {

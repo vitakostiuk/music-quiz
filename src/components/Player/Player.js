@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { togglePlaying } from '../../redux/player/playerSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { setStartPlayingTime } from '../../redux/player/playerSlice';
+import {
+  setStartPlayingTime,
+  togglePlaying,
+} from '../../redux/player/playerSlice';
 import {
   getQuizMode,
   getLanguage,
@@ -39,8 +41,6 @@ const Player = () => {
 
   // PLAY
   const handleClikPlay = () => {
-    // console.log('total1', Math.round(new Date().getTime()));
-
     dispatch(setStartPlayingTime(Math.round(new Date().getTime())));
     dispatch(togglePlaying());
     playAudio();

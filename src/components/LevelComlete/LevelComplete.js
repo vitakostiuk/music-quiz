@@ -21,16 +21,8 @@ import {
   setNextLevelMusicUKR,
   restartLevelRoboUKR,
   restartLevelMusicUKR,
-  setClickAnswer,
-  setCurrent,
-  resetAnswerStateArray,
-  resetLevelCompleteInfo,
-  setStartPlayingTime,
+  resetState,
 } from '../../redux/player/playerSlice';
-import {
-  addLVLCompleteInfoEN,
-  addLVLCompleteInfoUKR,
-} from '../../redux/player/playerOperations';
 import { ReactComponent as WrongIcon } from '../../images/cross.svg';
 import { ReactComponent as TrueIcon } from '../../images/checkmark.svg';
 import { ReactComponent as RestartIcon } from '../../images/restart.svg';
@@ -75,35 +67,8 @@ const LevelComplete = () => {
     return isEngLang ? shuffleArray[0].eng : shuffleArray[0].ukr;
   };
 
-  // Ф-я скидає всі стейти до початкового (InitialState)
-  const resetState = () => {
-    dispatch(setCurrent(0));
-    dispatch(setClickAnswer(false));
-    dispatch(resetAnswerStateArray([]));
-    dispatch(resetLevelCompleteInfo([]));
-    dispatch(setStartPlayingTime(''));
-  };
-
   const handleClickNextLevelEN = () => {
     if (!isEngLang) return;
-
-    // ВІДПРАВЛЯЄМО НА БЕКЕНД levelCompleteInfo
-    // --1-- загальний час, за який пройдено рiвень
-    const totalTime = levelCompleteInfo
-      .reduce((acc, { time }) => {
-        return acc + time;
-      }, 0)
-      .toFixed(2);
-
-    // --2-- Об'єкт,який відправляємо на бекенд
-    const userLevelCompleteInfo = {
-      isRoboQuizMode,
-      level: isRoboQuizMode ? levelRoboEN : levelMusicEN,
-      time: Number(totalTime),
-    };
-
-    // --3-- Діспатчимо об'єкт
-    dispatch(addLVLCompleteInfoEN(userLevelCompleteInfo));
 
     // Збільшуємо левел на 1 і ресетимо дані
     if (isRoboQuizMode) {
@@ -112,29 +77,11 @@ const LevelComplete = () => {
       dispatch(setNextLevelMusicEN());
     }
 
-    resetState();
+    dispatch(resetState());
   };
 
   const handleClickNextLevelUKR = () => {
     if (isEngLang) return;
-
-    // ВІДПРАВЛЯЄМО НА БЕКЕНД levelCompleteInfo
-    // --1-- загальний час, за який пройдено рiвень
-    const totalTime = levelCompleteInfo
-      .reduce((acc, { time }) => {
-        return acc + time;
-      }, 0)
-      .toFixed(2);
-
-    // --2-- Об'єкт,який відправляємо на бекенд
-    const userLevelCompleteInfo = {
-      isRoboQuizMode,
-      level: isRoboQuizMode ? levelRoboUKR : levelMusicUKR,
-      time: Number(totalTime),
-    };
-
-    // --3-- Діспатчимо об'єкт
-    dispatch(addLVLCompleteInfoUKR(userLevelCompleteInfo));
 
     // Збільшуємо левел на 1 і ресетимо дані
     if (isRoboQuizMode) {
@@ -143,7 +90,7 @@ const LevelComplete = () => {
       dispatch(setNextLevelMusicUKR());
     }
 
-    resetState();
+    dispatch(resetState());
   };
 
   const handleRestartLevelEN = () => {
@@ -172,67 +119,32 @@ const LevelComplete = () => {
 
   // DISABLE NEXT LEVEL BUTTON (ENG)
   useEffect(() => {
-    if (!isEngLang) return;
-
     if (
-      (isRoboQuizMode && levelRoboEN === 5) ||
-      (!isRoboQuizMode && levelMusicEN === 5)
+      (isRoboQuizMode && levelRoboEN === 5 && isEngLang) ||
+      (!isRoboQuizMode && levelMusicEN === 5 && isEngLang)
     ) {
       setIsDisabledNextLevelEN(true);
+      return;
     }
-  }, [isEngLang, isRoboQuizMode, levelMusicEN, levelRoboEN]);
-
-  // DISABLE NEXT LEVEL BUTTON (UKR)
-  useEffect(() => {
-    if (isEngLang) return;
 
     if (
-      (isRoboQuizMode && levelRoboUKR === 5) ||
-      (!isRoboQuizMode && levelMusicUKR === 5)
+      (isRoboQuizMode && levelRoboUKR === 5 && !isEngLang) ||
+      (!isRoboQuizMode && levelMusicUKR === 5 && !isEngLang)
     ) {
       setIsDisabledNextLevelUKR(true);
+      return;
     }
-  }, [isEngLang, isRoboQuizMode, levelMusicUKR, levelRoboUKR]);
+  }, [
+    isEngLang,
+    isRoboQuizMode,
+    levelMusicEN,
+    levelMusicUKR,
+    levelRoboEN,
+    levelRoboUKR,
+  ]);
 
-  const handleLeaderboardEN = () => {
-    // --1-- загальний час, за який пройдено рiвень
-    const totalTime = levelCompleteInfo
-      .reduce((acc, { time }) => {
-        return acc + time;
-      }, 0)
-      .toFixed(2);
-
-    // --2-- Об'єкт,який відправляємо на бекенд
-    const userLevelCompleteInfo = {
-      isRoboQuizMode,
-      level: isRoboQuizMode ? levelRoboEN : levelMusicEN,
-      time: Number(totalTime),
-    };
-
-    // --3-- Діспатчимо об'єкт
-    dispatch(addLVLCompleteInfoEN(userLevelCompleteInfo));
-
-    navigate('/leaderboard');
-  };
-
-  const handleLeaderboardUKR = () => {
-    // --1-- загальний час, за який пройдено рiвень
-    const totalTime = levelCompleteInfo
-      .reduce((acc, { time }) => {
-        return acc + time;
-      }, 0)
-      .toFixed(2);
-
-    // --2-- Об'єкт,який відправляємо на бекенд
-    const userLevelCompleteInfo = {
-      isRoboQuizMode,
-      level: isRoboQuizMode ? levelRoboEN : levelMusicEN,
-      time: Number(totalTime),
-    };
-
-    // --3-- Діспатчимо об'єкт
-    dispatch(addLVLCompleteInfoUKR(userLevelCompleteInfo));
-
+  const handleLeaderboard = () => {
+    dispatch(resetState());
     navigate('/leaderboard');
   };
 
@@ -297,9 +209,7 @@ const LevelComplete = () => {
       </div>
       {levelCompleteInfo.length !== 0 && (
         <div className={s.btnsContainer}>
-          {' '}
           <div className={s.btnsWrapper}>
-            {' '}
             <button
               className={isRoboQuizMode ? s.buttonRobo : s.buttonMusic}
               type="button"
@@ -332,8 +242,7 @@ const LevelComplete = () => {
             <button
               className={isRoboQuizMode ? s.buttonRobo : s.buttonMusic}
               type="button"
-              // onClick={() => navigate('/leaderboard')}
-              onClick={isEngLang ? handleLeaderboardEN : handleLeaderboardUKR}
+              onClick={handleLeaderboard}
             >
               {t('levelComplete.leaderboard')}
               <LeaderboardIcon className={s.icon} />

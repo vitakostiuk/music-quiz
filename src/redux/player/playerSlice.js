@@ -46,6 +46,25 @@ const playerSlice = createSlice({
   name: 'player',
   initialState,
   reducers: {
+    resetState: (state, { payload }) => {
+      state.currentSong = 0;
+      state.clickAnswer = false;
+      state.answerState = [];
+      state.levelCompleteInfo = [];
+      state.startPlayingTime = '';
+      state.isClickQuizMode = false;
+      state.isClickLogo = false;
+      state.isClickHome = false;
+      state.isClickLeaderboard = false;
+      state.isClickLanguage = false;
+    },
+    resetLevels: (state, { payload }) => {
+      state.levelRoboEN = 1;
+      state.levelMusicEN = 1;
+      state.levelMusicUKR = 1;
+      state.levelRoboUKR = 1;
+    },
+
     setQuizMode: (state, { payload }) => {
       state.isRoboQuizMode = payload;
     },
@@ -200,6 +219,9 @@ const playerSlice = createSlice({
 export const {
   setQuizMode,
   toggleLanguage,
+
+  resetState,
+  resetLevels,
 
   setLevelRoboEN,
   setLevelMusicEN,
