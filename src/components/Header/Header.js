@@ -23,6 +23,8 @@ const Header = () => {
   const [quizModePopup, setQuizModePopup] = useState(false);
   const [leaderboardPopup, setLeaderboardPopup] = useState(false);
   const [languagePopup, setLanguagePopup] = useState(false);
+  const [signinPopup, setSigninPopup] = useState(false);
+  const [signupPopup, setSignupPopup] = useState(false);
   const [isActiveHome, setIsActiveHome] = useState(true);
   const [isActiveLeaderboard, setIsActiveLeaderboard] = useState(false);
   const [isActiveQuizMode, setIsActiveQuizMode] = useState(false);
@@ -37,12 +39,15 @@ const Header = () => {
   const refQuizMode = useRef();
   const refLeaderboarde = useRef();
   const refLanguage = useRef();
-  const refAvatar = useRef();
+  const refSignin = useRef();
+  const refSignup = useRef();
   useOutsideClick(refLogo, setLogoPopup);
   useOutsideClick(refHome, setHomePopup);
   useOutsideClick(refQuizMode, setQuizModePopup);
   useOutsideClick(refLeaderboarde, setLeaderboardPopup);
   useOutsideClick(refLanguage, setLanguagePopup);
+  useOutsideClick(refSignin, setSigninPopup);
+  useOutsideClick(refSignup, setSignupPopup);
 
   const isEngLang = useSelector(getLanguage);
   const token = useSelector(getToken);
@@ -150,10 +155,6 @@ const Header = () => {
       if (logoPopup) return setLogoPopup(false);
       setLogoPopup(true);
     }
-
-    // setTimeout(() => {
-    //   window.location.reload(false);
-    // });
   };
 
   // Клік по перемикачу мови
@@ -169,13 +170,40 @@ const Header = () => {
     }
   };
 
+  // Клік по signin
+  const onClickSignIn = () => {
+    if (answers.length === 0) {
+      navigate('/login');
+    }
+
+    // Попап при натисканні на signin в режмі гри
+    if (answers.length > 0) {
+      if (signinPopup) return setSigninPopup(false);
+      setSigninPopup(true);
+    }
+  };
+
+  // Клік по signup
+  const onClickSignUp = () => {
+    if (answers.length === 0) {
+      navigate('/register');
+    }
+
+    // Попап при натисканні на signin в режмі гри
+    if (answers.length > 0) {
+      if (signupPopup) return setSignupPopup(false);
+      setSignupPopup(true);
+    }
+  };
+
   // POPUP BUTTONS (попап коли в грі натискається будь-що з хедеру (крім мови))
   const onClickLeaveGameBtn = to => {
     setLogoPopup(null);
     setHomePopup(null);
     setQuizModePopup(null);
     setLeaderboardPopup(null);
-    // setLanguagePopup(null);
+    setSigninPopup(null);
+    setSignupPopup(null);
 
     dispatch(resetState());
 
@@ -187,6 +215,8 @@ const Header = () => {
     setQuizModePopup(null);
     setLeaderboardPopup(null);
     setLanguagePopup(null);
+    setSigninPopup(null);
+    setSignupPopup(null);
   };
 
   // POPUP BUTTONS (попап коли в грі натискається перемикач мови)
@@ -275,22 +305,34 @@ const Header = () => {
         </div>
       </div>
       {!token && (
-        <button
-          className={s.signin}
-          type="button"
-          onClick={() => navigate('/login')}
-        >
-          {t('header.signin')}
-        </button>
+        <div ref={refSignin}>
+          <button className={s.signin} type="button" onClick={onClickSignIn}>
+            {t('header.signin')}
+          </button>
+          {signinPopup && (
+            <Popup
+              title={t('popup.title')}
+              handleClickLeaveBtn={onClickLeaveGameBtn}
+              handleClickContinueBtn={onClickContinueGameBtn}
+              to="login"
+            />
+          )}
+        </div>
       )}
       {!token && (
-        <button
-          className={s.signup}
-          type="button"
-          onClick={() => navigate('/register')}
-        >
-          {t('header.signup')}
-        </button>
+        <div ref={refSignup}>
+          <button className={s.signup} type="button" onClick={onClickSignUp}>
+            {t('header.signup')}
+          </button>
+          {signupPopup && (
+            <Popup
+              title={t('popup.title')}
+              handleClickLeaveBtn={onClickLeaveGameBtn}
+              handleClickContinueBtn={onClickContinueGameBtn}
+              to="register"
+            />
+          )}
+        </div>
       )}
       <div ref={refLanguage}>
         <button className={s.language} onClick={onClickLangBtn}>
