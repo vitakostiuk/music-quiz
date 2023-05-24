@@ -160,9 +160,9 @@ const Answers = () => {
       setIsMatch(true);
       isRightAnswer = true;
 
-      setTimeout(() => {
-        setIsDisabled(false);
-      }, 2000);
+      // setTimeout(() => {
+      //   setIsDisabled(false);
+      // }, 2000);
     } else {
       setIsMatch(false);
       isRightAnswer = false;

@@ -143,7 +143,7 @@ const LevelComplete = () => {
     levelRoboUKR,
   ]);
 
-  const handleLeaderboard = () => {
+  const handleClickLeaderboard = () => {
     dispatch(resetState());
     navigate('/leaderboard');
   };
@@ -242,7 +242,7 @@ const LevelComplete = () => {
             <button
               className={isRoboQuizMode ? s.buttonRobo : s.buttonMusic}
               type="button"
-              onClick={handleLeaderboard}
+              onClick={handleClickLeaderboard}
             >
               {t('levelComplete.leaderboard')}
               <LeaderboardIcon className={s.icon} />

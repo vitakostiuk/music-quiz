@@ -55,5 +55,10 @@
     "passwordPlaceholder": "Ваш пароль",
     "resetYourPassword": "Скинути пароль",
     "textBtn": "Скинути"
+  },
+  "popup": {
+    "title": "Ви дійсно бажаєте вийти? Цей рівень не збережеться.",
+    "leaveBtn": "вийти",
+    "continueBtn": "залишитися"
   }
 }

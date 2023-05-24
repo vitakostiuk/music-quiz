@@ -57,6 +57,7 @@ const playerSlice = createSlice({
       state.isClickHome = false;
       state.isClickLeaderboard = false;
       state.isClickLanguage = false;
+      state.playing = false;
     },
     resetLevels: (state, { payload }) => {
       state.levelRoboEN = 1;

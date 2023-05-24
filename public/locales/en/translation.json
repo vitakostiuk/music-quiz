@@ -54,5 +54,10 @@
     "passwordPlaceholder": "your password",
     "resetYourPassword": "Reset Your Password",
     "textBtn": "reset password"
+  },
+  "popup": {
+    "title": "Do you really want to leave the game? This level will not be saved.",
+    "leaveBtn": "leave",
+    "continueBtn": "continue"
   }
 }

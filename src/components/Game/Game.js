@@ -104,7 +104,7 @@ const Game = () => {
     const userScoreInfoMusicEN = userScoreEN.filter(
       item => item.isRoboQuizMode === 'false'
     );
-    console.log('userScoreInfoMusicEN', userScoreInfoMusicEN);
+    // console.log('userScoreInfoMusicEN', userScoreInfoMusicEN);
     console.log(userScoreInfoMusicEN.length);
     if (
       userScoreInfoMusicEN.length !== 0 &&
