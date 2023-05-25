@@ -5,6 +5,7 @@ import {
   forgotPassword,
   google,
   logout,
+  getUser,
 } from './authOperations';
 
 const initialState = {
@@ -75,6 +76,24 @@ const authSlice = createSlice({
       .addCase(signin.rejected, (state, { payload }) => {
         state.loading = false;
         state.error = payload;
+      })
+
+      // REDUCER FOR GET_USER
+      .addCase(getUser.pending, state => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getUser.fulfilled, (state, { payload }) => {
+        state.loadingUser = false;
+        state.userEmail = payload.email;
+      })
+      .addCase(getUser.rejected, (state, { payload }) => {
+        state.loading = false;
+        state.error = payload;
+        state.token = null;
+        state.userID = null;
+        state.userEmail = null;
+        state.userAvatar = null;
       })
 
       // FORGOT PASSWORD

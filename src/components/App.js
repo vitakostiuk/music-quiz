@@ -1,8 +1,11 @@
 import { Route, Routes } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 // import { useSelector } from 'react-redux';
-// import { getToken, getGoogleToken } from '../redux/auth/authSelectors';
+import { getToken } from '../redux/auth/authSelectors';
+import { getUser } from '../redux/auth/authOperations';
 import SignInPage from './pages/SignInPage';
 import SignUpPage from './pages/SignUpPage';
 import GamePage from './pages/GamePage';
@@ -12,10 +15,16 @@ import LeaderboardPage from './pages/LeaderboardPage';
 import s from './App.module.css';
 
 function App() {
-  // const token = useSelector(getToken);
-  // const googleToken = useSelector(getGoogleToken);
-  // console.log('token', token);
-  // console.log('googleToken', googleToken);
+  const dispatch = useDispatch();
+
+  const token = useSelector(getToken);
+
+  useEffect(() => {
+    if (!token) return;
+
+    dispatch(getUser());
+  }, [dispatch, token]);
+
   return (
     <>
       <Header />

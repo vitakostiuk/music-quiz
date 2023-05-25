@@ -78,4 +78,25 @@ const logout = createAsyncThunk(
   }
 );
 
-export { signup, signin, forgotPassword, google, logout };
+const getUser = createAsyncThunk(
+  'auth/getUser',
+  async (_, { getState, rejectWithValue }) => {
+    try {
+      const { token } = getState().auth;
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
+      const { data } = await axios.get(`/users/current`);
+      console.log('auth/getUser', data);
+      return data;
+    } catch (error) {
+      // if (error.response.status === 401) {
+      //   toast.error(
+      //     'You are not authorized. Log in or Sign up to save results'
+      //   );
+      // }
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export { signup, signin, forgotPassword, google, logout, getUser };

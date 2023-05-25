@@ -81,11 +81,11 @@ const addLVLCompleteInfoEN = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error);
-      if (error.response.status === 401) {
-        toast.error(
-          'You are not authorized. Log in or Sign up to save results'
-        );
-      }
+      // if (error.response.status === 401) {
+      //   toast.error(
+      //     'You are not authorized. Log in or Sign up to save results'
+      //   );
+      // }
       return rejectWithValue(error.message);
     }
   }
@@ -104,11 +104,11 @@ const addLVLCompleteInfoUKR = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error);
-      if (error.response.status === 401) {
-        toast.error(
-          'You are not authorized. Log in or Sign up to save results'
-        );
-      }
+      // if (error.response.status === 401) {
+      //   toast.error(
+      //     'You are not authorized. Log in or Sign up to save results'
+      //   );
+      // }
       return rejectWithValue(error.message);
     }
   }
