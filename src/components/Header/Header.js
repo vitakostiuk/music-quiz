@@ -13,7 +13,7 @@ import { getToken } from '../../redux/auth/authSelectors';
 import { ReactComponent as Logo } from '../../images/main-logo1.svg';
 import AvatarButton from './AvatarButton';
 import Popup from '../common/Popup';
-import useOutsideClick from '../../hooks/useOutsideClick';
+import { useOutsideClick } from '../../hooks';
 import s from './Header.module.css';
 import './SelectList.scss';
 

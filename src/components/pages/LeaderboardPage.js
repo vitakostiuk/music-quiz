@@ -1,23 +1,13 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
-import { getQuizMode } from '../../redux/player/playerSelectors';
 import Leaderboard from '../Leaderboard';
 import Container from '../common/Container';
-import s from './Pages.module.css';
+import GameWrapper from '../common/wrappers/GameWrapper';
 
-const LeaderboardPage = () => {
-  const isRoboQuizMode = useSelector(getQuizMode);
-  return (
-    <div
-      className={
-        isRoboQuizMode ? s.gamePageWrapperRobo : s.gamePageWrapperMusic
-      }
-    >
-      <Container>
-        <Leaderboard />
-      </Container>
-    </div>
-  );
-};
+const LeaderboardPage = () => (
+  <GameWrapper>
+    <Container>
+      <Leaderboard />
+    </Container>
+  </GameWrapper>
+);
 
 export default LeaderboardPage;

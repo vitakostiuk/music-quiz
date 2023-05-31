@@ -2,7 +2,7 @@ import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import useOutsideClick from '../../../hooks/useOutsideClick';
+import { useOutsideClick } from '../../../hooks';
 import { logout } from '../../../redux/auth/authOperations';
 import { resetState, resetLevels } from '../../../redux/player/playerSlice';
 import {

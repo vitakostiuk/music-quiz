@@ -1,16 +1,13 @@
-import React from 'react';
 import Home from '../Home';
 import Container from '../common/Container';
-import s from './Pages.module.css';
+import HomeWrapper from '../common/wrappers/HomeWrapper';
 
-const HomePage = () => {
-  return (
-    <div className={s.homePageWrapper}>
-      <Container>
-        <Home />
-      </Container>
-    </div>
-  );
-};
+const HomePage = () => (
+  <HomeWrapper>
+    <Container>
+      <Home />
+    </Container>
+  </HomeWrapper>
+);
 
 export default HomePage;

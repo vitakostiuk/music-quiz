@@ -1,0 +1,17 @@
+.gamePageWrapperRobo {
+  width: 100vw;
+  /* min-height: 968px; */
+  height: 100vh;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  /* border: 1px solid red; */
+  padding-top: 103px;
+  background-image: url('../../../../images/BG_blue.svg');
+}
+
+.gamePageWrapperMusic {
+  composes: gamePageWrapperRobo;
+  padding-top: 103px;
+  background-image: url('../../../../images/BG.png');
+}

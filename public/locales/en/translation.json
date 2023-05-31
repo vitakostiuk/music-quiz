@@ -59,5 +59,13 @@
     "title": "Do you really want to leave the game? This level will not be saved.",
     "leaveBtn": "leave",
     "continueBtn": "continue"
+  },
+  "formValidation": {
+    "email": "Invalid email address",
+    "emailRequired": "Email is required",
+    "password": "Password is Too short",
+    "passwordRequired": "Password is required",
+    "name": "Name is Too short",
+    "nameRequired": "Name is required"
   }
 }

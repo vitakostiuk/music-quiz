@@ -14,8 +14,6 @@ import {
   getLevelMusicEN,
   getLevelRoboUKR,
   getLevelMusicUKR,
-  getLevelIdEN,
-  getLevelIdUKR,
   getIsLoading,
 } from '../../redux/player/playerSelectors';
 import {
@@ -27,8 +25,6 @@ import {
   setStartPlayingTime,
   resetAnswerStateArray,
   resetLevelCompleteInfo,
-  setLevelIdEN,
-  setLevelIdUKR,
 } from '../../redux/player/playerSlice';
 import {
   addLVLCompleteInfoEN,
@@ -56,9 +52,6 @@ const Answers = () => {
 
   const levelRoboUKR = useSelector(getLevelRoboUKR);
   const levelMusicUKR = useSelector(getLevelMusicUKR);
-
-  const levelIdEN = useSelector(getLevelIdEN);
-  const levelIdUKR = useSelector(getLevelIdUKR);
 
   const dispatch = useDispatch();
 

@@ -1,25 +1,15 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
 import Game from '../Game';
 import Container from '../common/Container';
 import Robot from '../common/Robot';
-import { getQuizMode } from '../../redux/player/playerSelectors';
-import s from './Pages.module.css';
+import GameWrapper from '../common/wrappers/GameWrapper';
 
-const GamePage = () => {
-  const isRoboQuizMode = useSelector(getQuizMode);
-  return (
-    <div
-      className={
-        isRoboQuizMode ? s.gamePageWrapperRobo : s.gamePageWrapperMusic
-      }
-    >
-      <Container>
-        <Robot />
-        <Game />
-      </Container>
-    </div>
-  );
-};
+const GamePage = () => (
+  <GameWrapper>
+    <Container>
+      <Robot />
+      <Game />
+    </Container>
+  </GameWrapper>
+);
 
 export default GamePage;

@@ -168,6 +168,11 @@
   border: none;
 }
 
+.bigButton:hover,
+.bigButton:focus {
+  background-color: #4fb1f7;
+}
+
 .questionContainr {
   display: flex;
   align-items: center;

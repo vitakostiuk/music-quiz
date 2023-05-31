@@ -6,31 +6,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Formik, Form, Field } from 'formik';
 import { GoogleLogin } from '@react-oauth/google';
 import jwt_decode from 'jwt-decode';
-import { forgotPassword, google } from '../../redux/auth/authOperations';
-import { getIsLoading } from '../../redux/auth/authSelectors';
-import Modal from '../common/Modal';
-import Loader from '../common/Loader/Loader';
-import * as Yup from 'yup';
+import { forgotPassword, google } from '../../../redux/auth/authOperations';
+import { getIsLoading } from '../../../redux/auth/authSelectors';
+import Modal from '../../common/Modal';
+import Loader from '../../common/Loader';
+import { authValidation } from '../../../hooks';
 import s from './AuthForm.module.css';
-
-const SigninSchema = Yup.object().shape({
-  email: Yup.string()
-    .email('Invalid email address')
-    .required('Email is required'),
-  password: Yup.string()
-    .min(8, 'Password is Too short')
-    .required('Password is required'),
-});
-
-const SignupSchema = Yup.object().shape({
-  name: Yup.string().min(2, 'Name is Too short').required('Name is required'),
-  email: Yup.string()
-    .email('Invalid email address')
-    .required('Email is required'),
-  password: Yup.string()
-    .min(8, 'Password is Too short')
-    .required('Password is required'),
-});
 
 const AuthForm = ({
   questionText,
@@ -42,6 +23,9 @@ const AuthForm = ({
 }) => {
   const [isShowModal, setisShowModal] = useState(false);
   const [email, setEmail] = useState(null);
+
+  const SigninSchema = authValidation.useLoginValidationSchema();
+  const SignupSchema = authValidation.useSignUpValidationSchema();
 
   const { t } = useTranslation();
 
