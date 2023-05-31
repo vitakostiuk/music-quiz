@@ -6,6 +6,8 @@ import {
   getAllUkr,
   getAllEngByUser,
   getAllUkrByUser,
+  addLVLCompleteInfoEN,
+  addLVLCompleteInfoUKR,
 } from './playerOperations';
 
 const initialState = {
@@ -17,6 +19,9 @@ const initialState = {
 
   levelRoboUKR: 1,
   levelMusicUKR: 1,
+
+  levelIdUKR: null,
+  levelIdEN: null,
 
   songslistUKR: songs.find(({ stage }) => stage === 1).quizInfo,
   songslistEN: songsEn.find(({ stage }) => stage === 1).quizInfo,
@@ -58,6 +63,8 @@ const playerSlice = createSlice({
       state.isClickLeaderboard = false;
       state.isClickLanguage = false;
       state.playing = false;
+      state.levelIdUKR = null;
+      state.levelIdEN = null;
     },
     resetLevels: (state, { payload }) => {
       state.levelRoboEN = 1;
@@ -92,6 +99,9 @@ const playerSlice = createSlice({
     restartLevelMusicEN: (state, { payload }) => {
       state.levelMusicEN = payload;
     },
+    // setLevelIdEN: (state, { payload }) => {
+    //   state.levelIdEN = payload;
+    // },
 
     // UKR
     setLevelRoboUKR: (state, { payload }) => {
@@ -112,6 +122,9 @@ const playerSlice = createSlice({
     restartLevelMusicUKR: (state, { payload }) => {
       state.levelMusicUKR = payload;
     },
+    // setLevelIdUKR: (state, { payload }) => {
+    //   state.levelIdUKR = payload;
+    // },
 
     // Збереження скору нового юзера
     setNewUserGameInfoEN: (state, { payload }) => {
@@ -213,6 +226,28 @@ const playerSlice = createSlice({
       .addCase(getAllUkrByUser.rejected, (state, { payload }) => {
         state.loading = false;
         state.error = payload;
+      })
+
+      // REDUCER FOR addLVLCompleteInfoEN (EN version)
+      .addCase(addLVLCompleteInfoEN.pending, state => {
+        state.error = null;
+      })
+      .addCase(addLVLCompleteInfoEN.fulfilled, (state, { payload }) => {
+        state.levelIdEN = payload._id;
+      })
+      .addCase(addLVLCompleteInfoEN.rejected, (state, { payload }) => {
+        state.error = payload;
+      })
+
+      // REDUCER FOR addLVLCompleteInfoUKR (UKR version)
+      .addCase(addLVLCompleteInfoUKR.pending, state => {
+        state.error = null;
+      })
+      .addCase(addLVLCompleteInfoUKR.fulfilled, (state, { payload }) => {
+        state.levelIdUKR = payload._id;
+      })
+      .addCase(addLVLCompleteInfoUKR.rejected, (state, { payload }) => {
+        state.error = payload;
       });
   },
 });
@@ -230,6 +265,7 @@ export const {
   setNextLevelMusicEN,
   restartLevelRoboEN,
   restartLevelMusicEN,
+  setLevelIdEN,
 
   setLevelRoboUKR,
   setLevelMusicUKR,
@@ -237,6 +273,7 @@ export const {
   setNextLevelMusicUKR,
   restartLevelRoboUKR,
   restartLevelMusicUKR,
+  setLevelIdUKR,
 
   setNewUserGameInfoEN,
   setNewUserGameInfoUKR,

@@ -14,6 +14,8 @@ import {
   getLevelMusicEN,
   getLevelRoboUKR,
   getLevelMusicUKR,
+  getLevelIdEN,
+  getLevelIdUKR,
   getIsLoading,
 } from '../../redux/player/playerSelectors';
 import {
@@ -25,6 +27,8 @@ import {
   setStartPlayingTime,
   resetAnswerStateArray,
   resetLevelCompleteInfo,
+  setLevelIdEN,
+  setLevelIdUKR,
 } from '../../redux/player/playerSlice';
 import {
   addLVLCompleteInfoEN,
@@ -32,7 +36,7 @@ import {
 } from '../../redux/player/playerOperations';
 import { shuffle } from '../../helpers/shuffle';
 import { wrongAudio } from '../Game/wrongAudio';
-import LevelComlete from '../LevelComlete';
+import LevelComplete from '../LevelComlete';
 import Loader from '../common/Loader/Loader';
 import s from './Answers.module.css';
 
@@ -52,6 +56,9 @@ const Answers = () => {
 
   const levelRoboUKR = useSelector(getLevelRoboUKR);
   const levelMusicUKR = useSelector(getLevelMusicUKR);
+
+  const levelIdEN = useSelector(getLevelIdEN);
+  const levelIdUKR = useSelector(getLevelIdUKR);
 
   const dispatch = useDispatch();
 
@@ -73,7 +80,7 @@ const Answers = () => {
       }, 0)
       .toFixed(2);
 
-    // запис результату на бекенд ENG
+    // ENG
     if (isEngLang) {
       const userLevelCompleteInfo = {
         isRoboQuizMode,
@@ -81,8 +88,6 @@ const Answers = () => {
         time: Number(totalTime),
       };
       dispatch(addLVLCompleteInfoEN(userLevelCompleteInfo));
-
-      console.log('addLVLCompleteInfoEN');
     }
 
     // запис результату на бекенд UKR
@@ -93,8 +98,6 @@ const Answers = () => {
         time: Number(totalTime),
       };
       dispatch(addLVLCompleteInfoUKR(userLevelCompleteInfo));
-
-      console.log('addLVLCompleteInfoUKR');
     }
   };
 
@@ -199,12 +202,12 @@ const Answers = () => {
       }
     }, DELAY);
 
-    // Передчасне закінчення пісні-відповіді
-    if (countClicksOnAnswerBtn > 0 && currentSong !== 4) {
-      setIsMatch(null);
-      dispatch(setCurrent(currentSong + 1));
-      dispatch(togglePlaying());
-    }
+    // // Передчасне закінчення пісні-відповіді (!!!ВИМИКАЄМО поки!!!)
+    // if (countClicksOnAnswerBtn > 0 && currentSong !== 4) {
+    //   setIsMatch(null);
+    //   dispatch(setCurrent(currentSong + 1));
+    //   dispatch(togglePlaying());
+    // }
 
     // Автоматичнтй перехід на LEVEL COMPLETE
     setTimeout(() => {
@@ -216,14 +219,16 @@ const Answers = () => {
       setIsLVLComplete(true);
     }, DELAY);
 
-    // Передчасне закінчення останньої пісні - Перехід на LEVEL COMPLETE
-    if (countClicksOnAnswerBtn > 0 && currentSong === 4) {
-      // запис результату на бекенд
-      postResult(levelCompleteInfo);
+    // // Передчасне закінчення останньої пісні - Перехід на LEVEL COMPLETE (!!!ВИМИКАЄМО поки!!!)
+    //   if (countClicksOnAnswerBtn > 0 && currentSong === 4) {
+    //     // запис результату на бекенд
+    //     postResult(levelCompleteInfo);
+    //     // запис результату на бекенд
+    //     postResult(levelCompleteInfo);
 
-      setIsLVLComplete(true);
-      dispatch(togglePlaying());
-    }
+    //     setIsLVLComplete(true);
+    //     dispatch(togglePlaying());
+    //   }
   };
 
   // Classname для неактивної, правильної і неправильної відповіді
@@ -309,7 +314,7 @@ const Answers = () => {
           )}
         </div>
       )}
-      {isLVLComplete && <LevelComlete />}
+      {isLVLComplete && <LevelComplete />}
     </>
   );
 };

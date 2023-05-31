@@ -3,9 +3,11 @@ const getLanguage = state => state.player.isEngLang;
 
 const getLevelRoboEN = state => state.player.levelRoboEN;
 const getLevelMusicEN = state => state.player.levelMusicEN;
+const getLevelIdEN = state => state.player.levelIdEN;
 
 const getLevelRoboUKR = state => state.player.levelRoboUKR;
 const getLevelMusicUKR = state => state.player.levelMusicUKR;
+const getLevelIdUKR = state => state.player.levelIdUKR;
 
 const getSongsListEN = state => state.player.songslistEN;
 const getSongsListUKR = state => state.player.songslistUKR;
@@ -31,6 +33,8 @@ export {
   getLevelMusicUKR,
   getSongsListEN,
   getSongsListUKR,
+  getLevelIdEN,
+  getLevelIdUKR,
   getCurrent,
   isPlaying,
   clickAnswer,

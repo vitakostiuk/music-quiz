@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
+import { sendToken } from '../player/playerOperations';
 
 // axios.defaults.baseURL = 'http://localhost:3000/api';
 axios.defaults.baseURL = 'https://musicquiz-backend.onrender.com/api';
@@ -69,9 +70,11 @@ const logout = createAsyncThunk(
   async (_, { rejectWithValue, getState }) => {
     try {
       const { token } = getState().auth;
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      // axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      sendToken.set(token);
 
-      await axios.get('/users/logout');
+      await axios.post('/users/logout');
+      sendToken.unset();
     } catch (err) {
       return rejectWithValue(err.response);
     }
@@ -83,17 +86,14 @@ const getUser = createAsyncThunk(
   async (_, { getState, rejectWithValue }) => {
     try {
       const { token } = getState().auth;
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      // axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      sendToken.set(token);
 
       const { data } = await axios.get(`/users/current`);
       console.log('auth/getUser', data);
       return data;
     } catch (error) {
-      // if (error.response.status === 401) {
-      //   toast.error(
-      //     'You are not authorized. Log in or Sign up to save results'
-      //   );
-      // }
+      sendToken.unset();
       return rejectWithValue(error.message);
     }
   }

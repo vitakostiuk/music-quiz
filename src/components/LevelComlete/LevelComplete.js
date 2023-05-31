@@ -11,6 +11,8 @@ import {
   getLevelMusicUKR,
   getQuizMode,
   getLanguage,
+  getLevelIdEN,
+  getLevelIdUKR,
 } from '../../redux/player/playerSelectors';
 import {
   setNextLevelRoboEN,
@@ -23,6 +25,10 @@ import {
   restartLevelMusicUKR,
   resetState,
 } from '../../redux/player/playerSlice';
+import {
+  removeLevelByIdUKR,
+  removeLevelByIdEN,
+} from '../../redux/player/playerOperations';
 import { ReactComponent as WrongIcon } from '../../images/cross.svg';
 import { ReactComponent as TrueIcon } from '../../images/checkmark.svg';
 import { ReactComponent as RestartIcon } from '../../images/restart.svg';
@@ -40,9 +46,6 @@ const LevelComplete = () => {
 
   const navigate = useNavigate();
 
-  const [isDisabledNextLevelEN, setIsDisabledNextLevelEN] = useState(false);
-  const [isDisabledNextLevelUKR, setIsDisabledNextLevelUKR] = useState(false);
-
   // Потім левел будемо брати з бекенда
   const isEngLang = useSelector(getLanguage);
 
@@ -53,8 +56,10 @@ const LevelComplete = () => {
   const levelMusicUKR = useSelector(getLevelMusicUKR);
 
   const levelCompleteInfo = useSelector(getLevelCompleteInfo);
-  // console.log('levelCompleteInfo', levelCompleteInfo);
   const isRoboQuizMode = useSelector(getQuizMode);
+
+  const levelIdUKR = useSelector(getLevelIdUKR);
+  const levelIdEN = useSelector(getLevelIdEN);
 
   // Перевіряємо, чи є хоча б одна неправильна відповідь
   const filteredByWrongAnswers = levelCompleteInfo.filter(
@@ -93,55 +98,44 @@ const LevelComplete = () => {
     dispatch(resetState());
   };
 
+  // RESTART LEVEL
   const handleRestartLevelEN = () => {
     if (!isEngLang) return;
 
+    // delete level on backend
+    if (levelIdEN) {
+      dispatch(removeLevelByIdEN(levelIdEN));
+    }
+    // restart level on frontend
     if (isRoboQuizMode) {
       dispatch(restartLevelRoboEN(levelRoboEN));
     } else {
       dispatch(restartLevelMusicEN(levelMusicEN));
     }
 
-    resetState();
+    dispatch(resetState());
   };
 
   const handleRestartLevelUKR = () => {
     if (isEngLang) return;
 
+    // delete level on backend
+    if (levelIdUKR) {
+      dispatch(removeLevelByIdUKR(levelIdUKR));
+    }
+    // restart level on frontend
     if (isRoboQuizMode) {
       dispatch(restartLevelRoboUKR(levelRoboUKR));
     } else {
       dispatch(restartLevelMusicUKR(levelMusicUKR));
     }
 
-    resetState();
+    dispatch(resetState());
   };
 
-  // DISABLE NEXT LEVEL BUTTON (ENG)
-  useEffect(() => {
-    if (
-      (isRoboQuizMode && levelRoboEN === 5 && isEngLang) ||
-      (!isRoboQuizMode && levelMusicEN === 5 && isEngLang)
-    ) {
-      setIsDisabledNextLevelEN(true);
-      return;
-    }
-
-    if (
-      (isRoboQuizMode && levelRoboUKR === 5 && !isEngLang) ||
-      (!isRoboQuizMode && levelMusicUKR === 5 && !isEngLang)
-    ) {
-      setIsDisabledNextLevelUKR(true);
-      return;
-    }
-  }, [
-    isEngLang,
-    isRoboQuizMode,
-    levelMusicEN,
-    levelMusicUKR,
-    levelRoboEN,
-    levelRoboUKR,
-  ]);
+  //  DISABLE NEXT LEVEL BUTTONS
+  const isDisabledNextLevelEN = levelRoboEN === 5 || levelMusicEN === 5;
+  const isDisabledNextLevelUKR = levelRoboUKR === 5 || levelMusicUKR === 5;
 
   const handleClickLeaderboard = () => {
     dispatch(resetState());
@@ -220,7 +214,6 @@ const LevelComplete = () => {
             </button>
           </div>
           <div div className={s.btnsWrapper}>
-            {' '}
             <button
               className={
                 isRoboQuizMode ? s.buttonNextLVLRobo : s.buttonNextLVLMusic
@@ -238,7 +231,6 @@ const LevelComplete = () => {
             </button>
           </div>
           <div div className={s.btnsWrapper}>
-            {' '}
             <button
               className={isRoboQuizMode ? s.buttonRobo : s.buttonMusic}
               type="button"

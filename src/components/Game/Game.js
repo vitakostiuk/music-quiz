@@ -67,22 +67,18 @@ const Game = () => {
   // Витягуэмо з бекенду інформацію про скор юзера (ENG).
   // Це треба для того, щоб потім запускати гру з того левела, на якму юзер закінчив
   useEffect(() => {
-    if (!isEngLang) return;
-
     if (userID) {
       dispatch(getAllEngByUser(userID));
     }
-  }, [dispatch, userID, isRoboQuizMode, isEngLang]);
+  }, [dispatch, userID, isRoboQuizMode]);
 
   // Витягуэмо з бекенду інформацію про скор юзера (UKR).
   // Це треба для того, щоб потім запускати гру з того левела, на якму юзер закінчив
   useEffect(() => {
-    if (isEngLang) return;
-
     if (userID) {
       dispatch(getAllUkrByUser(userID));
     }
-  }, [dispatch, userID, isRoboQuizMode, isEngLang]);
+  }, [dispatch, userID, isRoboQuizMode]);
 
   // Обробка інформацїї про скор юзера (ENG)
   useEffect(() => {

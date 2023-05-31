@@ -2,6 +2,16 @@ import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
 
+//Відправка токена в заголовку Authorization
+export const sendToken = {
+  set(token) {
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+  },
+  unset() {
+    axios.defaults.headers.common['Authorization'] = '';
+  },
+};
+
 // axios.defaults.baseURL = 'http://localhost:3000/api';
 axios.defaults.baseURL = 'https://musicquiz-backend.onrender.com/api';
 axios.defaults.headers.post['Content-Type'] = 'application/json';
@@ -39,7 +49,8 @@ const getAllEngByUser = createAsyncThunk(
   async (userID, { rejectWithValue, getState }) => {
     try {
       const { token } = getState().auth;
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      sendToken.set(token);
+      // axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
       const { data } = await axios.get(`/game/en/${userID}`);
 
@@ -56,7 +67,8 @@ const getAllUkrByUser = createAsyncThunk(
   async (userID, { rejectWithValue, getState }) => {
     try {
       const { token } = getState().auth;
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      // axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      sendToken.set(token);
 
       const { data } = await axios.get(`/game/ukr/${userID}`);
 
@@ -73,7 +85,8 @@ const addLVLCompleteInfoEN = createAsyncThunk(
   async (dataInfo, { rejectWithValue, getState }) => {
     try {
       const { token } = getState().auth;
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      // axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      sendToken.set(token);
 
       const { data } = await axios.post('/game/en', dataInfo);
       console.log('addLVLCompleteInfoEN', data);
@@ -81,11 +94,11 @@ const addLVLCompleteInfoEN = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error);
-      // if (error.response.status === 401) {
-      //   toast.error(
-      //     'You are not authorized. Log in or Sign up to save results'
-      //   );
-      // }
+      if (error.response.status === 401) {
+        toast.error(
+          'You are not authorized. Log in or Sign up to save results'
+        );
+      }
       return rejectWithValue(error.message);
     }
   }
@@ -96,7 +109,8 @@ const addLVLCompleteInfoUKR = createAsyncThunk(
   async (dataInfo, { rejectWithValue, getState }) => {
     try {
       const { token } = getState().auth;
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      // axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      sendToken.set(token);
 
       const { data } = await axios.post('/game/ukr', dataInfo);
       console.log('addLVLCompleteInfoUKR', data);
@@ -104,11 +118,49 @@ const addLVLCompleteInfoUKR = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error);
-      // if (error.response.status === 401) {
-      //   toast.error(
-      //     'You are not authorized. Log in or Sign up to save results'
-      //   );
-      // }
+      if (error.response.status === 401) {
+        toast.error(
+          'You are not authorized. Log in or Sign up to save results'
+        );
+      }
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+const removeLevelByIdUKR = createAsyncThunk(
+  'player/removeLevelByIdUKR',
+  async (levelID, { rejectWithValue, getState }) => {
+    try {
+      const { token } = getState().auth;
+      // axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      sendToken.set(token);
+
+      const { data } = await axios.delete(`/game/ukr/${levelID}`);
+      console.log('removeLevelByIdUKR', data);
+
+      return data;
+    } catch (error) {
+      console.log(error);
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+const removeLevelByIdEN = createAsyncThunk(
+  'player/removeLevelByIdUKR',
+  async (levelID, { rejectWithValue, getState }) => {
+    try {
+      const { token } = getState().auth;
+      // axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      sendToken.set(token);
+
+      const { data } = await axios.delete(`/game/en/${levelID}`);
+      console.log('removeLevelByIdEN', data);
+
+      return data;
+    } catch (error) {
+      console.log(error);
       return rejectWithValue(error.message);
     }
   }
@@ -121,4 +173,6 @@ export {
   addLVLCompleteInfoUKR,
   getAllEngByUser,
   getAllUkrByUser,
+  removeLevelByIdUKR,
+  removeLevelByIdEN,
 };
