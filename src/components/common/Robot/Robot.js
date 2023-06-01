@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import {
   isPlaying,
-  answerState,
+  getAnswerState,
   getCurrent,
 } from '../../../redux/player/playerSelectors';
 import { ReactComponent as RobotAnim1 } from '../../../images/WEB_anim1.svg';
@@ -13,7 +13,7 @@ import s from './Robot.module.css';
 
 const Robot = props => {
   const playing = useSelector(isPlaying);
-  const answersArray = useSelector(answerState);
+  const answersArray = useSelector(getAnswerState);
   const currentSong = useSelector(getCurrent);
 
   return (

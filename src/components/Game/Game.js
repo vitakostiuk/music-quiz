@@ -20,7 +20,7 @@ import {
   getSongsListEN,
   getSongsListUKR,
   getCurrent,
-  answerState,
+  getAnswerState,
   getUserScoreEN,
   getUserScoreUKR,
   getIsLoading,
@@ -60,7 +60,7 @@ const Game = () => {
   const songsListEN = useSelector(getSongsListEN);
   const songsListUKR = useSelector(getSongsListUKR);
   const currentSong = useSelector(getCurrent);
-  const answers = useSelector(answerState);
+  const answers = useSelector(getAnswerState);
 
   const isLoading = useSelector(getIsLoading);
 

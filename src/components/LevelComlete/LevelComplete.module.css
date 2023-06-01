@@ -175,3 +175,10 @@
 .icon {
   margin-left: 30px;
 }
+
+.confettiContainer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%);
+}

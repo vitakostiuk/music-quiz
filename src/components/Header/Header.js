@@ -8,7 +8,10 @@ import {
   toggleLanguage,
   resetState,
 } from '../../redux/player/playerSlice';
-import { getLanguage, answerState } from '../../redux/player/playerSelectors';
+import {
+  getLanguage,
+  getAnswerState,
+} from '../../redux/player/playerSelectors';
 import { getToken } from '../../redux/auth/authSelectors';
 import { ReactComponent as Logo } from '../../images/main-logo1.svg';
 import AvatarButton from './AvatarButton';
@@ -51,7 +54,7 @@ const Header = () => {
 
   const isEngLang = useSelector(getLanguage);
   const token = useSelector(getToken);
-  const answers = useSelector(answerState);
+  const answers = useSelector(getAnswerState);
 
   const options = [
     {

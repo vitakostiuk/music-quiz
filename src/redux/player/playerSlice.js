@@ -99,9 +99,6 @@ const playerSlice = createSlice({
     restartLevelMusicEN: (state, { payload }) => {
       state.levelMusicEN = payload;
     },
-    // setLevelIdEN: (state, { payload }) => {
-    //   state.levelIdEN = payload;
-    // },
 
     // UKR
     setLevelRoboUKR: (state, { payload }) => {
@@ -122,9 +119,6 @@ const playerSlice = createSlice({
     restartLevelMusicUKR: (state, { payload }) => {
       state.levelMusicUKR = payload;
     },
-    // setLevelIdUKR: (state, { payload }) => {
-    //   state.levelIdUKR = payload;
-    // },
 
     // Збереження скору нового юзера
     setNewUserGameInfoEN: (state, { payload }) => {

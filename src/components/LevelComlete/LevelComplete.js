@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-// import { toast } from 'react-toastify';
+import ConfettiExplosion from 'react-confetti-explosion';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -13,6 +12,7 @@ import {
   getLanguage,
   getLevelIdEN,
   getLevelIdUKR,
+  getAnswerState,
 } from '../../redux/player/playerSelectors';
 import {
   setNextLevelRoboEN,
@@ -142,8 +142,21 @@ const LevelComplete = () => {
     navigate('/leaderboard');
   };
 
+  const isExploding = filteredByWrongAnswers.length === 0;
+
   return (
     <>
+      {isExploding && (
+        <div className={s.confettiContainer}>
+          <ConfettiExplosion
+            force={0.8}
+            duration={3000}
+            particleCount={250}
+            width={1600}
+          />
+        </div>
+      )}
+
       <div className={s.wrapper}>
         {levelCompleteInfo.length !== 0 && (
           <h1

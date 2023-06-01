@@ -10,7 +10,7 @@ import {
   getAvatarURL,
   getUserEmail,
 } from '../../../redux/auth/authSelectors';
-import { answerState } from '../../../redux/player/playerSelectors';
+import { getAnswerState } from '../../../redux/player/playerSelectors';
 import Popup from '../../common/Popup';
 import s from '../Header.module.css';
 
@@ -30,7 +30,7 @@ const AvatarButton = () => {
   const token = useSelector(getToken);
   const userAvatar = useSelector(getAvatarURL);
   const userEmail = useSelector(getUserEmail);
-  const answers = useSelector(answerState);
+  const answers = useSelector(getAnswerState);
 
   // POPUP
   const handleClickExit = () => {

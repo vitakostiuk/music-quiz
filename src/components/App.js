@@ -12,6 +12,7 @@ import GamePage from './pages/GamePage';
 import HomePage from './pages/HomePage';
 import Header from './Header';
 import LeaderboardPage from './pages/LeaderboardPage';
+import ConfettiExplosion from 'react-confetti-explosion';
 import s from './App.module.css';
 
 function App() {
@@ -27,6 +28,15 @@ function App() {
 
   return (
     <>
+      {/* <div className={s.confettiContainer}>
+        <ConfettiExplosion
+          force={0.8}
+          duration={3000}
+          particleCount={250}
+          width={1600}
+        />
+      </div> */}
+
       <Header />
       <Routes>
         <Route path="/" element={<HomePage />} />
