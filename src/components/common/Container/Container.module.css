@@ -6,6 +6,7 @@
   width: 320px;
   height: 100vh;
   padding-bottom: 20px;
+  border: 1px solid transparent;
   /* border: 1px solid rgb(255, 0, 212); */
 }
 
