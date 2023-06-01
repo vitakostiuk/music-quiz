@@ -1,12 +1,3 @@
-.paper {
-  padding: 50px;
-  width: 1180px;
-  /* height: 612px; */
-  height: 799px;
-  background-color: #ffffff;
-  border-radius: 25px;
-}
-
 /* КНОПКИ І ЗАГОЛОВОК */
 .titleWrapper {
   margin: 0 auto;

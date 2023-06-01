@@ -1,12 +1,5 @@
 .container {
   width: 1180px;
   height: 75px;
-  border: 1px solid red;
-}
-
-.confettiContainer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh; /* Adjust the height as needed */
+  /* border: 1px solid red; */
 }

@@ -81,11 +81,17 @@ const playerSlice = createSlice({
     },
 
     // EN
+    // setLevelRoboEN: (state, { payload }) => {
+    //   state.levelRoboEN = payload.length + 1;
+    // },
+    // setLevelMusicEN: (state, { payload }) => {
+    //   state.levelMusicEN = payload.length + 1;
+    // },
     setLevelRoboEN: (state, { payload }) => {
-      state.levelRoboEN = payload.length + 1;
+      state.levelRoboEN = payload;
     },
     setLevelMusicEN: (state, { payload }) => {
-      state.levelMusicEN = payload.length + 1;
+      state.levelMusicEN = payload;
     },
     setNextLevelRoboEN: (state, { payload }) => {
       state.levelRoboEN = state.levelRoboEN + 1;
@@ -101,11 +107,17 @@ const playerSlice = createSlice({
     },
 
     // UKR
+    // setLevelRoboUKR: (state, { payload }) => {
+    //   state.levelRoboUKR = payload.length + 1;
+    // },
+    // setLevelMusicUKR: (state, { payload }) => {
+    //   state.levelMusicUKR = payload.length + 1;
+    // },
     setLevelRoboUKR: (state, { payload }) => {
-      state.levelRoboUKR = payload.length + 1;
+      state.levelRoboUKR = payload;
     },
     setLevelMusicUKR: (state, { payload }) => {
-      state.levelMusicUKR = payload.length + 1;
+      state.levelMusicUKR = payload;
     },
     setNextLevelRoboUKR: (state, { payload }) => {
       state.levelRoboUKR = state.levelRoboUKR + 1;

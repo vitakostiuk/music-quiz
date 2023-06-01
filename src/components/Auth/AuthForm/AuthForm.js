@@ -10,6 +10,7 @@ import { forgotPassword, google } from '../../../redux/auth/authOperations';
 import { getIsLoading } from '../../../redux/auth/authSelectors';
 import Modal from '../../common/Modal';
 import Loader from '../../common/Loader';
+import Paper from '../../common/Paper';
 import { authValidation } from '../../../hooks';
 import s from './AuthForm.module.css';
 
@@ -54,7 +55,7 @@ const AuthForm = ({
     : { name: '', email: '', password: '' };
 
   return (
-    <>
+    <Paper>
       {isLoading && <Loader />}
       {!isLoading && (
         <div className={s.wrapper}>
@@ -207,7 +208,7 @@ const AuthForm = ({
           </div>
         </div>
       )}
-    </>
+    </Paper>
   );
 };
 

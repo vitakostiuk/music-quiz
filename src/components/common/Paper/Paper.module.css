@@ -1,9 +1,15 @@
 .paper {
   position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   margin: 0 auto;
+  margin-top: 203px;
   padding: 50px 167px;
   width: 1180px;
-  height: 512px;
+  min-height: 530px;
   background-color: #ffffff;
   border-radius: 25px;
   /* border: 1px solid red; */

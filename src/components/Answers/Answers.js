@@ -33,7 +33,6 @@ import {
 import { shuffle } from '../../helpers/shuffle';
 import { wrongAudio } from '../Game/wrongAudio';
 import LevelComplete from '../LevelComlete';
-import Loader from '../common/Loader/Loader';
 import s from './Answers.module.css';
 
 const Answers = () => {
@@ -62,8 +61,6 @@ const Answers = () => {
   const [countClicksOnAnswerBtn, setCountClicksOnAnswerBtn] = useState(0);
   const [isLVLComplete, setIsLVLComplete] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
-
-  const isLoading = useSelector(getIsLoading);
 
   // Запис результату на бекенд
   const postResult = levelInfo => {
@@ -273,7 +270,6 @@ const Answers = () => {
 
   return (
     <>
-      {isLoading && <Loader />}
       {!isLVLComplete && (
         <div className={!playing && !isClickAnswer ? s.hidden : s.wrapper}>
           {answersList && (

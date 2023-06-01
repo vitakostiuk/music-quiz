@@ -85,31 +85,39 @@ const Game = () => {
     if (!isEngLang) return;
 
     // -- 1.1 -- ФІЛЬТРУЄМО ПО РЕЖИМУ РОБОТ (ENG)
-    const userScoreInfoRoboEN = userScoreEN.filter(
-      item => item.isRoboQuizMode === 'true'
-    );
-    // console.log('userScoreInfoRoboEN', userScoreInfoRoboEN);
-    if (userScoreInfoRoboEN.length !== 0 && userScoreInfoRoboEN.length !== 5) {
-      dispatch(setLevelRoboEN(userScoreInfoRoboEN));
-    }
-    if (isRoboQuizMode && userScoreInfoRoboEN.length === 5) {
-      navigate('/leaderboard');
+    if (isRoboQuizMode) {
+      const userScoreInfoRoboEN = userScoreEN.filter(
+        item => item.isRoboQuizMode === 'true'
+      );
+      // console.log('userScoreInfoRoboEN', userScoreInfoRoboEN);
+      if (
+        userScoreInfoRoboEN.length !== 0 &&
+        userScoreInfoRoboEN.length !== 5
+      ) {
+        dispatch(setLevelRoboEN(userScoreInfoRoboEN.length + 1));
+      }
+      if (userScoreInfoRoboEN.length === 5) {
+        dispatch(setLevelRoboEN(userScoreInfoRoboEN.length));
+        navigate('/leaderboard');
+      }
     }
 
     // -- 1.2 -- ФІЛЬТРУЄМО ПО РЕЖИМУ МУЗИКА (ENG)
-    const userScoreInfoMusicEN = userScoreEN.filter(
-      item => item.isRoboQuizMode === 'false'
-    );
-    // console.log('userScoreInfoMusicEN', userScoreInfoMusicEN);
-    console.log(userScoreInfoMusicEN.length);
-    if (
-      userScoreInfoMusicEN.length !== 0 &&
-      userScoreInfoMusicEN.length !== 5
-    ) {
-      dispatch(setLevelMusicEN(userScoreInfoMusicEN));
-    }
-    if (!isRoboQuizMode && userScoreInfoMusicEN.length === 5) {
-      navigate('/leaderboard');
+    if (!isRoboQuizMode) {
+      const userScoreInfoMusicEN = userScoreEN.filter(
+        item => item.isRoboQuizMode === 'false'
+      );
+      // console.log('userScoreInfoMusicEN', userScoreInfoMusicEN);
+      if (
+        userScoreInfoMusicEN.length !== 0 &&
+        userScoreInfoMusicEN.length !== 5
+      ) {
+        dispatch(setLevelMusicEN(userScoreInfoMusicEN.length + 1));
+      }
+      if (userScoreInfoMusicEN.length === 5) {
+        dispatch(setLevelMusicEN(userScoreInfoMusicEN.length));
+        navigate('/leaderboard');
+      }
     }
   }, [dispatch, isEngLang, isRoboQuizMode, navigate, userScoreEN]);
 
@@ -118,42 +126,41 @@ const Game = () => {
     if (isEngLang) return;
 
     // -- 1.1 -- ФІЛЬТРУЄМО ПО РЕЖИМУ РОБОТ (UKR)
-    const userScoreInfoRoboUKR = userScoreUKR.filter(
-      item => item.isRoboQuizMode === 'true'
-    );
-    // console.log('userScoreInfoRoboUKR', userScoreInfoRoboUKR);
-    if (
-      userScoreInfoRoboUKR.length !== 0 &&
-      userScoreInfoRoboUKR.length !== 5
-    ) {
-      dispatch(setLevelRoboUKR(userScoreInfoRoboUKR));
-    }
-    if (userScoreInfoRoboUKR.length === 5) {
-      navigate('/leaderboard');
+    if (isRoboQuizMode) {
+      const userScoreInfoRoboUKR = userScoreUKR.filter(
+        item => item.isRoboQuizMode === 'true'
+      );
+      // console.log('userScoreInfoRoboUKR', userScoreInfoRoboUKR);
+      if (
+        userScoreInfoRoboUKR.length !== 0 &&
+        userScoreInfoRoboUKR.length !== 5
+      ) {
+        dispatch(setLevelRoboUKR(userScoreInfoRoboUKR.length + 1));
+      }
+      if (userScoreInfoRoboUKR.length === 5) {
+        dispatch(setLevelRoboUKR(userScoreInfoRoboUKR.length));
+        navigate('/leaderboard');
+      }
     }
 
     // -- 1.2 -- ФІЛЬТРУЄМО ПО РЕЖИМУ МУЗИКА (UKR)
-    const userScoreInfoMusicUKR = userScoreUKR.filter(
-      item => item.isRoboQuizMode === 'false'
-    );
-    // console.log('userScoreInfoMusicUKR', userScoreInfoMusicUKR);
-    if (
-      userScoreInfoMusicUKR.length !== 0 &&
-      userScoreInfoMusicUKR.length !== 5
-    ) {
-      dispatch(setLevelMusicUKR(userScoreInfoMusicUKR));
+    if (!isRoboQuizMode) {
+      const userScoreInfoMusicUKR = userScoreUKR.filter(
+        item => item.isRoboQuizMode === 'false'
+      );
+      // console.log('userScoreInfoMusicUKR', userScoreInfoMusicUKR);
+      if (
+        userScoreInfoMusicUKR.length !== 0 &&
+        userScoreInfoMusicUKR.length !== 5
+      ) {
+        dispatch(setLevelMusicUKR(userScoreInfoMusicUKR.length + 1));
+      }
+      if (userScoreInfoMusicUKR.length === 5) {
+        dispatch(setLevelMusicUKR(userScoreInfoMusicUKR.length));
+        navigate('/leaderboard');
+      }
     }
-    if (userScoreInfoMusicUKR.length === 5) {
-      navigate('/leaderboard');
-    }
-  }, [
-    dispatch,
-    isEngLang,
-    isRoboQuizMode,
-    navigate,
-    userScoreEN,
-    userScoreUKR,
-  ]);
+  }, [dispatch, isEngLang, isRoboQuizMode, navigate, userScoreUKR]);
 
   const handleClickSong = idx => {
     // console.log(songsListEN[idx].name);
@@ -310,7 +317,6 @@ const Game = () => {
 
   return (
     <>
-      {' '}
       <Paper>
         {isLoading && <Loader />}
 

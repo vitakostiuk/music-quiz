@@ -1,10 +1,13 @@
 import SignIn from '../Auth/SignIn';
-import AuthWrapper from '../common/wrappers/AuthWrapper/AuthWrapper';
+import GameWrapper from '../common/wrappers/GameWrapper';
+import Container from '../common/Container';
 
 const SignInPage = () => (
-  <AuthWrapper>
-    <SignIn />
-  </AuthWrapper>
+  <GameWrapper>
+    <Container>
+      <SignIn />
+    </Container>
+  </GameWrapper>
 );
 
 export default SignInPage;

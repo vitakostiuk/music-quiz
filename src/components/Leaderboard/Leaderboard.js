@@ -10,15 +10,12 @@ import {
   getIsLoading,
 } from '../../redux/player/playerSelectors';
 import { getAllEng, getAllUkr } from '../../redux/player/playerOperations';
-import {
-  getUserID,
-  getToken,
-  getGoogleToken,
-} from '../../redux/auth/authSelectors';
+import { getUserID } from '../../redux/auth/authSelectors';
 import { getFilteredArrayByOwner } from '../../helpers/getFilteredArrayByOwner';
 import { findUserById } from '../../helpers/findUserById';
 import { getSortedArrayByTimeAndLevels } from '../../helpers/getSortedArrayByTimeAndLevels';
 import Loader from '../common/Loader/Loader';
+import Paper from '../common/Paper';
 import s from './Leaderboard.module.css';
 
 const Leaderboard = () => {
@@ -136,10 +133,10 @@ const Leaderboard = () => {
     }
   };
   return (
-    <>
+    <Paper>
       {isLoading && <Loader />}
       {!isLoading && (
-        <div className={s.paper}>
+        <div>
           <div className={s.titleWrapper}>
             <div className={s.btnsWrapper}>
               <button
@@ -431,7 +428,7 @@ const Leaderboard = () => {
           )}
         </div>
       )}
-    </>
+    </Paper>
   );
 };
 
