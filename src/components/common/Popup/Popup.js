@@ -24,7 +24,11 @@ const Popup = ({
       {list && (
         <ul>
           {list.map(({ text }, idx) => (
-            <li key={idx} onClick={handleClickItem} className={s.item}>
+            <li
+              key={idx}
+              onClick={() => handleClickItem(text)}
+              className={s.item}
+            >
               {text}
             </li>
           ))}

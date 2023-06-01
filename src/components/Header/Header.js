@@ -2,12 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import Select from 'react-select';
-import {
-  setQuizMode,
-  toggleLanguage,
-  resetState,
-} from '../../redux/player/playerSlice';
+import { toggleLanguage, resetState } from '../../redux/player/playerSlice';
 import {
   getLanguage,
   getAnswerState,
@@ -16,11 +11,13 @@ import { getToken } from '../../redux/auth/authSelectors';
 import { ReactComponent as Logo } from '../../images/main-logo1.svg';
 import AvatarButton from './AvatarButton';
 import Popup from '../common/Popup';
+import QuizModeButton from './QuizModeButton/QuizModeButton';
 import { useOutsideClick } from '../../hooks';
 import s from './Header.module.css';
-import './SelectList.scss';
 
 const Header = () => {
+  const { t, i18n } = useTranslation();
+
   const [logoPopup, setLogoPopup] = useState(false);
   const [homePopup, setHomePopup] = useState(false);
   const [quizModePopup, setQuizModePopup] = useState(false);
@@ -34,8 +31,6 @@ const Header = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  const { t, i18n } = useTranslation();
 
   const refLogo = useRef();
   const refHome = useRef();
@@ -56,17 +51,6 @@ const Header = () => {
   const token = useSelector(getToken);
   const answers = useSelector(getAnswerState);
 
-  const options = [
-    {
-      value: t('header.roboQuiz'),
-      label: t('header.roboQuiz'),
-    },
-    {
-      value: t('header.musicQuiz'),
-      label: t('header.musicQuiz'),
-    },
-  ];
-
   useEffect(() => {
     if (isEngLang) {
       i18n.changeLanguage('en');
@@ -79,39 +63,25 @@ const Header = () => {
     }
   }, [i18n, isEngLang]);
 
-  // Select dropdown
-  const handleChangeQuizMode = e => {
-    // перехід на сторінку Music-Quiz/Robo-Quiz
-    navigate('/game');
-
+  // Клік по guizMode
+  const onClickQuizMode = () => {
     setIsActiveQuizMode(true);
     setIsActiveHome(false);
     setIsActiveLeaderboard(false);
-
-    // записуємо в редакс режим гри
-    if (e.value === 'Robo-Quiz' || e.value === 'Режим робота') {
-      dispatch(setQuizMode(true));
-      dispatch(resetState());
-      return;
-    }
-
-    if (e.value === 'Music-Quiz' || e.value === 'Режим музики') {
-      dispatch(setQuizMode(false));
-      dispatch(resetState());
-      return;
-    }
   };
 
-  // Клік по guizMode
-  const onClickQuizMode = () => {
-    // Попап при натисканні на вибір режиму гри в режимі гри
-    if (answers.length > 0) {
-      if (quizModePopup) return setQuizModePopup(false);
-      setQuizModePopup(true);
-
+  // Клік по guizMode під час гри
+  const onClickQuizModeOnGame = () => {
+    if (answers.length === 0) {
       setIsActiveQuizMode(true);
       setIsActiveHome(false);
       setIsActiveLeaderboard(false);
+    }
+
+    // Попап при натисканні на головну в режмі гри
+    if (answers.length > 0) {
+      if (quizModePopup) return setQuizModePopup(false);
+      setQuizModePopup(true);
     }
   };
 
@@ -150,6 +120,7 @@ const Header = () => {
   // Клік по логотипу
   const onClickLogo = () => {
     if (answers.length === 0) {
+      setIsActiveQuizMode(false);
       navigate('/');
     }
 
@@ -176,6 +147,7 @@ const Header = () => {
   // Клік по signin
   const onClickSignIn = () => {
     if (answers.length === 0) {
+      setIsActiveQuizMode(false);
       navigate('/login');
     }
 
@@ -189,6 +161,7 @@ const Header = () => {
   // Клік по signup
   const onClickSignUp = () => {
     if (answers.length === 0) {
+      setIsActiveQuizMode(false);
       navigate('/register');
     }
 
@@ -209,6 +182,9 @@ const Header = () => {
     setSignupPopup(null);
 
     dispatch(resetState());
+
+    // щоб змінювався режим гри на дефолтне знеачення
+    setIsActiveQuizMode(false);
 
     navigate(`/${to}`);
   };
@@ -262,34 +238,15 @@ const Header = () => {
           )}
         </div>
 
-        {answers.length === 0 && (
-          <Select
-            classNamePrefix="custom-select"
-            onChange={handleChangeQuizMode}
-            required
-            options={options}
-            placeholder={t('header.quizMode')}
-            isSearchable={false}
-            defaultValue="ahdghjafg"
-          />
-        )}
-        {answers.length > 0 && (
-          <div
-            onClick={onClickQuizMode}
-            ref={refQuizMode}
+        <div>
+          <QuizModeButton
             className={isActiveQuizMode ? s.activeStyle : s.navItem}
-          >
-            {t('header.quizMode')}
-            {quizModePopup && (
-              <Popup
-                title={t('popup.title')}
-                handleClickLeaveBtn={onClickLeaveGameBtn}
-                handleClickContinueBtn={onClickContinueGameBtn}
-                to=""
-              />
-            )}
-          </div>
-        )}
+            onClickQuizMode={onClickQuizMode}
+            onClickQuizModeOnGame={onClickQuizModeOnGame}
+            isActiveQuizMode={isActiveQuizMode}
+          />
+        </div>
+
         <div ref={refLeaderboarde}>
           <div
             className={isActiveLeaderboard ? s.activeStyle : s.navItem}
