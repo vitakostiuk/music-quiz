@@ -11,6 +11,8 @@ import {
   getAnswerState,
 } from '../../../redux/player/playerSelectors';
 import Popup from '../../common/Popup';
+import { ReactComponent as RoboIcon } from '../../../images/Robo_icon_gray.svg';
+import { ReactComponent as MusicIcon } from '../../../images/Music_icon_Gray.svg';
 import s from '../Header.module.css';
 
 import React from 'react';
@@ -20,6 +22,7 @@ const QuizModeButton = ({
   onClickQuizMode,
   onClickQuizModeOnGame,
   isActiveQuizMode,
+  children,
 }) => {
   const { t } = useTranslation();
 
@@ -128,15 +131,20 @@ const QuizModeButton = ({
           }
         >
           {!isActiveQuizMode ? t('header.quizMode') : selectedValue}
+
+          {children}
         </div>
+
         {popup && (
           <Popup
             list={[
               {
                 text: t('header.roboQuiz'),
+                icon: <RoboIcon />,
               },
               {
                 text: t('header.musicQuiz'),
+                icon: <MusicIcon />,
               },
             ]}
             mouseEnterHandler={mouseEnterHandler}

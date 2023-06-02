@@ -3,25 +3,60 @@
   top: 40;
   left: 40;
 
-  padding: 16px;
-  min-width: 175px;
-  /* width: 300px; */
+  padding: 20px;
   background-color: #fff;
   box-shadow: 0px 5px 20px rgba(5, 0, 255, 0.1),
     inset 0px -3px 15px rgba(255, 255, 255, 0.3);
   border-radius: 15px;
-  font-family: 'CircleRoundedAlt';
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 1.5;
-  color: #000000;
+}
+
+.list {
+  margin: 0;
 }
 
 .item {
   cursor: pointer;
 }
 
+.text,
+.email {
+  color: #9e9e9e;
+  font-family: 'CircleRoundedAlt';
+  font-weight: 400;
+  font-size: 16px;
+  text-align: center;
+  line-height: 1.5;
+}
+
+.email {
+  text-align: left;
+  cursor: pointer;
+}
+.email:hover,
+.email:focus {
+  color: #000;
+}
+
+.itemWrapper {
+  display: flex;
+  align-items: center;
+  min-width: 140px;
+}
+
+.itemWrapper:hover .text {
+  color: #000;
+}
+
+.itemWrapper:hover .icon path {
+  fill: black;
+}
+
+.icon {
+  margin-right: 6px;
+}
+
 .title {
+  composes: text;
   margin-bottom: 16px;
 }
 
@@ -50,7 +85,3 @@
 .btnLeave {
   margin-right: 10px;
 }
-
-/* .item:not(:last-child) {
-  margin-bottom: 8px;
-} */

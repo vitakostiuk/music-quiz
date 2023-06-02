@@ -9,6 +9,7 @@ import {
 } from '../../redux/player/playerSelectors';
 import { getToken } from '../../redux/auth/authSelectors';
 import { ReactComponent as Logo } from '../../images/main-logo1.svg';
+import { ReactComponent as Arrow } from '../../images/dropdown-arrow.svg';
 import AvatarButton from './AvatarButton';
 import Popup from '../common/Popup';
 import QuizModeButton from './QuizModeButton/QuizModeButton';
@@ -221,7 +222,7 @@ const Header = () => {
       </div>
 
       <div className={s.navigation}>
-        <div ref={refHome}>
+        <div className={s.navWrapper} ref={refHome}>
           <div
             className={isActiveHome ? s.activeStyle : s.navItem}
             onClick={onClickHome}
@@ -238,16 +239,18 @@ const Header = () => {
           )}
         </div>
 
-        <div>
+        <div className={s.navWrapper}>
           <QuizModeButton
             className={isActiveQuizMode ? s.activeStyle : s.navItem}
             onClickQuizMode={onClickQuizMode}
             onClickQuizModeOnGame={onClickQuizModeOnGame}
             isActiveQuizMode={isActiveQuizMode}
-          />
+          >
+            <Arrow className={isActiveQuizMode ? s.arrowActive : s.arrow} />
+          </QuizModeButton>
         </div>
 
-        <div ref={refLeaderboarde}>
+        <div className={s.navWrapper} ref={refLeaderboarde}>
           <div
             className={isActiveLeaderboard ? s.activeStyle : s.navItem}
             onClick={onClickleaderboard}

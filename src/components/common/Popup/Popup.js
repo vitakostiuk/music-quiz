@@ -20,17 +20,20 @@ const Popup = ({
       onMouseEnter={mouseEnterHandler}
       onMouseLeave={mouseLeaveHandler}
     >
-      {email && <div>{email}</div>}
+      {email && <div className={s.email}>{email}</div>}
       {title && <div className={s.title}>{title}</div>}
       {list && (
-        <ul>
-          {list.map(({ text }, idx) => (
+        <ul className={s.list}>
+          {list.map(({ text, icon }, idx) => (
             <li
               key={idx}
               onClick={() => handleClickItem(text)}
               className={s.item}
             >
-              {text}
+              <div className={s.itemWrapper}>
+                {icon && <div className={s.icon}>{icon}</div>}
+                <p className={s.text}>{text}</p>
+              </div>
             </li>
           ))}
         </ul>
@@ -65,6 +68,7 @@ Popup.propTypes = {
   list: PropTypes.arrayOf(
     PropTypes.shape({
       text: PropTypes.string,
+      icon: PropTypes.element,
     })
   ),
   mouseEnterHandler: PropTypes.func,
