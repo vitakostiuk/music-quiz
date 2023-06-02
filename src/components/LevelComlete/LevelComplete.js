@@ -12,7 +12,6 @@ import {
   getLanguage,
   getLevelIdEN,
   getLevelIdUKR,
-  getAnswerState,
 } from '../../redux/player/playerSelectors';
 import {
   setNextLevelRoboEN,

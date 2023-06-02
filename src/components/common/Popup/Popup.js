@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import PropTypes from 'prop-types';
 import s from './Popup.module.css';
 
 const Popup = ({
@@ -56,6 +57,22 @@ const Popup = ({
       </div>
     </div>
   );
+};
+
+Popup.propTypes = {
+  email: PropTypes.string,
+  title: PropTypes.string,
+  list: PropTypes.arrayOf(
+    PropTypes.shape({
+      text: PropTypes.string,
+    })
+  ),
+  mouseEnterHandler: PropTypes.func,
+  mouseLeaveHandler: PropTypes.func,
+  handleClickItem: PropTypes.func,
+  handleClickLeaveBtn: PropTypes.func,
+  handleClickContinueBtn: PropTypes.func,
+  to: PropTypes.string,
 };
 
 export default Popup;

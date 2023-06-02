@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -156,6 +157,13 @@ const QuizModeButton = ({
       </div>
     </>
   );
+};
+
+QuizModeButton.propTypes = {
+  className: PropTypes.string.isRequired,
+  onClickQuizMode: PropTypes.func.isRequired,
+  onClickQuizModeOnGame: PropTypes.func.isRequired,
+  isActiveQuizMode: PropTypes.bool.isRequired,
 };
 
 export default QuizModeButton;

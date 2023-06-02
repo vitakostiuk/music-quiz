@@ -14,7 +14,6 @@ import {
   getLevelMusicEN,
   getLevelRoboUKR,
   getLevelMusicUKR,
-  getIsLoading,
 } from '../../redux/player/playerSelectors';
 import {
   setCurrent,
