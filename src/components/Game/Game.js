@@ -321,7 +321,7 @@ const Game = () => {
         {isLoading && <Loader />}
 
         {!isLoading && (
-          <div>
+          <div className={s.container}>
             <div className={s.titleWrapper}>
               {isEngLang && (
                 <>

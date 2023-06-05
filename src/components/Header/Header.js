@@ -77,12 +77,16 @@ const Header = () => {
       setIsActiveQuizMode(true);
       setIsActiveHome(false);
       setIsActiveLeaderboard(false);
+
+      return;
     }
 
     // Попап при натисканні на головну в режмі гри
     if (answers.length > 0) {
       if (quizModePopup) return setQuizModePopup(false);
       setQuizModePopup(true);
+
+      return;
     }
   };
 
@@ -93,12 +97,16 @@ const Header = () => {
       setIsActiveLeaderboard(false);
       setIsActiveQuizMode(false);
       navigate('/');
+
+      return;
     }
 
     // Попап при натисканні на головну в режмі гри
     if (answers.length > 0) {
       if (homePopup) return setHomePopup(false);
       setHomePopup(true);
+
+      return;
     }
   };
 
@@ -109,12 +117,16 @@ const Header = () => {
       setIsActiveHome(false);
       setIsActiveQuizMode(false);
       navigate('/leaderboard');
+
+      return;
     }
 
     // Попап при натисканні на лідерборд в режмі гри
     if (answers.length > 0) {
       if (leaderboardPopup) return setLeaderboardPopup(false);
       setLeaderboardPopup(true);
+
+      return;
     }
   };
 
@@ -123,12 +135,16 @@ const Header = () => {
     if (answers.length === 0) {
       setIsActiveQuizMode(false);
       navigate('/');
+
+      return;
     }
 
     // Попап при натисканні на лого в режмі гри
     if (answers.length > 0) {
       if (logoPopup) return setLogoPopup(false);
       setLogoPopup(true);
+
+      return;
     }
   };
 
@@ -136,12 +152,16 @@ const Header = () => {
   const onClickLangBtn = () => {
     if (answers.length === 0) {
       dispatch(toggleLanguage());
+
+      return;
     }
 
     // Попап при натисканні на мову в режмі гри
     if (answers.length > 0) {
       if (languagePopup) return setLanguagePopup(false);
       setLanguagePopup(true);
+
+      return;
     }
   };
 
@@ -150,12 +170,16 @@ const Header = () => {
     if (answers.length === 0) {
       setIsActiveQuizMode(false);
       navigate('/login');
+
+      return;
     }
 
     // Попап при натисканні на signin в режмі гри
     if (answers.length > 0) {
       if (signinPopup) return setSigninPopup(false);
       setSigninPopup(true);
+
+      return;
     }
   };
 
@@ -164,12 +188,16 @@ const Header = () => {
     if (answers.length === 0) {
       setIsActiveQuizMode(false);
       navigate('/register');
+
+      return;
     }
 
     // Попап при натисканні на signin в режмі гри
     if (answers.length > 0) {
       if (signupPopup) return setSignupPopup(false);
       setSignupPopup(true);
+
+      return;
     }
   };
 

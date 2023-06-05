@@ -77,6 +77,7 @@ const Answers = () => {
         time: Number(totalTime),
       };
       dispatch(addLVLCompleteInfoEN(userLevelCompleteInfo));
+      dispatch(resetAnswerStateArray([]));
     }
 
     // запис результату на бекенд UKR
@@ -87,6 +88,7 @@ const Answers = () => {
         time: Number(totalTime),
       };
       dispatch(addLVLCompleteInfoUKR(userLevelCompleteInfo));
+      dispatch(resetAnswerStateArray([]));
     }
   };
 

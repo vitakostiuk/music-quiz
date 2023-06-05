@@ -1,3 +1,8 @@
+.container {
+  position: relative;
+  /* border: 1px solid red; */
+}
+
 .titleWrapper {
   display: flex;
   justify-content: space-between;
@@ -84,10 +89,12 @@
   display: flex;
   align-items: center;
   height: 50px;
+  /* border: 1px solid red; */
 }
 
 .line {
   margin-left: 5px;
+  margin-right: 5px;
   width: 138px;
   height: 5px;
   background-color: #d9d9d9;

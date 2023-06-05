@@ -242,7 +242,7 @@ const LevelComplete = () => {
               <NextLVLIcon className={s.icon} />
             </button>
           </div>
-          <div div className={s.btnsWrapper}>
+          <div className={s.btnsWrapper}>
             <button
               className={isRoboQuizMode ? s.buttonRobo : s.buttonMusic}
               type="button"

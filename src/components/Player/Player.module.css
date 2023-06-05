@@ -1,5 +1,6 @@
 .controls {
   /* position: relative; */
+  /* border: 1px solid red; */
 }
 
 .musicControls {
@@ -16,7 +17,7 @@
 }
 
 .play {
-  border: 1px solid red;
+  /* border: 1px solid red; */
   width: 168px;
   height: 168px;
   display: flex;
@@ -59,8 +60,10 @@
 /* VOLUME */
 .volume {
   position: absolute;
-  top: 60px;
-  right: 167px;
+  top: 12px;
+  right: 0;
+  /* top: 60px;
+  right: 167px; */
   display: flex;
   align-items: center;
   transition: all 500ms;
