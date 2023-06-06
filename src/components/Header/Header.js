@@ -6,6 +6,7 @@ import { toggleLanguage, resetState } from '../../redux/player/playerSlice';
 import {
   getLanguage,
   getAnswerState,
+  getLevelCompleteInfo,
 } from '../../redux/player/playerSelectors';
 import { getToken } from '../../redux/auth/authSelectors';
 import { ReactComponent as Logo } from '../../images/main-logo1.svg';

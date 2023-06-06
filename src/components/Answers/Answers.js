@@ -14,6 +14,8 @@ import {
   getLevelMusicEN,
   getLevelRoboUKR,
   getLevelMusicUKR,
+  getUserScoreEN,
+  getUserScoreUKR,
 } from '../../redux/player/playerSelectors';
 import {
   setCurrent,
@@ -24,10 +26,17 @@ import {
   setStartPlayingTime,
   resetAnswerStateArray,
   resetLevelCompleteInfo,
+  setLevelRoboUKR,
+  setLevelRoboEN,
+  setLevelMusicEN,
+  setLevelMusicUKR,
+  resetState,
 } from '../../redux/player/playerSlice';
 import {
   addLVLCompleteInfoEN,
   addLVLCompleteInfoUKR,
+  editLevelByIdEN,
+  editLevelByIdUKR,
 } from '../../redux/player/playerOperations';
 import { shuffle } from '../../helpers/shuffle';
 import { wrongAudio } from '../Game/wrongAudio';
@@ -37,6 +46,8 @@ import s from './Answers.module.css';
 const Answers = () => {
   const isRoboQuizMode = useSelector(getQuizMode);
   const isEngLang = useSelector(getLanguage);
+  const userScoreEN = useSelector(getUserScoreEN);
+  const userScoreUKR = useSelector(getUserScoreUKR);
   const songsListEN = useSelector(getSongsListEN);
   const songsListUKR = useSelector(getSongsListUKR);
   const currentSong = useSelector(getCurrent);
@@ -61,7 +72,7 @@ const Answers = () => {
   const [isLVLComplete, setIsLVLComplete] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
 
-  // Запис результату на бекенд
+  // Функція для запису результату на бекенд
   const postResult = levelInfo => {
     const totalTime = levelInfo
       .reduce((acc, { time }) => {
@@ -69,26 +80,185 @@ const Answers = () => {
       }, 0)
       .toFixed(2);
 
-    // ENG
+    // Запис результату на бекенд ENG
     if (isEngLang) {
-      const userLevelCompleteInfo = {
-        isRoboQuizMode,
-        level: isRoboQuizMode ? levelRoboEN : levelMusicEN,
-        time: Number(totalTime),
-      };
-      dispatch(addLVLCompleteInfoEN(userLevelCompleteInfo));
-      dispatch(resetAnswerStateArray([]));
+      // Режим РОБОТ ENG
+      if (isRoboQuizMode) {
+        // ---1--- Фільтруємо скор юзера по режиму РОБОТ
+        const userScoreInfoRoboEN = userScoreEN.filter(
+          item => item.isRoboQuizMode === 'true'
+        );
+
+        // ---2--- Ресетимо левел до 1, якщо дійшли до 5-го рівня
+        if (userScoreInfoRoboEN.length === 5 && levelRoboEN) {
+          dispatch(setLevelRoboEN(1));
+        }
+
+        // ---3--- Шукаємо левел, який зараз граємо, в масиві юзера
+        const findLevelRoboEN = userScoreInfoRoboEN.find(
+          item => item.level === levelRoboEN
+        );
+
+        // ---4--- Об'єкт, який відправлятимемо на бекенд
+        const userLevelCompleteInfo = {
+          isRoboQuizMode,
+          level: levelRoboEN,
+          time: Number(totalTime),
+        };
+
+        // ---5--- Якщо findLevelRoboEN.level === undefined, то це означає, що в базі ще такого левала немає,
+        if (findLevelRoboEN === undefined) {
+          // зберігаємо результат на бекенд
+          dispatch(addLVLCompleteInfoEN(userLevelCompleteInfo));
+          return;
+        }
+
+        // ---6--- Якщо findLevelRoboEN.level === levelRoboEN, то значить,
+        // що ми переграли левел і треба його перезаписати на бекенді
+        if (findLevelRoboEN.level === levelRoboEN) {
+          // оновлюємо результат на бекенді
+          dispatch(
+            editLevelByIdEN({ id: findLevelRoboEN._id, userLevelCompleteInfo })
+          );
+          return;
+        }
+      }
+
+      // режим МУЗИКА ENG
+      if (!isRoboQuizMode) {
+        // ---1--- Фільтруємо скор юзера по режиму МУЗИКА
+        const userScoreInfoMusicEN = userScoreEN.filter(
+          item => item.isRoboQuizMode === 'false'
+        );
+
+        // ---2--- Ресетимо левел до 1, якщо дійшли до 5-го рівня
+        if (userScoreInfoMusicEN.length === 5 && levelMusicEN) {
+          dispatch(setLevelMusicEN(1));
+        }
+
+        // ---3--- Шукаємо левел, який зараз граємо, в масиві юзера
+        const findLevelMusicEN = userScoreInfoMusicEN.find(
+          item => item.level === levelMusicEN
+        );
+
+        // ---4--- Об'єкт, який відправлятимемо на бекенд
+        const userLevelCompleteInfo = {
+          isRoboQuizMode,
+          level: levelMusicEN,
+          time: Number(totalTime),
+        };
+
+        // ---5--- Якщо findLevelMusicEN.level === undefined, то це означає, що в базі ще такого левала немає,
+        if (findLevelMusicEN === undefined) {
+          // зберігаємо результат на бекенд
+          dispatch(addLVLCompleteInfoEN(userLevelCompleteInfo));
+          return;
+        }
+
+        // ---6--- Якщо findLevelMusicEN.level === levelMusicEN, то значить,
+        // що ми переграли левел і треба його перезаписати на бекенді
+        if (findLevelMusicEN.level === levelMusicEN) {
+          // оновлюємо результат на бекенді
+          dispatch(
+            editLevelByIdEN({ id: findLevelMusicEN._id, userLevelCompleteInfo })
+          );
+          return;
+        }
+      }
     }
 
     // запис результату на бекенд UKR
     if (!isEngLang) {
-      const userLevelCompleteInfo = {
-        isRoboQuizMode,
-        level: isRoboQuizMode ? levelRoboUKR : levelMusicUKR,
-        time: Number(totalTime),
-      };
-      dispatch(addLVLCompleteInfoUKR(userLevelCompleteInfo));
-      dispatch(resetAnswerStateArray([]));
+      // Режим РОБОТ UKR
+      if (isRoboQuizMode) {
+        // ---1--- Фільтруємо скор юзера по режиму РОБОТ
+        const userScoreInfoRoboUKR = userScoreUKR.filter(
+          item => item.isRoboQuizMode === 'true'
+        );
+        console.log('userScoreInfoRoboUKR', userScoreInfoRoboUKR);
+
+        // ---2--- Ресетимо левел до 1, якщо дійшли до 5-го рівня
+        if (userScoreInfoRoboUKR.length === 5 && levelRoboUKR) {
+          dispatch(setLevelRoboUKR(1));
+        }
+
+        // ---3--- Шукаємо левел, який зараз граємо, в масиві юзера
+        const findLevelRoboUKR = userScoreInfoRoboUKR.find(
+          item => item.level === levelRoboUKR
+        );
+
+        // ---4--- Об'єкт, який відправлятимемо на бекенд
+        const userLevelCompleteInfo = {
+          isRoboQuizMode,
+          level: levelRoboUKR,
+          time: Number(totalTime),
+        };
+
+        // ---5--- Якщо findLevelRoboUKR.level === undefined, то це означає, що в базі ще такого левала немає,
+        if (findLevelRoboUKR === undefined) {
+          // зберігаємо результат на бекенд
+          dispatch(addLVLCompleteInfoUKR(userLevelCompleteInfo));
+          return;
+        }
+
+        // ---6--- Якщо findLevelRoboUKR.level === levelRoboEN, то значить,
+        // що ми переграли левел і треба його перезаписати на бекенді
+        if (findLevelRoboUKR.level === levelRoboUKR) {
+          // оновлюємо результат на бекенді
+          dispatch(
+            editLevelByIdUKR({
+              id: findLevelRoboUKR._id,
+              userLevelCompleteInfo,
+            })
+          );
+          return;
+        }
+      }
+
+      // режим МУЗИКА UKR
+      if (!isRoboQuizMode) {
+        // ---1--- Фільтруємо скор юзера по режиму МУЗИКА
+        const userScoreInfoMusicUKR = userScoreUKR.filter(
+          item => item.isRoboQuizMode === 'false'
+        );
+
+        // ---2--- Ресетимо левел до 1, якщо дійшли до 5-го рівня
+        if (userScoreInfoMusicUKR.length === 5 && levelMusicUKR) {
+          dispatch(setLevelMusicUKR(1));
+        }
+
+        // ---3--- Шукаємо левел, який зараз граємо, в масиві юзера
+        const findLevelMusicUKR = userScoreInfoMusicUKR.find(
+          item => item.level === levelMusicUKR
+        );
+
+        // ---4--- Об'єкт, який відправлятимемо на бекенд
+        const userLevelCompleteInfo = {
+          isRoboQuizMode,
+          level: levelMusicUKR,
+          time: Number(totalTime),
+        };
+
+        // ---5--- Якщо findLevelMusicUKR.level === undefined, то це означає, що в базі ще такого левала немає,
+        if (findLevelMusicUKR === undefined) {
+          // зберігаємо результат на бекенд
+          dispatch(addLVLCompleteInfoUKR(userLevelCompleteInfo));
+          return;
+        }
+
+        // ---6--- Якщо findLevelMusicUKR.level === levelMusicUKR, то значить,
+        // що ми переграли левел і треба його перезаписати на бекенді
+        if (findLevelMusicUKR.level === levelMusicUKR) {
+          // оновлюємо результат на бекенді
+          dispatch(
+            editLevelByIdUKR({
+              id: findLevelMusicUKR._id,
+              userLevelCompleteInfo,
+            })
+          );
+          return;
+        }
+      }
     }
   };
 
@@ -200,16 +370,6 @@ const Answers = () => {
     //   dispatch(togglePlaying());
     // }
 
-    // Автоматичнтй перехід на LEVEL COMPLETE
-    setTimeout(() => {
-      if (currentSong !== 4) return;
-
-      // запис результату на бекенд
-      postResult(levelCompleteInfo);
-
-      setIsLVLComplete(true);
-    }, DELAY);
-
     // // Передчасне закінчення останньої пісні - Перехід на LEVEL COMPLETE (!!!ВИМИКАЄМО поки!!!)
     //   if (countClicksOnAnswerBtn > 0 && currentSong === 4) {
     //     // запис результату на бекенд
@@ -221,6 +381,22 @@ const Answers = () => {
     //     dispatch(togglePlaying());
     //   }
   };
+
+  // Автоматичнтй перехід на LEVEL COMPLETE
+  useEffect(() => {
+    if (levelCompleteInfo.length !== 5) return;
+
+    setTimeout(
+      () => {
+        // запис результату на бекенд
+        postResult(levelCompleteInfo);
+
+        setIsLVLComplete(true);
+      },
+      isMatch ? 8000 : 2000
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [levelCompleteInfo]);
 
   // Classname для неактивної, правильної і неправильної відповіді
   const makeOptionClassName = (index, array) => {

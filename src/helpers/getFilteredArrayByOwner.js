@@ -9,6 +9,7 @@ export const getFilteredArrayByOwner = arrayByMode => {
       acc[key] = sublist;
     }
     sublist.push(item);
+
     return acc;
   }, {});
 };

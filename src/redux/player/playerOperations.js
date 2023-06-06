@@ -12,8 +12,8 @@ export const sendToken = {
   },
 };
 
-// axios.defaults.baseURL = 'http://localhost:3000/api';
-axios.defaults.baseURL = 'https://musicquiz-backend.onrender.com/api';
+axios.defaults.baseURL = 'http://localhost:3000/api';
+// axios.defaults.baseURL = 'https://musicquiz-backend.onrender.com/api';
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 const getAllEng = createAsyncThunk(
@@ -128,6 +128,47 @@ const addLVLCompleteInfoUKR = createAsyncThunk(
   }
 );
 
+const editLevelByIdUKR = createAsyncThunk(
+  'player/editLevelByIdUKR',
+  async ({ id, userLevelCompleteInfo }, { rejectWithValue, getState }) => {
+    try {
+      const { token } = getState().auth;
+      // axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      sendToken.set(token);
+
+      const { data } = await axios.put(
+        `/game/ukr/${id}`,
+        userLevelCompleteInfo
+      );
+      console.log('editLevelByIdUKR', data);
+
+      return data;
+    } catch (error) {
+      console.log(error);
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+const editLevelByIdEN = createAsyncThunk(
+  'player/editLevelByIdEN',
+  async ({ id, userLevelCompleteInfo }, { rejectWithValue, getState }) => {
+    try {
+      const { token } = getState().auth;
+      // axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      sendToken.set(token);
+
+      const { data } = await axios.put(`/game/en/${id}`, userLevelCompleteInfo);
+      console.log('editLevelByIdEN', data);
+
+      return data;
+    } catch (error) {
+      console.log(error);
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 const removeLevelByIdUKR = createAsyncThunk(
   'player/removeLevelByIdUKR',
   async (levelID, { rejectWithValue, getState }) => {
@@ -173,6 +214,8 @@ export {
   addLVLCompleteInfoUKR,
   getAllEngByUser,
   getAllUkrByUser,
+  editLevelByIdEN,
+  editLevelByIdUKR,
   removeLevelByIdUKR,
   removeLevelByIdEN,
 };

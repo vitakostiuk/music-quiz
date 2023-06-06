@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import ConfettiExplosion from 'react-confetti-explosion';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -24,10 +25,6 @@ import {
   restartLevelMusicUKR,
   resetState,
 } from '../../redux/player/playerSlice';
-import {
-  removeLevelByIdUKR,
-  removeLevelByIdEN,
-} from '../../redux/player/playerOperations';
 import { ReactComponent as WrongIcon } from '../../images/cross.svg';
 import { ReactComponent as TrueIcon } from '../../images/checkmark.svg';
 import { ReactComponent as RestartIcon } from '../../images/restart.svg';
@@ -101,10 +98,6 @@ const LevelComplete = () => {
   const handleRestartLevelEN = () => {
     if (!isEngLang) return;
 
-    // delete level on backend
-    if (levelIdEN) {
-      dispatch(removeLevelByIdEN(levelIdEN));
-    }
     // restart level on frontend
     if (isRoboQuizMode) {
       dispatch(restartLevelRoboEN(levelRoboEN));
@@ -118,10 +111,6 @@ const LevelComplete = () => {
   const handleRestartLevelUKR = () => {
     if (isEngLang) return;
 
-    // delete level on backend
-    if (levelIdUKR) {
-      dispatch(removeLevelByIdUKR(levelIdUKR));
-    }
     // restart level on frontend
     if (isRoboQuizMode) {
       dispatch(restartLevelRoboUKR(levelRoboUKR));

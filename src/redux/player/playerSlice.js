@@ -8,6 +8,8 @@ import {
   getAllUkrByUser,
   addLVLCompleteInfoEN,
   addLVLCompleteInfoUKR,
+  editLevelByIdUKR,
+  editLevelByIdEN,
 } from './playerOperations';
 
 const initialState = {
@@ -253,6 +255,28 @@ const playerSlice = createSlice({
         state.levelIdUKR = payload._id;
       })
       .addCase(addLVLCompleteInfoUKR.rejected, (state, { payload }) => {
+        state.error = payload;
+      })
+
+      // REDUCER FOR editLevelByIdEN (EN version)
+      .addCase(editLevelByIdEN.pending, state => {
+        state.error = null;
+      })
+      .addCase(editLevelByIdEN.fulfilled, (state, { payload }) => {
+        state.levelIdEN = payload._id;
+      })
+      .addCase(editLevelByIdEN.rejected, (state, { payload }) => {
+        state.error = payload;
+      })
+
+      // REDUCER FOR editLevelByIdUKR (UKR version)
+      .addCase(editLevelByIdUKR.pending, state => {
+        state.error = null;
+      })
+      .addCase(editLevelByIdUKR.fulfilled, (state, { payload }) => {
+        state.levelIdUKR = payload._id;
+      })
+      .addCase(editLevelByIdUKR.rejected, (state, { payload }) => {
         state.error = payload;
       });
   },

@@ -89,17 +89,17 @@ const Game = () => {
       const userScoreInfoRoboEN = userScoreEN.filter(
         item => item.isRoboQuizMode === 'true'
       );
-      // console.log('userScoreInfoRoboEN', userScoreInfoRoboEN);
+      console.log('userScoreInfoRoboEN', userScoreInfoRoboEN);
       if (
         userScoreInfoRoboEN.length !== 0 &&
         userScoreInfoRoboEN.length !== 5
       ) {
         dispatch(setLevelRoboEN(userScoreInfoRoboEN.length + 1));
       }
-      if (userScoreInfoRoboEN.length === 5) {
-        dispatch(setLevelRoboEN(userScoreInfoRoboEN.length));
-        navigate('/leaderboard');
-      }
+      // if (userScoreInfoRoboEN.length === 5) {
+      //   dispatch(setLevelRoboEN('completed'));
+      //   navigate('/leaderboard');
+      // }
     }
 
     // -- 1.2 -- ФІЛЬТРУЄМО ПО РЕЖИМУ МУЗИКА (ENG)
@@ -107,17 +107,17 @@ const Game = () => {
       const userScoreInfoMusicEN = userScoreEN.filter(
         item => item.isRoboQuizMode === 'false'
       );
-      // console.log('userScoreInfoMusicEN', userScoreInfoMusicEN);
+      console.log('userScoreInfoMusicEN', userScoreInfoMusicEN);
       if (
         userScoreInfoMusicEN.length !== 0 &&
         userScoreInfoMusicEN.length !== 5
       ) {
         dispatch(setLevelMusicEN(userScoreInfoMusicEN.length + 1));
       }
-      if (userScoreInfoMusicEN.length === 5) {
-        dispatch(setLevelMusicEN(userScoreInfoMusicEN.length));
-        navigate('/leaderboard');
-      }
+      // if (userScoreInfoMusicEN.length === 5) {
+      //   dispatch(setLevelMusicEN('completed'));
+      //   navigate('/leaderboard');
+      // }
     }
   }, [dispatch, isEngLang, isRoboQuizMode, navigate, userScoreEN]);
 
@@ -130,17 +130,17 @@ const Game = () => {
       const userScoreInfoRoboUKR = userScoreUKR.filter(
         item => item.isRoboQuizMode === 'true'
       );
-      // console.log('userScoreInfoRoboUKR', userScoreInfoRoboUKR);
+      console.log('userScoreInfoRoboUKR', userScoreInfoRoboUKR);
       if (
         userScoreInfoRoboUKR.length !== 0 &&
         userScoreInfoRoboUKR.length !== 5
       ) {
         dispatch(setLevelRoboUKR(userScoreInfoRoboUKR.length + 1));
       }
-      if (userScoreInfoRoboUKR.length === 5) {
-        dispatch(setLevelRoboUKR(userScoreInfoRoboUKR.length));
-        navigate('/leaderboard');
-      }
+      // if (userScoreInfoRoboUKR.length === 5) {
+      //   dispatch(setLevelRoboUKR('completed'));
+      //   navigate('/leaderboard');
+      // }
     }
 
     // -- 1.2 -- ФІЛЬТРУЄМО ПО РЕЖИМУ МУЗИКА (UKR)
@@ -148,17 +148,17 @@ const Game = () => {
       const userScoreInfoMusicUKR = userScoreUKR.filter(
         item => item.isRoboQuizMode === 'false'
       );
-      // console.log('userScoreInfoMusicUKR', userScoreInfoMusicUKR);
+      console.log('userScoreInfoMusicUKR', userScoreInfoMusicUKR);
       if (
         userScoreInfoMusicUKR.length !== 0 &&
         userScoreInfoMusicUKR.length !== 5
       ) {
         dispatch(setLevelMusicUKR(userScoreInfoMusicUKR.length + 1));
       }
-      if (userScoreInfoMusicUKR.length === 5) {
-        dispatch(setLevelMusicUKR(userScoreInfoMusicUKR.length));
-        navigate('/leaderboard');
-      }
+      // if (userScoreInfoMusicUKR.length === 5) {
+      //   dispatch(setLevelMusicUKR('completed'));
+      //   navigate('/leaderboard');
+      // }
     }
   }, [dispatch, isEngLang, isRoboQuizMode, navigate, userScoreUKR]);
 
