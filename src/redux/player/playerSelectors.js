@@ -1,6 +1,8 @@
 const getQuizMode = state => state.player.isRoboQuizMode;
 const getLanguage = state => state.player.isEngLang;
 
+const getPathname = state => state.player.pathname;
+
 const getLevelRoboEN = state => state.player.levelRoboEN;
 const getLevelMusicEN = state => state.player.levelMusicEN;
 const getLevelIdEN = state => state.player.levelIdEN;
@@ -27,6 +29,7 @@ const getIsLoading = state => state.player.loading;
 export {
   getQuizMode,
   getLanguage,
+  getPathname,
   getLevelRoboEN,
   getLevelMusicEN,
   getLevelRoboUKR,

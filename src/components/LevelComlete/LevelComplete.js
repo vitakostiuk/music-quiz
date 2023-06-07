@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import ConfettiExplosion from 'react-confetti-explosion';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -24,6 +25,7 @@ import {
   restartLevelRoboUKR,
   restartLevelMusicUKR,
   resetState,
+  setPathname,
 } from '../../redux/player/playerSlice';
 import { ReactComponent as WrongIcon } from '../../images/cross.svg';
 import { ReactComponent as TrueIcon } from '../../images/checkmark.svg';
@@ -37,6 +39,9 @@ import s from './LevelComplete.module.css';
 
 const LevelComplete = () => {
   const dispatch = useDispatch();
+
+  const location = useLocation();
+  console.log('location', location);
 
   const { t } = useTranslation();
 
@@ -56,6 +61,10 @@ const LevelComplete = () => {
 
   const levelIdUKR = useSelector(getLevelIdUKR);
   const levelIdEN = useSelector(getLevelIdEN);
+
+  useEffect(() => {
+    dispatch(setPathname(location.pathname));
+  }, [dispatch, location.pathname]);
 
   // Перевіряємо, чи є хоча б одна неправильна відповідь
   const filteredByWrongAnswers = levelCompleteInfo.filter(

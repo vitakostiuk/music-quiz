@@ -3,8 +3,8 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
 import { sendToken } from '../player/playerOperations';
 
-axios.defaults.baseURL = 'http://localhost:3000/api';
-// axios.defaults.baseURL = 'https://musicquiz-backend.onrender.com/api';
+// axios.defaults.baseURL = 'http://localhost:3000/api';
+axios.defaults.baseURL = 'https://musicquiz-backend.onrender.com/api';
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 const signup = createAsyncThunk(

@@ -47,6 +47,8 @@ const initialState = {
 
   loading: false,
   error: null,
+
+  pathname: '',
 };
 
 const playerSlice = createSlice({
@@ -67,6 +69,7 @@ const playerSlice = createSlice({
       state.playing = false;
       state.levelIdUKR = null;
       state.levelIdEN = null;
+      state.pathname = '';
     },
     resetLevels: (state, { payload }) => {
       state.levelRoboEN = 1;
@@ -82,13 +85,11 @@ const playerSlice = createSlice({
       state.isEngLang = !state.isEngLang;
     },
 
+    setPathname: (state, { payload }) => {
+      state.pathname = payload;
+    },
+
     // EN
-    // setLevelRoboEN: (state, { payload }) => {
-    //   state.levelRoboEN = payload.length + 1;
-    // },
-    // setLevelMusicEN: (state, { payload }) => {
-    //   state.levelMusicEN = payload.length + 1;
-    // },
     setLevelRoboEN: (state, { payload }) => {
       state.levelRoboEN = payload;
     },
@@ -109,12 +110,6 @@ const playerSlice = createSlice({
     },
 
     // UKR
-    // setLevelRoboUKR: (state, { payload }) => {
-    //   state.levelRoboUKR = payload.length + 1;
-    // },
-    // setLevelMusicUKR: (state, { payload }) => {
-    //   state.levelMusicUKR = payload.length + 1;
-    // },
     setLevelRoboUKR: (state, { payload }) => {
       state.levelRoboUKR = payload;
     },
@@ -285,6 +280,8 @@ const playerSlice = createSlice({
 export const {
   setQuizMode,
   toggleLanguage,
+
+  setPathname,
 
   resetState,
   resetLevels,

@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -6,7 +7,7 @@ import { toggleLanguage, resetState } from '../../redux/player/playerSlice';
 import {
   getLanguage,
   getAnswerState,
-  getLevelCompleteInfo,
+  getPathname,
 } from '../../redux/player/playerSelectors';
 import { getToken } from '../../redux/auth/authSelectors';
 import { ReactComponent as Logo } from '../../images/main-logo1.svg';
@@ -33,6 +34,7 @@ const Header = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const location = useLocation();
 
   const refLogo = useRef();
   const refHome = useRef();
@@ -52,6 +54,7 @@ const Header = () => {
   const isEngLang = useSelector(getLanguage);
   const token = useSelector(getToken);
   const answers = useSelector(getAnswerState);
+  const pathname = useSelector(getPathname);
 
   useEffect(() => {
     if (isEngLang) {
@@ -74,16 +77,17 @@ const Header = () => {
 
   // Клік по guizMode під час гри
   const onClickQuizModeOnGame = () => {
-    if (answers.length === 0) {
+    if (answers.length === 0 || pathname === '/game') {
       setIsActiveQuizMode(true);
       setIsActiveHome(false);
       setIsActiveLeaderboard(false);
+      dispatch(resetState());
 
       return;
     }
 
     // Попап при натисканні на головну в режмі гри
-    if (answers.length > 0) {
+    if (answers.length > 0 && pathname !== '/game') {
       if (quizModePopup) return setQuizModePopup(false);
       setQuizModePopup(true);
 
@@ -93,17 +97,18 @@ const Header = () => {
 
   // Клік по home
   const onClickHome = () => {
-    if (answers.length === 0) {
+    if (answers.length === 0 || pathname === '/game') {
       setIsActiveHome(true);
       setIsActiveLeaderboard(false);
       setIsActiveQuizMode(false);
+      dispatch(resetState());
       navigate('/');
 
       return;
     }
 
     // Попап при натисканні на головну в режмі гри
-    if (answers.length > 0) {
+    if (answers.length > 0 && pathname !== '/game') {
       if (homePopup) return setHomePopup(false);
       setHomePopup(true);
 
@@ -113,17 +118,18 @@ const Header = () => {
 
   // Клік по leaderboard
   const onClickleaderboard = () => {
-    if (answers.length === 0) {
+    if (answers.length === 0 || pathname === '/game') {
       setIsActiveLeaderboard(true);
       setIsActiveHome(false);
       setIsActiveQuizMode(false);
+      dispatch(resetState());
       navigate('/leaderboard');
 
       return;
     }
 
     // Попап при натисканні на лідерборд в режмі гри
-    if (answers.length > 0) {
+    if (answers.length > 0 && pathname !== '/game') {
       if (leaderboardPopup) return setLeaderboardPopup(false);
       setLeaderboardPopup(true);
 
@@ -133,15 +139,16 @@ const Header = () => {
 
   // Клік по логотипу
   const onClickLogo = () => {
-    if (answers.length === 0) {
+    if (answers.length === 0 || pathname === '/game') {
       setIsActiveQuizMode(false);
+      dispatch(resetState());
       navigate('/');
 
       return;
     }
 
     // Попап при натисканні на лого в режмі гри
-    if (answers.length > 0) {
+    if (answers.length > 0 && pathname !== '/game') {
       if (logoPopup) return setLogoPopup(false);
       setLogoPopup(true);
 
@@ -151,14 +158,15 @@ const Header = () => {
 
   // Клік по перемикачу мови
   const onClickLangBtn = () => {
-    if (answers.length === 0) {
+    if (answers.length === 0 || pathname === '/game') {
       dispatch(toggleLanguage());
+      dispatch(resetState());
 
       return;
     }
 
     // Попап при натисканні на мову в режмі гри
-    if (answers.length > 0) {
+    if (answers.length > 0 && pathname !== '/game') {
       if (languagePopup) return setLanguagePopup(false);
       setLanguagePopup(true);
 
@@ -168,15 +176,16 @@ const Header = () => {
 
   // Клік по signin
   const onClickSignIn = () => {
-    if (answers.length === 0) {
+    if (answers.length === 0 || pathname === '/game') {
       setIsActiveQuizMode(false);
+      dispatch(resetState());
       navigate('/login');
 
       return;
     }
 
     // Попап при натисканні на signin в режмі гри
-    if (answers.length > 0) {
+    if (answers.length > 0 && pathname !== '/game') {
       if (signinPopup) return setSigninPopup(false);
       setSigninPopup(true);
 
@@ -186,15 +195,16 @@ const Header = () => {
 
   // Клік по signup
   const onClickSignUp = () => {
-    if (answers.length === 0) {
+    if (answers.length === 0 || pathname === '/game') {
       setIsActiveQuizMode(false);
+      dispatch(resetState());
       navigate('/register');
 
       return;
     }
 
     // Попап при натисканні на signin в режмі гри
-    if (answers.length > 0) {
+    if (answers.length > 0 && pathname !== '/game') {
       if (signupPopup) return setSignupPopup(false);
       setSignupPopup(true);
 
